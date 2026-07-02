@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Gerald Schranz, MSc – IT Consultant. Online CV & Portfolio.">
   <title>Gerald Schranz, MSc – IT Consultant</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
   <style>
     /* ── Fonts (lokal gehostet) ── */
     @font-face {
@@ -363,6 +365,82 @@
     footer .legal-section a { color: var(--accent2); }
     footer .legal-section a:hover { color: #fff; }
 
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px 16px;
+      background: rgba(10,10,15,.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    nav a {
+      font-size: .78rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      transition: all .2s;
+    }
+    nav a:hover {
+      color: var(--text);
+      background: var(--bg-hover);
+    }
+
+    /* ── Padding für fixed Nav ── */
+    body { padding-top: 52px; }
+
+    /* ── Print ── */
+    @media print {
+      nav { display: none; }
+      body { padding-top: 0; background: #fff; color: #111; }
+      header::before { display: none; }
+      header { padding: 32px 0 20px; }
+      header h1 { -webkit-text-fill-color: #111; background: none; }
+      .avatar {
+        width: 80px; height: 80px;
+        font-size: 28px;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .about-text, .timeline-item p,
+      .timeline-item ul, .timeline-item .company,
+      .edu-card .school, .cert-item span,
+      .project-card .desc, .project-card .tech-stack span,
+      .lang-item .lang-desc { color: #333; }
+      .timeline-item, .edu-card, .skill-group,
+      .cert-item, .project-card, .lang-item {
+        background: #f5f5f5;
+        border-color: #ddd;
+        box-shadow: none;
+      }
+      .skill-tag { background: #e8e8ff; border-color: #ccc; color: #222; }
+      .timeline-item:hover, .edu-card:hover,
+      .cert-item:hover, .project-card:hover { transform: none; box-shadow: none; }
+      .timeline::before { background: #999; }
+      .timeline-item::before { background: #6c63ff; border-color: #fff; }
+      .legal-toggle { display: none; }
+      .legal-section { display: block !important; border-color: #ddd; background: #f5f5f5; }
+      .legal-section p, .legal-section h3 { color: #333; }
+      section { padding: 24px 0; page-break-inside: avoid; }
+      section h2 { color: #111; }
+      .header-links a { border-color: #ddd; }
+      footer { border-top-color: #ddd; color: #666; }
+      .date { color: #6c63ff !important; }
+      .skill-group h4 { color: #6c63ff !important; }
+      .lang-item .lang-level { color: #6c63ff !important; }
+    }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       header h1 { font-size: 2rem; }
@@ -380,6 +458,16 @@
   </style>
 </head>
 <body>
+
+  <nav>
+    <a href="#about">👤</a>
+    <a href="#experience">💼</a>
+    <a href="#education">🎓</a>
+    <a href="#skills">⚡</a>
+    <a href="#certifications">🏅</a>
+    <a href="#languages">🌐</a>
+    <a href="#projects">🚀</a>
+  </nav>
 
   <header>
     <div class="avatar">GS</div>
