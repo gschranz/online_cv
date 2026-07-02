@@ -127,6 +127,7 @@
       font-size: 1.05rem;
       max-width: 720px;
       line-height: 1.8;
+      padding: 0 2px;
     }
 
     /* ── Experience ── */
@@ -571,6 +572,51 @@
     }
     .lang-item.visible .lang-bar { width: var(--pct); }
 
+    /* ── WOW: Scroll Progress Bar ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      z-index: 200;
+      transition: width .1s linear;
+      width: 0;
+    }
+
+    /* ── WOW: Animated Gradient Name ── */
+    header h1 {
+      background: linear-gradient(135deg, #fff 20%, var(--accent) 50%, var(--accent2) 80%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textShimmer 4s ease-in-out infinite;
+    }
+    @keyframes textShimmer {
+      0% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+      100% { background-position: 0% center; }
+    }
+
+    /* ── WOW: Rotating Avatar Border ── */
+    .avatar {
+      position: relative;
+    }
+    .avatar::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+      background-size: 400% 400%;
+      z-index: -1;
+      animation: spinBorder 6s linear infinite;
+    }
+    @keyframes spinBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       header h1 { font-size: 1.7rem; }
@@ -588,8 +634,11 @@
       nav a { padding: 6px 10px; font-size: .72rem; }
       body::before { animation: none; opacity: .3; }
       .timeline-item::before { animation: none; }
+      header h1 { animation: none; }
+      .avatar::after { animation: none; }
     }
     @media (max-width: 480px) {
+      .container { padding: 0 16px; }
       header h1 { font-size: 1.4rem; }
       header { padding: 52px 0 24px; }
       .avatar { width: 80px; height: 80px; font-size: 30px; margin-bottom: 14px; }
@@ -608,6 +657,8 @@
   </style>
 </head>
 <body>
+
+  <div id="progress-bar"></div>
 
   <nav>
     <a href="#about">👤</a>
@@ -949,7 +1000,7 @@
 
   <footer>
     <div class="container">
-      <p>© 2026 Gerald Schranz, MSc &bull; Built with ❤️</p>
+      <p>© 2026 Gerald Schranz, MSc &bull; Mit Hilfe von KI erstellt &bull; Built with ❤️</p>
       <span class="legal-toggle" onclick="document.getElementById('legal-info').classList.toggle('show')">📋 Impressum &amp; Datenschutz</span>
       <div id="legal-info" class="legal-section">
         <h3>Impressum</h3>
@@ -967,6 +1018,13 @@
   </footer>
 
 <script>
+    // Scroll Progress Bar
+    const bar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+    }, { passive: true });
+
     // Scroll Reveal
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
