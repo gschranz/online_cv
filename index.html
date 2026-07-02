@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gerald Schranz, MSc – IT Consultant. Online CV & Portfolio.">
-  <title>Gerald Schranz, MSc – IT Consultant</title>
+  <meta name="description" content="Gerald Schranz, MSc – IT-Manager. Online CV & Portfolio.">
+  <title>Gerald Schranz, MSc – IT-Manager</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.svg">
   <style>
@@ -379,6 +379,7 @@
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     nav::-webkit-scrollbar { display: none; }
@@ -572,17 +573,37 @@
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
-      header h1 { font-size: 2rem; }
-      header { padding: 48px 0 32px; }
-      section { padding: 32px 0; }
-      .timeline { padding-left: 24px; }
-      .timeline-item::before { left: -20px; }
+      header h1 { font-size: 1.7rem; }
+      header { padding: 60px 0 32px; }
+      .avatar { width: 96px; height: 96px; font-size: 36px; }
+      .subtitle { font-size: .95rem; }
+      section { padding: 28px 0; }
+      .timeline { padding-left: 22px; }
+      .timeline-item { padding: 16px 18px; }
+      .timeline-item::before { left: -18px; width: 10px; height: 10px; }
+      .timeline-item h3 { font-size: 1rem; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .lang-grid { grid-template-columns: 1fr 1fr; }
+      .header-links a { padding: 8px 14px; font-size: .82rem; }
+      nav a { padding: 6px 10px; font-size: .72rem; }
+      body::before { animation: none; opacity: .3; }
+      .timeline-item::before { animation: none; }
     }
-    @media (max-width: 400px) {
+    @media (max-width: 480px) {
+      header h1 { font-size: 1.4rem; }
+      header { padding: 52px 0 24px; }
+      .avatar { width: 80px; height: 80px; font-size: 30px; margin-bottom: 14px; }
+      .subtitle { font-size: .85rem; }
+      section { padding: 24px 0; }
+      section h2 { font-size: 1.2rem; margin-bottom: 20px; }
+      .timeline-item { margin-bottom: 24px; }
       .skills-grid { grid-template-columns: 1fr; }
       .lang-grid { grid-template-columns: 1fr; }
+      .header-links { gap: 10px; }
+      .header-links a { padding: 6px 12px; font-size: .78rem; }
+      .cert-grid { grid-template-columns: 1fr; }
+      .project-grid { grid-template-columns: 1fr; }
+      .edu-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -601,7 +622,7 @@
   <header>
     <div class="avatar">GS</div>
     <h1>Gerald Schranz, MSc</h1>
-    <p class="subtitle">IT Consultant &bull; Cloud &amp; AI Specialist &bull; Wien, Österreich</p>
+    <p class="subtitle">IT-Manager &bull; Cloud &amp; AI Specialist &bull; Wien, Österreich</p>
     <p class="motto">„Think twice, code once."</p>
     <div class="badge-available">
       <span class="dot"></span>
@@ -629,7 +650,7 @@
     <section id="about" class="reveal">
       <h2><span class="icon">👤</span> Über mich</h2>
       <div class="about-text">
-        <p>IT Consultant mit Leidenschaft für Cloud-Technologien, künstliche Intelligenz und moderne Softwareentwicklung. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und einem starken Fokus auf lösungsorientierte, pragmatische Architekturen.</p>
+        <p>IT-Manager mit Leidenschaft für Cloud-Technologien, künstliche Intelligenz und moderne Softwareentwicklung. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und einem starken Fokus auf lösungsorientierte, pragmatische Architekturen.</p>
         <p style="margin-top: 12px;">Ob Azure-Infrastruktur, AI-Integration oder Full-Stack-Entwicklung — ich bringe Projekte von der Konzeption bis zur produktiven Umsetzung. Als erfahrener IT-Generalist mit über einem Jahrzehnt Berufserfahrung schätze ich sauberen Code, effiziente Prozesse und den Austausch im Team.</p>
       </div>
     </section>
@@ -641,9 +662,9 @@
 
         <div class="timeline-item">
           <div class="date">seit 2022</div>
-          <h3>IT Consultant</h3>
+          <h3>IT-Manager</h3>
           <div class="company">CANCOM Austria — Wien</div>
-          <p>Ganzheitliche IT-Beratung mit Fokus auf Microsoft-Technologien, Cloud-Transformation &amp; AI-Integration. Seit 2024 als Senior Consultant mit Schwerpunkt auf Cloud-Security, Modern Workplace und Copilot-Lösungen.</p>
+          <p>Ganzheitliche IT-Beratung mit Fokus auf Microsoft-Technologien, Cloud-Transformation &amp; AI-Integration. Seit 2024 als Senior IT-Manager mit Schwerpunkt auf Cloud-Security, Modern Workplace und Copilot-Lösungen.</p>
           <ul>
             <li>Microsoft Copilot for Security — Early Access Program &amp; Implementierung</li>
             <li>Azure Security &amp; Compliance Architektur</li>
