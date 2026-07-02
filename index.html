@@ -5,9 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Gerald Schranz, MSc – IT Consultant. Online CV & Portfolio.">
   <title>Gerald Schranz, MSc – IT Consultant</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    /* ── Fonts (lokal gehostet) ── */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url('fonts/Inter-latin-ext.woff2') format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url('fonts/Inter-latin.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
     /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -177,6 +193,10 @@
     .edu-card .date { font-size: .82rem; color: var(--accent2); font-weight: 600; }
     .edu-card h3 { font-size: 1rem; font-weight: 600; margin: 4px 0; }
     .edu-card .school { font-size: .88rem; color: var(--text-dim); }
+    .edu-card .details {
+      font-size: .82rem; color: var(--text-dim);
+      margin-top: 6px; line-height: 1.5;
+    }
 
     /* ── Skills ── */
     .skills-grid {
@@ -238,6 +258,34 @@
     .badge-azure { background: rgba(0,120,212,.15); }
     .badge-ms { background: rgba(0,160,80,.15); }
     .badge-d365 { background: rgba(0,100,180,.15); }
+    .badge-apple { background: rgba(150,150,150,.15); }
+    .badge-pma { background: rgba(255,180,50,.15); }
+
+    /* ── Languages ── */
+    .lang-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .lang-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      transition: all .2s;
+    }
+    .lang-item:hover {
+      border-color: var(--accent);
+    }
+    .lang-item .lang-name {
+      font-weight: 600; font-size: .95rem;
+    }
+    .lang-item .lang-level {
+      font-size: .82rem; color: var(--accent2); font-weight: 600;
+    }
+    .lang-item .lang-desc {
+      font-size: .82rem; color: var(--text-dim); margin-top: 2px;
+    }
 
     /* ── Projects ── */
     .project-grid {
@@ -280,6 +328,40 @@
       color: var(--text-dim);
       font-size: .85rem;
     }
+    footer .legal-toggle {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: .8rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-color: var(--border);
+      transition: color .2s;
+    }
+    footer .legal-toggle:hover { color: var(--accent2); }
+    footer .legal-section {
+      display: none;
+      margin-top: 20px;
+      padding: 20px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: left;
+      font-size: .82rem;
+      line-height: 1.7;
+    }
+    footer .legal-section.show { display: block; }
+    footer .legal-section h3 {
+      font-size: .9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    footer .legal-section p { margin-bottom: 6px; }
+    footer .legal-section p:last-child { margin-bottom: 0; }
+    footer .legal-section a { color: var(--accent2); }
+    footer .legal-section a:hover { color: #fff; }
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
@@ -289,9 +371,11 @@
       .timeline { padding-left: 24px; }
       .timeline-item::before { left: -20px; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
+      .lang-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 400px) {
       .skills-grid { grid-template-columns: 1fr; }
+      .lang-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -325,7 +409,7 @@
       <h2><span class="icon">👤</span> Über mich</h2>
       <div class="about-text">
         <p>IT Consultant mit Leidenschaft für Cloud-Technologien, künstliche Intelligenz und moderne Softwareentwicklung. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und einem starken Fokus auf lösungsorientierte, pragmatische Architekturen.</p>
-        <p style="margin-top: 12px;">Ob Azure-Infrastruktur, AI-Integration oder Full-Stack-Entwicklung — ich bringe Projekte von der Konzeption bis zur produktiven Umsetzung. Als erfahrener IT-Generalist schätze ich sauberen Code, effiziente Prozesse und den Austausch im Team.</p>
+        <p style="margin-top: 12px;">Ob Azure-Infrastruktur, AI-Integration oder Full-Stack-Entwicklung — ich bringe Projekte von der Konzeption bis zur produktiven Umsetzung. Als erfahrener IT-Generalist mit über einem Jahrzehnt Berufserfahrung schätze ich sauberen Code, effiziente Prozesse und den Austausch im Team.</p>
       </div>
     </section>
 
@@ -358,6 +442,60 @@
           </ul>
         </div>
 
+        <div class="timeline-item">
+          <div class="date">2018 – 2022</div>
+          <h3>System- &amp; Netzwerkadministrator</h3>
+          <div class="company">Great Wall Motor Austria Research &amp; Development GmbH — Bad Vöslau</div>
+          <p>Verantwortlich für die IT-Infrastruktur im Forschungs- und Entwicklungsbetrieb.</p>
+          <ul>
+            <li>Systemadministration und Betreuung der gesamten IT-Umgebung</li>
+            <li>Entwicklung massgeschneiderter Infrastrukturlösungen für F&amp;E</li>
+            <li>DevOps-Weiterentwicklung und Automatisierung</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <div class="date">2014 – 2016</div>
+          <h3>System- &amp; Netzwerkadministrator</h3>
+          <div class="company">IMaGE Performing Arts GmbH — Wien</div>
+          <p>IT-Betreuung eines Unternehmens der Veranstaltungsbranche.</p>
+          <ul>
+            <li>Wartung und Erweiterung der IT/TK-Infrastruktur</li>
+            <li>Support bei Störfällen und Erstberatung im Unternehmen</li>
+            <li>Erstellung der EDV-Dokumentation und Bereitschaftsdienst</li>
+            <li>Beschaffung und Einrichtung neuer Hardware</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <div class="date">2014</div>
+          <h3>Technischer Support</h3>
+          <div class="company">McShark Computervertriebs-GmbH — Wien</div>
+          <ul>
+            <li>Lösung von Anwenderproblemen im IT-Support</li>
+            <li>Information und Konfliktlösung</li>
+            <li>Aufrüstungen und Reparaturen</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <div class="date">2012 – 2013</div>
+          <h3>Verkauf &amp; technischer Support</h3>
+          <div class="company">macoffice, Hillisch und Partner GmbH — Wiener Neustadt</div>
+          <ul>
+            <li>Verkaufsberatung und Zusammenstellung massgeschneiderter EDV-Lösungen</li>
+            <li>Technischer Support, Reparaturen, Aufrüstungen und Umbauten</li>
+            <li>Betreuung der Online-Präsenzen</li>
+            <li>Zertifizierung der Geschäftsstelle bei Apple und Adobe</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <div class="date">2011 – 2012</div>
+          <h3>Rettungssanitäter (Zivildienst)</h3>
+          <div class="company">Österreichisches Rotes Kreuz — Wiener Neustadt</div>
+        </div>
+
       </div>
     </section>
 
@@ -367,18 +505,24 @@
       <div class="edu-grid">
         <div class="edu-card">
           <div class="date">2020 – 2022</div>
-          <h3>Master of Science (MSc)</h3>
-          <div class="school">Fachhochschule Wiener Neustadt</div>
+          <h3>Master of Science in Engineering (MSc)</h3>
+          <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
         </div>
         <div class="edu-card">
           <div class="date">2016 – 2019</div>
-          <h3>Bachelor (BSc)</h3>
-          <div class="school">Fachhochschule Wiener Neustadt</div>
+          <h3>Bachelor of Science in Engineering (BSc)</h3>
+          <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
+          <div class="details">
+            Themen: Customized Containers für Multiphysics-Simulationen &amp; Usability-Engineering für Nutzer mit geringen Computerkenntnissen
+          </div>
         </div>
         <div class="edu-card">
           <div class="date">2006 – 2011</div>
-          <h3>Technische Ausbildung</h3>
-          <div class="school">Fachhochschule Wiener Neustadt</div>
+          <h3>Reife- und Diplomprüfung</h3>
+          <div class="school">HLA für Produktmanagement und Präsentation — Mödling</div>
+          <div class="details">
+            Schwerpunkte: Web- und Printmediengestaltung, Betriebswirtschaft, 3 lebende Fremdsprachen, Eventorganisation
+          </div>
         </div>
       </div>
     </section>
@@ -395,6 +539,8 @@
             <span class="skill-tag">Windows Server</span>
             <span class="skill-tag">Docker</span>
             <span class="skill-tag">Railway</span>
+            <span class="skill-tag">Nagios</span>
+            <span class="skill-tag">Linux</span>
           </div>
         </div>
         <div class="skill-group">
@@ -414,8 +560,12 @@
             <span class="skill-tag">Next.js</span>
             <span class="skill-tag">React</span>
             <span class="skill-tag">Tailwind CSS</span>
-            <span class="skill-tag">Python</span>
+            <span class="skill-tag">C# / .NET</span>
             <span class="skill-tag">SQL</span>
+            <span class="skill-tag">C / C++</span>
+            <span class="skill-tag">Java</span>
+            <span class="skill-tag">Prolog</span>
+            <span class="skill-tag">Matlab</span>
           </div>
         </div>
         <div class="skill-group">
@@ -425,6 +575,8 @@
             <span class="skill-tag">CI/CD</span>
             <span class="skill-tag">PowerShell</span>
             <span class="skill-tag">Azure CLI</span>
+            <span class="skill-tag">Bash</span>
+            <span class="skill-tag">Batch</span>
             <span class="skill-tag">DNS / INWX</span>
           </div>
         </div>
@@ -463,11 +615,59 @@
           </div>
         </div>
         <div class="cert-item">
+          <div class="badge badge-ms">🪟</div>
+          <div>
+            <strong>Microsoft TA</strong><br>
+            <span style="font-size:.82rem;color:var(--text-dim);">Microsoft Technical Associate</span>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="badge badge-pma">📋</div>
+          <div>
+            <strong>PMA Level D</strong><br>
+            <span style="font-size:.82rem;color:var(--text-dim);">Projektmanagement-Assistent</span>
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="badge badge-apple">🍏</div>
+          <div>
+            <strong>Apple Zertifikate</strong><br>
+            <span style="font-size:.82rem;color:var(--text-dim);">macOS Support &amp; Sales Certification</span>
+          </div>
+        </div>
+        <div class="cert-item">
           <div class="badge badge-d365">📊</div>
           <div>
             <strong>Learn4D365</strong><br>
             <span style="font-size:.82rem;color:var(--text-dim);">Badge of Achievement &amp; Certificate of Achievement</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Languages -->
+    <section id="languages">
+      <h2><span class="icon">🌐</span> Sprachen</h2>
+      <div class="lang-grid">
+        <div class="lang-item">
+          <div class="lang-name">🇩🇪 Deutsch</div>
+          <div class="lang-level">Muttersprache</div>
+          <div class="lang-desc">fliessend in Wort und Schrift</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">🇬🇧 Englisch</div>
+          <div class="lang-level">C2</div>
+          <div class="lang-desc">fliessend in Wort und Schrift</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">🇫🇷 Französisch</div>
+          <div class="lang-level">B1</div>
+          <div class="lang-desc">sehr gutes Verständnis, Phrasen in Wort und Schrift</div>
+        </div>
+        <div class="lang-item">
+          <div class="lang-name">🇪🇸 Spanisch</div>
+          <div class="lang-level">A1</div>
+          <div class="lang-desc">gutes Verständnis, Phrasen in Wort und Schrift</div>
         </div>
       </div>
     </section>
@@ -512,6 +712,19 @@
   <footer>
     <div class="container">
       <p>© 2026 Gerald Schranz, MSc &bull; Built with ❤️</p>
+      <span class="legal-toggle" onclick="document.getElementById('legal-info').classList.toggle('show')">📋 Impressum &amp; Datenschutz</span>
+      <div id="legal-info" class="legal-section">
+        <h3>Impressum</h3>
+        <p><strong>Gerald Schranz, MSc</strong><br>
+        E-Mail: <a href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a></p>
+
+        <h3 style="margin-top:16px;">Datenschutzerklärung</h3>
+        <p><strong>Verantwortlicher:</strong> Gerald Schranz, MSc (<a href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a>)</p>
+        <p><strong>Personenbezogene Daten:</strong> Diese Website erhebt und verarbeitet keine personenbezogenen Daten. Es werden keine Cookies, Tracking-Tools oder Analyse-Dienste eingesetzt. Die Schriftart Inter wird lokal vom Server ausgeliefert — es erfolgt keine Verbindung zu externen Schriftarten-Servern.</p>
+        <p><strong>Kontaktaufnahme:</strong> Bei E-Mail-Kontakt wird die Korrespondenz vertraulich behandelt und nicht an Dritte weitergegeben.</p>
+        <p><strong>Server-Logfiles:</strong> Beim Abruf der Seite werden durch den Hosting-Anbieter technisch notwendige Logdaten (IP, Uhrzeit, aufgerufene Seite) verarbeitet. Diese Daten werden nicht mit anderen Datenquellen zusammengeführt.</p>
+        <p><strong>Ihre Rechte:</strong> Ihnen stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit zu. Bei Fragen kontaktieren Sie mich bitte per E-Mail.</p>
+      </div>
     </div>
   </footer>
 
