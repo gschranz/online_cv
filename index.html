@@ -138,7 +138,7 @@
       background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
     }
     .timeline-item {
-      position: relative;
+      position: relative; z-index: 1;
       margin-bottom: 36px;
       padding: 20px 24px;
       background: var(--bg-card);
@@ -441,6 +441,135 @@
       .lang-item .lang-level { color: #6c63ff !important; }
     }
 
+    /* ── WOW: Animated Grid Background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(108,99,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(108,99,255,.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: -1;
+      animation: gridPulse 8s ease-in-out infinite;
+    }
+    @keyframes gridPulse {
+      0%, 100% { opacity: .6; }
+      50% { opacity: 1; }
+    }
+
+    /* ── WOW: Verfügbar-Badge ── */
+    .badge-available {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 16px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: .82rem; font-weight: 600;
+      background: rgba(0,212,170,.1);
+      border: 1px solid rgba(0,212,170,.25);
+      color: var(--accent2);
+      animation: pulseBadge 2s ease-in-out infinite;
+    }
+    .badge-available .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+    @keyframes pulseBadge {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,170,0); }
+      50% { box-shadow: 0 0 12px 0 rgba(0,212,170,.15); }
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .4; }
+    }
+
+    /* ── WOW: Section Headers ── */
+    section h2 .icon {
+      display: inline-block;
+      transition: transform .3s ease;
+    }
+    section:hover h2 .icon {
+      transform: scale(1.2) rotate(-5deg);
+    }
+
+    /* ── WOW: Scroll Reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── WOW: Timeline Dot Glow ── */
+    .timeline-item::before {
+      animation: glowDot 3s ease-in-out infinite;
+    }
+    @keyframes glowDot {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(108,99,255,.3); }
+      50% { box-shadow: 0 0 12px 4px rgba(108,99,255,.15); }
+    }
+    .timeline-item:nth-child(2)::before { animation-delay: .4s; }
+    .timeline-item:nth-child(3)::before { animation-delay: .8s; }
+    .timeline-item:nth-child(4)::before { animation-delay: 1.2s; }
+    .timeline-item:nth-child(5)::before { animation-delay: 1.6s; }
+    .timeline-item:nth-child(6)::before { animation-delay: 2s; }
+    .timeline-item:nth-child(7)::before { animation-delay: 2.4s; }
+
+    /* ── WOW: Card Glow on Hover ── */
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--accent), var(--accent2), transparent, var(--accent));
+      background-size: 300% 300%;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity .4s ease;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    .timeline-item:hover::after { opacity: 1; }
+    .edu-card:hover, .cert-item:hover, .project-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: var(--shadow), 0 0 20px rgba(108,99,255,.1);
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ── WOW: Skill Tags Stagger ── */
+    .skill-tag {
+      transition: all .25s ease;
+    }
+    .skill-tag:hover {
+      transform: translateY(-2px) scale(1.05);
+      background: rgba(108,99,255,.2);
+      box-shadow: 0 0 16px rgba(108,99,255,.15);
+    }
+
+    /* ── WOW: Language Bars ── */
+    .lang-item {
+      position: relative;
+      overflow: hidden;
+    }
+    .lang-item .lang-bar {
+      height: 3px;
+      border-radius: 2px;
+      margin-top: 8px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 1s ease;
+      width: 0;
+    }
+    .lang-item.visible .lang-bar { width: var(--pct); }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       header h1 { font-size: 2rem; }
@@ -473,7 +602,11 @@
     <div class="avatar">GS</div>
     <h1>Gerald Schranz, MSc</h1>
     <p class="subtitle">IT Consultant &bull; Cloud &amp; AI Specialist &bull; Wien, Österreich</p>
-    <p class="motto">„Think twice, Code once."</p>
+    <p class="motto">„Think twice, code once."</p>
+    <div class="badge-available">
+      <span class="dot"></span>
+      Für neue Projekte verfügbar
+    </div>
     <div class="header-links">
       <a href="https://at.linkedin.com/in/gerald-schranz-02083bab" target="_blank" rel="noopener">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -493,7 +626,7 @@
   <main class="container">
 
     <!-- About -->
-    <section id="about">
+    <section id="about" class="reveal">
       <h2><span class="icon">👤</span> Über mich</h2>
       <div class="about-text">
         <p>IT Consultant mit Leidenschaft für Cloud-Technologien, künstliche Intelligenz und moderne Softwareentwicklung. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und einem starken Fokus auf lösungsorientierte, pragmatische Architekturen.</p>
@@ -502,7 +635,7 @@
     </section>
 
     <!-- Experience -->
-    <section id="experience">
+    <section id="experience" class="reveal">
       <h2><span class="icon">💼</span> Berufserfahrung</h2>
       <div class="timeline">
 
@@ -562,7 +695,7 @@
           <h3>Verkauf &amp; technischer Support</h3>
           <div class="company">macoffice, Hillisch und Partner GmbH — Wiener Neustadt</div>
           <ul>
-            <li>Verkaufsberatung und Zusammenstellung massgeschneiderter EDV-Lösungen</li>
+            <li>Verkaufsberatung und Zusammenstellung maßgeschneiderter EDV-Lösungen</li>
             <li>Technischer Support, Reparaturen, Aufrüstungen und Umbauten</li>
             <li>Betreuung der Online-Präsenzen</li>
             <li>Zertifizierung der Geschäftsstelle bei Apple und Adobe</li>
@@ -579,7 +712,7 @@
     </section>
 
     <!-- Education -->
-    <section id="education">
+    <section id="education" class="reveal">
       <h2><span class="icon">🎓</span> Ausbildung</h2>
       <div class="edu-grid">
         <div class="edu-card">
@@ -608,7 +741,7 @@
     </section>
 
     <!-- Skills -->
-    <section id="skills">
+    <section id="skills" class="reveal">
       <h2><span class="icon">⚡</span> Skills</h2>
       <div class="skills-grid">
         <div class="skill-group">
@@ -664,7 +797,7 @@
     </section>
 
     <!-- Certifications -->
-    <section id="certifications">
+    <section id="certifications" class="reveal">
       <h2><span class="icon">🏅</span> Zertifizierungen</h2>
       <div class="cert-grid">
         <div class="cert-item">
@@ -726,34 +859,38 @@
     </section>
 
     <!-- Languages -->
-    <section id="languages">
+    <section id="languages" class="reveal">
       <h2><span class="icon">🌐</span> Sprachen</h2>
       <div class="lang-grid">
-        <div class="lang-item">
+        <div class="lang-item reveal">
           <div class="lang-name">🇩🇪 Deutsch</div>
           <div class="lang-level">Muttersprache</div>
-          <div class="lang-desc">fliessend in Wort und Schrift</div>
+          <div class="lang-desc">fließend in Wort und Schrift</div>
+          <div class="lang-bar" style="--pct:100%"></div>
         </div>
-        <div class="lang-item">
+        <div class="lang-item reveal">
           <div class="lang-name">🇬🇧 Englisch</div>
           <div class="lang-level">C2</div>
-          <div class="lang-desc">fliessend in Wort und Schrift</div>
+          <div class="lang-desc">fließend in Wort und Schrift</div>
+          <div class="lang-bar" style="--pct:90%"></div>
         </div>
-        <div class="lang-item">
+        <div class="lang-item reveal">
           <div class="lang-name">🇫🇷 Französisch</div>
           <div class="lang-level">B1</div>
           <div class="lang-desc">sehr gutes Verständnis, Phrasen in Wort und Schrift</div>
+          <div class="lang-bar" style="--pct:50%"></div>
         </div>
-        <div class="lang-item">
+        <div class="lang-item reveal">
           <div class="lang-name">🇪🇸 Spanisch</div>
           <div class="lang-level">A1</div>
           <div class="lang-desc">gutes Verständnis, Phrasen in Wort und Schrift</div>
+          <div class="lang-bar" style="--pct:30%"></div>
         </div>
       </div>
     </section>
 
     <!-- Projects -->
-    <section id="projects">
+    <section id="projects" class="reveal">
       <h2><span class="icon">🚀</span> Projekte</h2>
       <div class="project-grid">
         <div class="project-card">
@@ -808,5 +945,19 @@
     </div>
   </footer>
 
+<script>
+    // Scroll Reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: .1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Lazy init for lang bars
+    document.querySelectorAll('.lang-item.reveal').forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
