@@ -132,10 +132,17 @@ header {
     /* ── About ── */
     .about-text {
       color: var(--text-dim);
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       max-width: 720px;
-      line-height: 1.8;
+      line-height: 1.9;
+      letter-spacing: .01em;
+      font-weight: 350;
       padding: 0 2px;
+      text-shadow: 0 1px 2px rgba(0,0,0,.35);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      opacity: .96;
     }
 
     /* ── Experience ── */
@@ -696,6 +703,38 @@ header {
     }
     .cert-item > div { min-width: 0; }
 
+    /* ── Breathing Border Glow (permanent, dezent) ── */
+    .timeline-item, .edu-card, .cert-item,
+    .project-card, .skill-group, .lang-item {
+      --breath: 1; /* Intensitäts-Faktor, auf mobil reduziert */
+    }
+    .timeline-item:not(:hover), .edu-card:not(:hover), .cert-item:not(:hover),
+    .project-card:not(:hover), .skill-group:not(:hover), .lang-item:not(:hover) {
+      animation: cardBreath 7s ease-in-out infinite;
+    }
+    /* Versatz, damit die Karten nicht synchron „atmen" */
+    .edu-card:nth-child(2n), .cert-item:nth-child(2n),
+    .project-card:nth-child(2n), .skill-group:nth-child(2n),
+    .lang-item:nth-child(2n) { animation-delay: -2.3s; }
+    .edu-card:nth-child(3n), .cert-item:nth-child(3n),
+    .project-card:nth-child(3n), .skill-group:nth-child(3n),
+    .lang-item:nth-child(3n) { animation-delay: -4.6s; }
+    .timeline-item:nth-child(2n) { animation-delay: -2.8s; }
+    .timeline-item:nth-child(3n) { animation-delay: -5.1s; }
+
+    @keyframes cardBreath {
+      0%, 100% {
+        border-color: var(--border);
+        box-shadow: 0 0 0 1px rgba(108,99,255,0),
+                    0 0 0 0 rgba(108,99,255,0);
+      }
+      50% {
+        border-color: rgba(108,99,255, calc(.30 * var(--breath)));
+        box-shadow: 0 0 0 1px rgba(108,99,255, calc(.10 * var(--breath))),
+                    0 0 16px 0 rgba(0,212,170, calc(.055 * var(--breath)));
+      }
+    }
+
     /* ── Responsive ── */
     @media (max-width: 640px) {
       header h1 { font-size: 1.7rem; }
@@ -715,6 +754,18 @@ header {
       .timeline-item::before { animation: none; }
       header h1 { animation: none; }
       .avatar::after { animation: none; }
+      /* Breathing bleibt aktiv, nur schwächer und langsamer */
+      .timeline-item, .edu-card, .cert-item,
+      .project-card, .skill-group, .lang-item {
+        --breath: .55;
+        animation-duration: 9s;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .timeline-item:not(:hover), .edu-card:not(:hover), .cert-item:not(:hover),
+      .project-card:not(:hover), .skill-group:not(:hover), .lang-item:not(:hover) {
+        animation: none;
+      }
     }
     @media (max-width: 480px) {
       .container { padding: 0 16px; }
