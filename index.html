@@ -73,19 +73,25 @@ header {
       pointer-events: none;
     }
     .avatar {
+      position: relative;
       width: 120px; height: 120px;
       border-radius: 50%;
       display: inline-block;
-      overflow: hidden;
+      padding: 3px;                       /* Ringstärke */
       margin-bottom: 20px;
-      box-shadow: 0 0 40px rgba(108,99,255,.25);
-      border: 3px solid var(--accent);
+      background: rgba(108,99,255,.28);   /* Basisring, füllt Lücken des Conic-Gradients */
+      isolation: isolate;
+      transition: transform .45s cubic-bezier(.2,.8,.3,1);
     }
     .avatar img {
+      position: relative;
+      z-index: 1;
       width: 100%; height: 100%;
+      border-radius: 50%;
       object-fit: cover;
       object-position: 63% 29%;
       display: block;
+      transition: filter .45s ease;
     }
     header h1 {
       font-size: 2.8rem; font-weight: 800;
@@ -429,10 +435,13 @@ header {
       .avatar {
         width: 80px; height: 80px;
         box-shadow: none;
-        border-color: #999;
+        background: none;
+        border: 2px solid #999;
+        animation: none;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
+      .avatar::before, .avatar::after { display: none; }
       .about-text, .timeline-item p,
       .timeline-item ul, .timeline-item .company,
       .edu-card .school, .cert-item span,
@@ -615,25 +624,76 @@ header {
       100% { background-position: 0% center; }
     }
 
-    /* ── WOW: Rotating Avatar Border ── */
+    /* ── WOW: Futuristic Avatar Frame (Orbit-Ring + Scanline + Pulse) ── */
     .avatar {
-      position: relative;
+      animation: avatarPulse 4.5s ease-in-out infinite;
     }
+    @keyframes avatarPulse {
+      0%, 100% {
+        box-shadow: 0 0 0 1px rgba(108,99,255,.30),
+                    0 0 20px rgba(108,99,255,.24),
+                    0 0 46px rgba(0,212,170,.07);
+      }
+      50% {
+        box-shadow: 0 0 0 2px rgba(0,212,170,.32),
+                    0 0 32px rgba(108,99,255,.42),
+                    0 0 72px rgba(0,212,170,.15);
+      }
+    }
+
+    /* Rotierender Conic-Ring – der Kreis-Ausschnitt entsteht durch das Bild darüber */
+    .avatar::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      z-index: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg,
+        transparent 0deg,
+        var(--accent) 45deg,
+        var(--accent2) 105deg,
+        transparent 165deg,
+        transparent 195deg,
+        var(--accent2) 255deg,
+        var(--accent) 315deg,
+        transparent 360deg);
+      animation: avatarOrbit 5.5s linear infinite;
+    }
+    @keyframes avatarOrbit {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Holo-Overlay: feine Rasterlinien + durchlaufende Scanline */
     .avatar::after {
       content: '';
       position: absolute;
-      inset: -3px;
+      inset: 3px;
+      z-index: 2;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
-      background-size: 400% 400%;
-      z-index: -1;
-      animation: spinBorder 6s linear infinite;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      background-image:
+        linear-gradient(180deg, transparent 0%, rgba(0,212,170,.45) 50%, transparent 100%),
+        repeating-linear-gradient(180deg, rgba(0,212,170,.055) 0 1px, transparent 1px 3px);
+      background-size: 100% 38%, 100% 100%;
+      background-repeat: no-repeat, repeat;
+      animation: avatarScan 5s ease-in-out infinite;
     }
-    @keyframes spinBorder {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes avatarScan {
+      0%        { background-position: 0 -30%, 0 0; opacity: 0; }
+      12%       { opacity: 1; }
+      72%       { opacity: 1; }
+      85%, 100% { background-position: 0 130%, 0 0; opacity: 0; }
     }
+
+    /* Hover: näher heranzoomen, Ring & Scan beschleunigen */
+    .avatar:hover {
+      transform: scale(1.06);
+      animation-duration: 2s;
+    }
+    .avatar:hover::before { animation-duration: 1.8s; }
+    .avatar:hover::after  { animation-duration: 2.2s; }
+    .avatar:hover img     { filter: saturate(1.15) contrast(1.04); }
 
     /* ── Hero: Live Code Terminal ── */
     .hero-terminal-wrap { margin: -8px auto 4px; }
@@ -739,7 +799,7 @@ header {
     @media (max-width: 640px) {
       header h1 { font-size: 1.7rem; }
       header { padding: 60px 24px 32px; }
-      .avatar { width: 96px; height: 96px; }
+      .avatar { width: 96px; height: 96px; padding: 2px; }
       .subtitle { font-size: .95rem; }
       section { padding: 28px 0; }
       .timeline { padding-left: 22px; }
@@ -753,7 +813,13 @@ header {
       body::before { animation: none; opacity: .3; }
       .timeline-item::before { animation: none; }
       header h1 { animation: none; }
-      .avatar::after { animation: none; }
+      /* Mobil: Ring bleibt (GPU-günstiges rotate), Scanline aus */
+      .avatar::before { animation-duration: 7s; }
+      .avatar::after {
+        animation: none;
+        opacity: 1;
+        background-image: repeating-linear-gradient(180deg, rgba(0,212,170,.05) 0 1px, transparent 1px 3px);
+      }
       /* Breathing bleibt aktiv, nur schwächer und langsamer */
       .timeline-item, .edu-card, .cert-item,
       .project-card, .skill-group, .lang-item {
@@ -766,6 +832,17 @@ header {
       .project-card:not(:hover), .skill-group:not(:hover), .lang-item:not(:hover) {
         animation: none;
       }
+      .avatar, .avatar::before, .avatar::after { animation: none; }
+      .avatar {
+        box-shadow: 0 0 0 1px rgba(0,212,170,.3), 0 0 26px rgba(108,99,255,.28);
+      }
+      .avatar::before {
+        background: linear-gradient(135deg, var(--accent), var(--accent2));
+      }
+      .avatar::after {
+        background-image: repeating-linear-gradient(180deg, rgba(0,212,170,.05) 0 1px, transparent 1px 3px);
+      }
+      .avatar:hover { transform: none; }
     }
     @media (max-width: 480px) {
       .container { padding: 0 16px; }
