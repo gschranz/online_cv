@@ -424,6 +424,29 @@ header {
     /* ── Padding für fixed Nav ── */
     body { padding-top: 52px; }
 
+    /* ── Hero-Splash-Intro-Video ── */
+    #hero-splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg);
+      transition: opacity .7s ease;
+    }
+    #hero-splash video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #hero-splash.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+    body.splash-active { overflow: hidden; }
+    @media (prefers-reduced-motion: reduce) {
+      #hero-splash { display: none; }
+    }
+
     /* ── Print ── */
     @media print {
       nav { display: none; }
@@ -876,6 +899,13 @@ header {
 </head>
 <body>
 
+  <div id="hero-splash" aria-hidden="true">
+    <video id="hero-splash-video" autoplay muted playsinline preload="auto" poster="hero-poster.jpg">
+      <source src="hero-intro.webm" type="video/webm">
+      <source src="hero-intro.mp4" type="video/mp4">
+    </video>
+  </div>
+
   <div id="progress-bar"></div>
 
   <nav>
@@ -1242,6 +1272,34 @@ header {
   </footer>
 
 <script>
+    // ── Hero-Splash-Intro ──
+    (function () {
+      const splash = document.getElementById('hero-splash');
+      if (!splash) return;
+
+      if (sessionStorage.getItem('heroIntroShown')) {
+        splash.remove();
+        return;
+      }
+
+      document.body.classList.add('splash-active');
+      const video = document.getElementById('hero-splash-video');
+
+      let done = false;
+      function finishSplash() {
+        if (done) return;
+        done = true;
+        splash.classList.add('hide');
+        document.body.classList.remove('splash-active');
+        sessionStorage.setItem('heroIntroShown', '1');
+        setTimeout(() => splash.remove(), 800);
+      }
+
+      video.addEventListener('ended', finishSplash);
+      video.addEventListener('error', finishSplash);
+      setTimeout(finishSplash, 4000); // Sicherheitsnetz falls Autoplay blockiert wird
+    })();
+
     // Scroll Progress Bar
     const bar = document.getElementById('progress-bar');
     window.addEventListener('scroll', () => {
