@@ -41,7 +41,7 @@
       --radius:    12px;
       --shadow:    0 4px 24px rgba(0,0,0,.4);
     }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
+    html { scroll-behavior: smooth; overflow-x: hidden; scrollbar-gutter: stable; }
     body {
       font-family: 'Inter', -apple-system, sans-serif;
       background: var(--bg);
@@ -424,27 +424,34 @@ header {
     /* ── Padding für fixed Nav ── */
     body { padding-top: 52px; }
 
-    /* ── Hero-Splash-Intro-Video ── */
+    /* ── Hero-Splash-Intro-Video ──
+       Standardmäßig aus; erst das Skript schaltet es frei (kein Intro ohne JS). */
     #hero-splash {
+      display: none;
       position: fixed;
       inset: 0;
       z-index: 9999;
       background: var(--bg);
-      transition: opacity .7s ease;
+      transition: opacity .45s ease-out;
     }
+    #hero-splash.on { display: block; }
     #hero-splash video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transform: scale(1);
+      transition: transform .5s ease-out;
     }
+    /* Übergabe: Video zieht sanft weiter nach vorn, während die Seite erscheint */
     #hero-splash.hide {
       opacity: 0;
       pointer-events: none;
     }
-    body.splash-active { overflow: hidden; }
+    #hero-splash.hide video { transform: scale(1.06); }
+    html.splash-active, html.splash-active body { overflow: hidden; }
     @media (prefers-reduced-motion: reduce) {
-      #hero-splash { display: none; }
+      #hero-splash { display: none !important; }
     }
 
     /* ── Print ── */
@@ -900,11 +907,59 @@ header {
 <body>
 
   <div id="hero-splash" aria-hidden="true">
-    <video id="hero-splash-video" autoplay muted playsinline preload="auto" poster="hero-poster.jpg">
-      <source src="hero-intro.webm" type="video/webm">
-      <source src="hero-intro.mp4" type="video/mp4">
-    </video>
+    <video id="hero-splash-video" muted playsinline preload="auto"></video>
   </div>
+  <script>
+    // ── Hero-Splash-Intro ──
+    // Läuft einmal pro Browser-Sitzung und blendet genau in dem Moment in die
+    // echte Seite über, in dem das Video sie fertig aufgebaut hat.
+    (function () {
+      var splash = document.getElementById('hero-splash');
+      var video  = document.getElementById('hero-splash-video');
+      if (!splash || !video) return;
+
+      var seen = false;
+      try { seen = !!sessionStorage.getItem('heroIntroShown'); } catch (e) {}
+      if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        splash.remove();          // kein Video-Download bei Wiederbesuch
+        return;
+      }
+
+      // Hochformat für Handys, Breitformat für alles andere
+      video.src = matchMedia('(max-aspect-ratio: 1/1)').matches
+        ? 'hero-intro-portrait.mp4'
+        : 'hero-intro-wide.mp4';
+
+      splash.classList.add('on');
+      document.documentElement.classList.add('splash-active');
+
+      var HANDOFF = 1.10;         // Sekunde, ab der das Video ins Schwarz ausblendet
+      var done = false;
+
+      function finish() {
+        if (done) return;
+        done = true;
+        splash.classList.add('hide');
+        document.documentElement.classList.remove('splash-active');
+        try { sessionStorage.setItem('heroIntroShown', '1'); } catch (e) {}
+        setTimeout(function () { splash.remove(); }, 700);
+      }
+
+      function watch() {
+        if (done) return;
+        if (video.currentTime >= HANDOFF) { finish(); return; }
+        requestAnimationFrame(watch);
+      }
+
+      video.addEventListener('playing', function () { requestAnimationFrame(watch); });
+      video.addEventListener('ended', finish);
+      video.addEventListener('error', finish);
+      setTimeout(finish, 5000);   // Sicherheitsnetz, falls nichts davon greift
+
+      var p = video.play();
+      if (p && p.catch) p.catch(finish);   // Autoplay blockiert -> Seite sofort frei
+    })();
+  </script>
 
   <div id="progress-bar"></div>
 
@@ -1272,34 +1327,6 @@ header {
   </footer>
 
 <script>
-    // ── Hero-Splash-Intro ──
-    (function () {
-      const splash = document.getElementById('hero-splash');
-      if (!splash) return;
-
-      if (sessionStorage.getItem('heroIntroShown')) {
-        splash.remove();
-        return;
-      }
-
-      document.body.classList.add('splash-active');
-      const video = document.getElementById('hero-splash-video');
-
-      let done = false;
-      function finishSplash() {
-        if (done) return;
-        done = true;
-        splash.classList.add('hide');
-        document.body.classList.remove('splash-active');
-        sessionStorage.setItem('heroIntroShown', '1');
-        setTimeout(() => splash.remove(), 800);
-      }
-
-      video.addEventListener('ended', finishSplash);
-      video.addEventListener('error', finishSplash);
-      setTimeout(finishSplash, 4000); // Sicherheitsnetz falls Autoplay blockiert wird
-    })();
-
     // Scroll Progress Bar
     const bar = document.getElementById('progress-bar');
     window.addEventListener('scroll', () => {
