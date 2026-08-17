@@ -171,8 +171,8 @@ header {
       transition: all .25s;
     }
     .timeline-item:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
+      border-color: var(--accent);   /* traegt den Hover, falls der Leuchtrahmen entfaellt */
+      box-shadow: var(--shadow), 0 0 22px rgba(108,99,255,.16);
       transform: translateX(4px);
     }
     .timeline-item::before {
@@ -585,20 +585,34 @@ header {
     .timeline-item:nth-child(6)::before { animation-delay: 2s; }
     .timeline-item:nth-child(7)::before { animation-delay: 2.4s; }
 
-    /* ── WOW: Card Glow on Hover ── */
+    /* ── WOW: Card Glow on Hover ──
+       Der Verlauf wird auf den Rahmen ausgestanzt: gefuellt bliebe er ueber dem
+       Kartenhintergrund liegen (eigener Stacking Context) und schluckte den Text. */
     .timeline-item::after {
       content: '';
       position: absolute;
       inset: -1px;
+      padding: 1px;                 /* Staerke des Leuchtrahmens */
       border-radius: var(--radius);
       background: linear-gradient(135deg, var(--accent), var(--accent2), transparent, var(--accent));
       background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+              mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
       opacity: 0;
-      z-index: -1;
+      pointer-events: none;
       transition: opacity .4s ease;
+    }
+    /* Schimmern nur solange sichtbar - sonst laufen sieben Endlosanimationen leer */
+    .timeline-item:hover::after {
+      opacity: 1;
       animation: shimmer 3s ease-in-out infinite;
     }
-    .timeline-item:hover::after { opacity: 1; }
+    /* Ohne Maskenunterstuetzung lieber kein Glow als unlesbarer Text */
+    @supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
+      .timeline-item::after { display: none; }
+    }
     .edu-card:hover, .cert-item:hover, .project-card:hover {
       transform: translateY(-3px) scale(1.01);
       box-shadow: var(--shadow), 0 0 20px rgba(108,99,255,.1);
@@ -867,6 +881,7 @@ header {
       .project-card:not(:hover), .skill-group:not(:hover), .lang-item:not(:hover) {
         animation: none;
       }
+      .timeline-item::before, .timeline-item::after { animation: none; }
       .avatar, .avatar::before, .avatar::after { animation: none; }
       .avatar {
         box-shadow: 0 0 0 1px rgba(0,212,170,.3), 0 0 26px rgba(108,99,255,.28);
