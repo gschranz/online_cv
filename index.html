@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gerald Schranz, MSc – IT-Manager. Online CV & Portfolio.">
+  <meta name="description" content="Gerald Schranz, MSc – IT-Security Management, Cloud &amp; AI Specialist in Wiener Neustadt, Österreich. Online CV & Portfolio.">
   <title>Gerald Schranz, MSc – IT-Manager</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.svg">
@@ -108,6 +108,8 @@ header {
       font-size: .95rem; color: var(--accent2);
       font-style: italic;
     }
+    /* Nur fuer den Ausdruck; am Bildschirm uebernimmt die Terminal-Animation */
+    .print-only { display: none; }
     .header-links {
       margin-top: 24px;
       display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
@@ -458,6 +460,9 @@ header {
     @media print {
       nav { display: none; }
       .hero-terminal-wrap { display: none; }
+      .print-only { display: block; }
+      header .subtitle { color: #333; }
+      header .motto { color: #444; }
       body { padding-top: 0; background: #fff; color: #111; }
       header::before { display: none; }
       header { padding: 32px 24px 20px; }
@@ -521,7 +526,7 @@ header {
     /* ── WOW: Verfügbar-Badge ── */
     .badge-available {
       display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 16px;
+      margin-top: 22px;
       padding: 6px 16px;
       border-radius: 100px;
       font-size: .82rem; font-weight: 600;
@@ -755,7 +760,7 @@ header {
     .hero-code-area {
       margin: 0;
       padding: 16px 18px;
-      height: 188px;
+      height: calc(9 * 1.7em + 32px);   /* 9 Codezeilen + Innenabstand */
       overflow: hidden;
       text-align: left;
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
@@ -891,7 +896,7 @@ header {
       .project-grid { grid-template-columns: 1fr; }
       .edu-grid { grid-template-columns: 1fr; }
       .hero-terminal { max-width: 100%; }
-      .hero-code-area { font-size: .76rem; height: 176px; padding: 14px 14px; }
+      .hero-code-area { font-size: .76rem; height: calc(9 * 1.7em + 28px); padding: 14px 14px; }
       .hero-cursor { animation: none; }
     }
     @media (max-width: 380px) {
@@ -900,7 +905,8 @@ header {
       .project-grid, .edu-grid { grid-template-columns: 1fr; }
       .timeline-item { padding: 14px 13px; }
       section h2 { font-size: 1.1rem; }
-      .hero-code-area { font-size: .72rem; padding: 12px 12px; }
+      /* Untergrenze mitskalieren, damit die laengste Zeile (location) nicht abreisst */
+      .hero-code-area { font-size: clamp(.62rem, 3.1vw, .72rem); padding: 12px 12px; }
     }
   </style>
 </head>
@@ -976,8 +982,10 @@ header {
   <header>
     <div class="avatar"><img src="avatar.jpg" alt="Gerald Schranz"></div>
     <h1>Gerald Schranz, MSc</h1>
-    <p class="subtitle">IT-Manager &bull; Cloud &amp; AI Specialist &bull; Wien, Österreich</p>
-    <p class="motto">„Think twice, code once."</p>
+    <!-- Rolle, Ort und Motto stehen in der Terminal-Animation; im Ausdruck faellt
+         sie weg, daher hier die gedruckte Fassung. -->
+    <p class="subtitle print-only">IT-Security Management &bull; Cloud &amp; AI Specialist &bull; Wiener Neustadt, Österreich</p>
+    <p class="motto print-only">„Think twice, code once."</p>
     <div class="badge-available">
       <span class="dot"></span>
       Für neue Projekte verfügbar
@@ -1000,7 +1008,7 @@ header {
 
   <div class="hero-terminal-wrap container">
     <div class="hero-terminal" role="img"
-         aria-label="Animierter Code-Editor: const developer = { name: 'Gerald Schranz', role: 'IT-Manager', motto: 'Think twice, code once' }; build().ship().repeat();">
+         aria-label="Animierter Code-Editor: const developer = { name: 'Gerald Schranz', profession: 'IT-Security Management', focus: 'Cloud &amp; AI Specialist', location: 'Wiener Neustadt, Österreich', motto: 'Think twice, code once' }; build().ship().repeat();">
       <div class="hero-titlebar" aria-hidden="true">
         <span class="hero-dot red"></span>
         <span class="hero-dot yellow"></span>
@@ -1356,7 +1364,9 @@ header {
       const lines = [
         [{t:'const',c:'kw'},{t:' developer ',c:''},{t:'=',c:'op'},{t:' {',c:'pun'}],
         [{t:'  name',c:'prop'},{t:': ',c:'pun'},{t:'"Gerald Schranz"',c:'str'},{t:',',c:'pun'}],
-        [{t:'  role',c:'prop'},{t:': ',c:'pun'},{t:'"IT-Manager"',c:'str'},{t:',',c:'pun'}],
+        [{t:'  profession',c:'prop'},{t:': ',c:'pun'},{t:'"IT-Security Management"',c:'str'},{t:',',c:'pun'}],
+        [{t:'  focus',c:'prop'},{t:': ',c:'pun'},{t:'"Cloud & AI Specialist"',c:'str'},{t:',',c:'pun'}],
+        [{t:'  location',c:'prop'},{t:': ',c:'pun'},{t:'"Wiener Neustadt, Österreich"',c:'str'},{t:',',c:'pun'}],
         [{t:'  motto',c:'prop'},{t:': ',c:'pun'},{t:'"Think twice, code once"',c:'str'},{t:',',c:'pun'}],
         [{t:'}',c:'pun'},{t:';',c:'pun'}],
         [{t:'',c:''}],
