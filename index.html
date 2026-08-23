@@ -1181,7 +1181,7 @@ header {
 
     <!-- Skills -->
     <section id="skills" class="reveal">
-      <h2><span class="icon">⚡</span> Skills</h2>
+      <h2><span class="icon">⚡</span> Skills (Auszug von Beispielen)</h2>
       <div class="skills-grid">
         <div class="skill-group">
           <h4>Cloud &amp; Infrastructure</h4>
@@ -1200,9 +1200,8 @@ header {
           <div class="skill-tags">
             <span class="skill-tag">LLM Integration</span>
             <span class="skill-tag">Copilot</span>
-            <span class="skill-tag">Hermes Agent</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">Quant Analysis</span>
+            <span class="skill-tag">KI Agenten (Hermes, Openclaw, Claude Code, Codex, Copilot, etc.)</span>
+            <span class="skill-tag">etc.</span>
           </div>
         </div>
         <div class="skill-group">
@@ -1211,13 +1210,15 @@ header {
             <span class="skill-tag">TypeScript</span>
             <span class="skill-tag">Next.js</span>
             <span class="skill-tag">React</span>
-            <span class="skill-tag">Tailwind CSS</span>
+            <span class="skill-tag">HTML/CSS</span>
             <span class="skill-tag">C# / .NET</span>
             <span class="skill-tag">SQL</span>
             <span class="skill-tag">C / C++</span>
             <span class="skill-tag">Java</span>
             <span class="skill-tag">Prolog</span>
             <span class="skill-tag">Matlab</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">etc.</span>
           </div>
         </div>
         <div class="skill-group">
@@ -1228,8 +1229,8 @@ header {
             <span class="skill-tag">PowerShell</span>
             <span class="skill-tag">Azure CLI</span>
             <span class="skill-tag">Bash</span>
-            <span class="skill-tag">Batch</span>
-            <span class="skill-tag">DNS / INWX</span>
+            <span class="skill-tag">DNS/DHCP</span>
+            <span class="skill-tag">ISO-OSI</span>
           </div>
         </div>
       </div>
@@ -1459,7 +1460,7 @@ header {
 
         const pageW = doc.internal.pageSize.getWidth();
         const pageH = doc.internal.pageSize.getHeight();
-        const marginX = 18, marginTop = 20, marginBottom = 16;
+        const marginX = 18, marginTop = 20, marginBottom = 20;
         const contentW = pageW - marginX * 2;
         let y = marginTop;
 
@@ -1611,7 +1612,7 @@ header {
         // ── Skills ──
         const skillGroups = document.querySelectorAll('#skills .skill-group');
         if (skillGroups.length) {
-          sectionHeading('Skills');
+          sectionHeading('Skills (Auszug von Beispielen)');
           skillGroups.forEach((group) => {
             ensureSpace(12);
             const cat = txt(group.querySelector('h4'));
@@ -1711,12 +1712,35 @@ header {
 
         // ── Seitenfuß ──
         const name = txt(document.querySelector('header h1'));
+        const footerContact = [
+          { label: 'Moosgasse 8, 2700 Wiener Neustadt' },
+          { label: '+43 699/1507 51 51', href: 'tel:+4369915075151' },
+          { label: 'g.schranz@hotmail.com', href: 'mailto:g.schranz@hotmail.com' },
+        ];
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
           doc.setPage(i);
+
+          // Kontaktzeile, zentriert, klickbare Segmente
+          setFont('normal', 7.8, DIM);
+          const fSep = '   ·   ';
+          const totalW = footerContact.reduce((w, c) => w + doc.getTextWidth(c.label), 0) +
+            doc.getTextWidth(fSep) * (footerContact.length - 1);
+          let fx = pageW / 2 - totalW / 2;
+          footerContact.forEach((c, idx) => {
+            doc.setTextColor(DIM[0], DIM[1], DIM[2]);
+            if (c.href) doc.textWithLink(c.label, fx, pageH - 14, { url: c.href });
+            else doc.text(c.label, fx, pageH - 14);
+            fx += doc.getTextWidth(c.label);
+            if (idx < footerContact.length - 1) {
+              doc.text(fSep, fx, pageH - 14);
+              fx += doc.getTextWidth(fSep);
+            }
+          });
+
           setFont('normal', 8, DIM);
-          doc.text(name + ' — Lebenslauf', marginX, pageH - 9);
-          doc.text('Seite ' + i + ' / ' + pageCount, pageW - marginX, pageH - 9, { align: 'right' });
+          doc.text(name + ' — Lebenslauf', marginX, pageH - 8);
+          doc.text('Seite ' + i + ' / ' + pageCount, pageW - marginX, pageH - 8, { align: 'right' });
         }
 
         doc.save((name || 'Lebenslauf').replace(/[^\p{L}\p{N}]+/gu, '-') + '.pdf');
