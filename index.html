@@ -954,7 +954,7 @@ header {
       splash.classList.add('on');
       document.documentElement.classList.add('splash-active');
 
-      var HANDOFF = 5.12;         // Sekunde, ab der das Video ins Schwarz ausblendet
+      var HANDOFF = 1.10;         // Sekunde, ab der das Video ins Schwarz ausblendet
       var done = false;
 
       function finish() {
@@ -975,7 +975,7 @@ header {
       video.addEventListener('playing', function () { requestAnimationFrame(watch); });
       video.addEventListener('ended', finish);
       video.addEventListener('error', finish);
-      setTimeout(finish, 10000);  // Sicherheitsnetz, falls nichts davon greift
+      setTimeout(finish, 5000);   // Sicherheitsnetz, falls nichts davon greift
 
       var p = video.play();
       if (p && p.catch) p.catch(finish);   // Autoplay blockiert -> Seite sofort frei
