@@ -725,7 +725,6 @@ header.hero {
   min-height: min(calc(88vh - 52px), 820px);
   display: flex; align-items: center;
   overflow: visible;
-  cursor: crosshair;
 }
 header.hero .container { width: 100%; padding-top: 72px; padding-bottom: 72px; }
 .hero-eyebrow {
@@ -741,7 +740,7 @@ header.hero h1 {
   margin-top: 22px; max-width: 56ch;
   font-size: clamp(1.02rem, 1.6vw, 1.2rem); line-height: 1.7; color: var(--text-dim);
 }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; cursor: auto; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 11px 22px; border-radius: 8px; border: 1px solid var(--border);
@@ -815,7 +814,7 @@ section h2.teaser-title::after { display: none; }
 /* Karten auf der Startseite leicht transparent, damit der Schaltkreis dezent durchscheint */
 .page-home .pf-stage, .page-home .pf-panel { background: rgba(18,18,26,.86); }
 
-/* ── Platinen-Effekt (Klick im Hero) ── */
+/* ── Platinen-Effekt (Klick in den Hintergrund) ── */
 #circuit-fx {
   position: fixed; inset: 0; z-index: -1;
   pointer-events: none; opacity: 0;

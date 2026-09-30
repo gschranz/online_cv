@@ -1,11 +1,13 @@
-// Platinen-Effekt: Ein Klick im Hero lässt an der Klickstelle kurz einen Schaltkreis
-// sichtbar werden, der hinter der Seite liegt. Basis ist ein 4K-Standbild (scharf),
+// Platinen-Effekt: Ein Klick in den Hintergrund der Seite lässt an der Klickstelle kurz
+// einen Schaltkreis sichtbar werden, der hinter der Seite liegt. Basis ist ein 4K-Standbild (scharf),
 // darüber liegen die isolierten Lichtimpulse aus dem Hailuo-Video (mix-blend: screen).
 (function () {
   'use strict';
   var fx = document.getElementById('circuit-fx');
-  var hero = document.querySelector('header.hero');
-  if (!fx || !hero) return;
+  if (!fx) return;
+  // Inhalte, auf denen ein Klick etwas anderes bedeutet: Bedienelemente, Karten, Netzkarte, Navigation
+  var NOT_BACKGROUND = 'a, button, input, textarea, select, label, summary, nav, .pf, .svc-card, .steps li, .teaser,' +
+    ' .timeline-item, .edu-card, .skill-group, .cert-item, .lang-item, .project-card, .legal-section, .avatar';
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { fx.remove(); return; }
 
   var root = document.documentElement;
@@ -59,7 +61,9 @@
   }
 
   function trigger(e) {
-    if (e.button > 0 || e.target.closest('a, button, input, textarea, select')) return;
+    if (e.button > 0 || e.target.closest(NOT_BACKGROUND)) return;
+    var sel = window.getSelection && window.getSelection();
+    if (sel && !sel.isCollapsed) return;
     var now = performance.now();
     if (now - last < COOLDOWN) return;
     last = now;
@@ -79,7 +83,7 @@
     if (!raf) raf = requestAnimationFrame(frame);
   }
 
-  hero.addEventListener('pointerdown', trigger);
+  document.addEventListener('click', trigger);
 
   // Vorab laden, sobald das Intro vorbei ist, damit der erste Klick sofort wirkt.
   function preload() {

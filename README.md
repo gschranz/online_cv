@@ -10,7 +10,7 @@ Statische Website (reines HTML/CSS/JS, kein Build-Schritt), gehostet über GitHu
 - `site.js` – Scroll-Fortschritt und Scroll-Reveal (beide Seiten)
 - `cv-pdf.js` – erzeugt den Lebenslauf als PDF aus den Inhalten von `ueber-mich.html` (lädt `vendor/jspdf.umd.min.js` erst beim Klick). Die Selektoren (`header h1`, `.subtitle`, `.motto`, `.timeline-item`, `.edu-card`, `.skill-group`, `.cert-item`, `.lang-item`) bei Umbauten beibehalten.
 - `portfolio.js` – Projekt-Netzkarte: Knoten anklicken (Szene mit abstrakter Animation) oder ziehen (Feder-Physik). Inhalte stehen als `.project-card` in `index.html`.
-- `circuit.js` + `assets/circuit-*` – Platinen-Effekt beim Klick im Hero
+- `circuit.js` + `assets/circuit-*` – Platinen-Effekt beim Klick in den Seitenhintergrund (beide Seiten; Klicks auf Karten, Links, Netzkarte und Navigation lösen ihn nicht aus)
 - `fonts/`, `vendor/` – lokal eingebundene Schrift (Inter) und jsPDF
 - `avatar.jpg`, `favicon.svg`, `CNAME`, `.github/workflows/deploy.yml`
 
