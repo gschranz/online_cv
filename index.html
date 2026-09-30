@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gerald Schranz, MSc – IT-Security Management, Cloud &amp; AI Specialist in Wiener Neustadt, Österreich. Online CV & Portfolio.">
+  <meta name="description" content="Gerald Schranz, MSc – IT-Security Management, Cloud &amp; AI. Beratung und Umsetzung aus Wiener Neustadt, Österreich. Projekte, Leistungen und Lebenslauf.">
   <title>Gerald Schranz, MSc – IT-Manager</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.svg">
@@ -25,1334 +25,658 @@
       src: url('fonts/Inter-latin.woff2') format('woff2');
       unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
     }
-
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:        #0a0a0f;
-      --bg-card:   #12121a;
-      --bg-hover:  #1a1a2e;
-      --border:    #1e1e32;
-      --text:      #e4e4ed;
-      --text-dim:  #8888a0;
-      --accent:    #6c63ff;
-      --accent2:   #00d4aa;
-      --accent3:   #ff6b6b;
-      --radius:    12px;
-      --shadow:    0 4px 24px rgba(0,0,0,.4);
+    @font-face {
+      font-family: 'JetBrains Mono';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('fonts/JetBrainsMono-400-latin.woff2') format('woff2');
     }
-    html { scroll-behavior: smooth; overflow-x: hidden; scrollbar-gutter: stable; }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('fonts/JetBrainsMono-700-latin.woff2') format('woff2');
+    }
+
+    /* ── Reset & Tokens ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; }
+    :root {
+      --paper:  #F4F4F0;
+      --paper2: #EAE8E3;
+      --ink:    #111111;
+      --dim:    #55554f;
+      --red:    #E61919;
+      --line:   2px solid var(--ink);
+      --hair:   1px solid var(--ink);
+      --sans:   'Inter', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      --mono:   'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --gutter: clamp(16px, 3vw, 40px);
+      --navh:   44px;
+    }
+    html { scroll-behavior: smooth; overflow-x: hidden; scrollbar-gutter: stable; scroll-padding-top: var(--navh); }
+    html.splash-active { overflow: hidden; }
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
+      font-family: var(--sans);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.55;
       min-height: 100vh;
       overflow-x: hidden;
       overflow-wrap: break-word;
+      padding-top: var(--navh);
     }
-    a { color: var(--accent2); text-decoration: none; transition: color .2s; }
-    a:hover { color: #fff; }
-
-    /* ── Layout ── */
-    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-
-    /* ── Header / Hero ── */
-header {
-      padding: 80px 24px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    header::before {
+    body::after {
       content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,.08) 0%, transparent 60%);
+      position: fixed; inset: 0;
       pointer-events: none;
+      z-index: 50;
+      opacity: .07;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
     }
+    a { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+    a:hover { color: var(--red); }
+    :focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+    ::selection { background: var(--red); color: var(--paper); }
+
+    .wrap { max-width: 1320px; margin: 0 auto; padding: 0 var(--gutter); }
+    .mono { font-family: var(--mono); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; line-height: 1.4; }
+    .print-only { display: none; }
+
+    /* ── Progress + Nav ── */
+    #progress-bar { position: fixed; top: 0; left: 0; height: 4px; width: 0; background: var(--red); z-index: 200; }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--navh);
+      background: var(--paper); border-bottom: var(--line);
+      z-index: 100;
+    }
+    nav .wrap { display: flex; align-items: stretch; height: 100%; }
+    nav .brand {
+      display: flex; align-items: center; padding-right: 20px; margin-right: auto;
+      font: 700 .75rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+    }
+    nav .brand b { color: var(--red); margin-right: 8px; }
+    nav ul { display: flex; list-style: none; overflow-x: auto; scrollbar-width: none; }
+    nav ul::-webkit-scrollbar { display: none; }
+    nav li a {
+      display: flex; align-items: center; height: 100%; padding: 0 16px; white-space: nowrap;
+      border-left: var(--hair); text-decoration: none;
+      font: 400 .75rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+    }
+    nav li a:hover { background: var(--ink); color: var(--paper); }
+    nav li a span { color: var(--red); margin-right: 6px; }
+
+    /* ── Hero ── */
+    header { border-bottom: var(--line); }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px;
+      padding: 10px 0; border-bottom: var(--hair);
+    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 0; }
+    .hero-main { padding: clamp(24px, 5vw, 64px) 0 clamp(24px, 4vw, 48px); padding-right: var(--gutter); }
+    header h1 {
+      font-weight: 900; text-transform: uppercase;
+      font-size: clamp(3.2rem, 11.5vw, 10.5rem);
+      line-height: .86; letter-spacing: -.055em;
+      margin-left: -.04em;
+    }
+    header h1 .cm { display: none; }
+    header h1 .h1-suffix { text-transform: none; display: block; margin-top: .18em; font: 700 clamp(.85rem, 1.6vw, 1.25rem)/1 var(--mono); letter-spacing: .08em; }
+    .subtitle { margin-top: clamp(20px, 3vw, 36px); font-size: clamp(1.05rem, 2vw, 1.5rem); font-weight: 700; line-height: 1.25; max-width: 30ch; letter-spacing: -.01em; }
+    .motto { margin-top: 14px; font: 400 .8rem/1.4 var(--mono); letter-spacing: .04em; color: var(--dim); }
+    .badge-available {
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 28px;
+      background: var(--red); color: var(--paper); padding: 8px 12px;
+      font: 700 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+    }
+    .badge-available .dot { width: 8px; height: 8px; background: var(--paper); }
+    .header-links { display: flex; flex-wrap: wrap; gap: 0; margin-top: 24px; border: var(--line); width: fit-content; max-width: 100%; }
+    .header-links a, .pdf-download-btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 12px 16px;
+      background: transparent; color: var(--ink); border: 0; border-right: var(--hair);
+      font: 700 .75rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; cursor: pointer;
+    }
+    .header-links > :last-child { border-right: 0; }
+    .header-links a:hover, .pdf-download-btn:hover { background: var(--ink); color: var(--paper); }
+    .pdf-download-btn:disabled { opacity: .5; cursor: wait; }
+    .header-links svg { flex: none; }
+
     .avatar {
-      position: relative;
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      display: inline-block;
-      padding: 3px;                       /* Ringstärke */
-      margin-bottom: 20px;
-      background: rgba(108,99,255,.28);   /* Basisring, füllt Lücken des Conic-Gradients */
-      isolation: isolate;
-      transition: transform .45s cubic-bezier(.2,.8,.3,1);
+      position: relative; border-left: var(--line); background: var(--ink);
+      min-height: 100%; overflow: hidden;
     }
     .avatar img {
-      position: relative;
-      z-index: 1;
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: 63% 29%;
-      display: block;
-      transition: filter .45s ease;
+      display: block; width: 100%; height: 100%; min-height: 340px; object-fit: cover; object-position: 63% 29%;
+      filter: grayscale(1) contrast(1.25);
+      mix-blend-mode: normal;
     }
-    header h1 {
-      font-size: 2.8rem; font-weight: 800;
-      background: linear-gradient(135deg, #fff 30%, var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .avatar::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(circle at center, var(--ink) 0 1px, transparent 1.4px) 0 0 / 4px 4px;
+      mix-blend-mode: multiply; opacity: .55;
     }
-    header .subtitle {
-      font-size: 1.15rem; color: var(--text-dim);
-      margin-top: 8px; font-weight: 400;
-    }
-    header .motto {
-      margin-top: 12px;
-      font-size: .95rem; color: var(--accent2);
-      font-style: italic;
-    }
-    /* Nur fuer den Ausdruck; am Bildschirm uebernimmt die Terminal-Animation */
-    .print-only { display: none; }
-    .header-links {
-      margin-top: 24px;
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-    }
-    .header-links a, .header-links button {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 18px;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: .9rem; font-weight: 500;
-      transition: all .25s;
-    }
-    .header-links button {
-      background: none;
-      color: inherit;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .header-links button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-    .header-links a:hover, .header-links button:hover {
-      border-color: var(--accent);
-      background: var(--bg-hover);
-      transform: translateY(-2px);
+    .avatar figcaption {
+      position: absolute; left: 0; bottom: 0; z-index: 2; background: var(--paper); border-top: var(--line); border-right: var(--line);
+      padding: 6px 10px; font: 700 .68rem/1 var(--mono); letter-spacing: .08em;
     }
 
-    /* ── Sections ── */
-    section { padding: 48px 0; }
-    section h2 {
-      font-size: 1.5rem; font-weight: 700;
-      margin-bottom: 28px;
-      display: flex; align-items: center; gap: 10px;
+    /* ── Sektionen ── */
+    section, .block { border-bottom: var(--line); }
+    .sec-head {
+      display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: end; gap: 0;
+      padding: clamp(28px, 4vw, 56px) 0 20px;
     }
-    section h2 .icon { font-size: 1.4rem; }
+    .sec-num { font: 700 .8rem/1 var(--mono); letter-spacing: .08em; color: var(--red); padding-bottom: .7em; }
+    h2 {
+      font-weight: 900; text-transform: uppercase; letter-spacing: -.05em; line-height: .88;
+      font-size: clamp(2.4rem, 7vw, 6rem);
+    }
+    h2 small { font: 400 .75rem/1 var(--mono); letter-spacing: .08em; vertical-align: top; margin-left: .6em; color: var(--dim); }
+    .sub-head { display: flex; align-items: baseline; gap: 16px; padding: 28px 0 14px; border-top: var(--line); }
+    .sub-head h3 { font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1; }
+    .sub-head .mono { color: var(--red); font-weight: 700; }
 
-    /* ── About ── */
-    .about-text {
-      color: var(--text-dim);
-      font-size: 1.1rem;
-      max-width: 720px;
-      line-height: 1.9;
-      letter-spacing: .01em;
-      font-weight: 350;
-      padding: 0 2px;
-      text-shadow: 0 1px 2px rgba(0,0,0,.35);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      opacity: .96;
-    }
+    /* Gitter mit 1px-Trennlinien: Eltern = Tinte, Zellen = Papier */
+    .cells { display: grid; gap: 1px; background: var(--ink); border: var(--line); margin-bottom: clamp(28px, 4vw, 56px); }
+    .cells > * { background: var(--paper); padding: 20px; min-width: 0; }
+    .cells.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cells.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .cells.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-    /* ── Experience ── */
-    .timeline { position: relative; padding-left: 32px; }
-    .timeline::before {
-      content: '';
-      position: absolute; left: 8px; top: 8px; bottom: 8px;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
-    }
-    .timeline-item {
-      position: relative; z-index: 1;
-      margin-bottom: 36px;
-      padding: 20px 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: all .25s;
-    }
-    .timeline-item:hover {
-      border-color: var(--accent);   /* traegt den Hover, falls der Leuchtrahmen entfaellt */
-      box-shadow: var(--shadow), 0 0 22px rgba(108,99,255,.16);
-      transform: translateX(4px);
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -28px; top: 24px;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid var(--bg);
-    }
-    .timeline-item .date {
-      font-size: .82rem; color: var(--accent2);
-      font-weight: 600; margin-bottom: 4px;
-    }
-    .timeline-item h3 { font-size: 1.1rem; font-weight: 600; }
-    .timeline-item .company {
-      font-size: .92rem; color: var(--text-dim); margin-bottom: 8px;
-    }
-    .timeline-item p { color: var(--text-dim); font-size: .92rem; line-height: 1.7; }
-    .timeline-item ul {
-      margin-top: 8px; padding-left: 20px;
-      color: var(--text-dim); font-size: .9rem;
-    }
-    .timeline-item ul li { margin-bottom: 4px; }
+    /* Leistungen */
+    .service .n { font: 700 .75rem/1 var(--mono); letter-spacing: .08em; color: var(--red); }
+    .service h3 { margin: 28px 0 10px; font-size: 1.35rem; font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; line-height: 1; }
+    .service p { font-size: .92rem; color: var(--dim); }
 
-    /* ── Education ── */
-    .edu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .edu-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      transition: all .25s;
-    }
-    .edu-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-    }
-    .edu-card .date { font-size: .82rem; color: var(--accent2); font-weight: 600; }
-    .edu-card h3 { font-size: 1rem; font-weight: 600; margin: 4px 0; }
-    .edu-card .school { font-size: .88rem; color: var(--text-dim); }
-    .edu-card .details {
-      font-size: .82rem; color: var(--text-dim);
-      margin-top: 6px; line-height: 1.5;
-    }
+    /* Projekte */
+    .project-card { display: flex; flex-direction: column; gap: 14px; min-height: 260px; }
+    .project-card .n { font: 900 3.6rem/.8 var(--sans); letter-spacing: -.06em; }
+    .project-card h3 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; line-height: 1.05; }
+    .project-card h3 a { text-decoration: none; }
+    .project-card h3 a:hover { color: var(--red); text-decoration: underline; }
+    .project-card .desc { font-size: .92rem; color: var(--dim); flex: 1; }
+    .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tech-stack span { border: var(--hair); padding: 4px 8px; font: 400 .7rem/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 
-    /* ── Skills ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
-    .skill-group {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-    }
-    .skill-group h4 {
-      font-size: .82rem; text-transform: uppercase; letter-spacing: .06em;
-      color: var(--accent2); margin-bottom: 10px;
-    }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .skill-tag {
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-size: .82rem;
-      background: rgba(108,99,255,.1);
-      border: 1px solid rgba(108,99,255,.15);
-      color: var(--text);
-      transition: all .2s;
-    }
-    .skill-tag:hover {
-      background: rgba(108,99,255,.2);
-      border-color: var(--accent);
-    }
+    /* Über mich */
+    .about-grid { display: grid; grid-template-columns: 120px minmax(0, 1fr); padding-bottom: clamp(28px, 4vw, 56px); }
+    .about-text { max-width: 62ch; font-size: clamp(1.05rem, 1.6vw, 1.3rem); line-height: 1.5; }
+    .about-text p + p { margin-top: 1em; }
+    .indent { padding-left: 120px; }
 
-    /* ── Certifications ── */
-    .cert-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-    }
-    .cert-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 18px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-size: .9rem;
-      transition: all .2s;
-    }
-    .cert-item:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-    }
-    .cert-item .badge {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-    .badge-azure { background: rgba(0,120,212,.15); }
-    .badge-ms { background: rgba(0,160,80,.15); }
-    .badge-d365 { background: rgba(0,100,180,.15); }
-    .badge-apple { background: rgba(150,150,150,.15); }
-    .badge-pma { background: rgba(255,180,50,.15); }
+    .timeline { border-top: var(--line); margin-bottom: clamp(28px, 4vw, 56px); }
+    .timeline-item { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 0 24px; padding: 22px 0; border-bottom: var(--hair); }
+    .timeline-item .date { grid-row: 1 / span 4; font: 700 .8rem/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--red); }
+    .timeline-item h3 { font-size: 1.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; line-height: 1.1; }
+    .timeline-item .company { font: 400 .78rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; margin: 4px 0 10px; }
+    .timeline-item p { max-width: 70ch; color: var(--dim); }
+    .timeline-item ul { margin-top: 10px; list-style: none; max-width: 70ch; }
+    .timeline-item li { position: relative; padding-left: 22px; margin-top: 4px; font-size: .95rem; }
+    .timeline-item li::before { content: '>'; position: absolute; left: 0; font: 700 .85rem/1.7 var(--mono); color: var(--red); }
 
-    /* ── Languages ── */
-    .lang-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
+    .edu-card .date, .skill-group h4 { font: 700 .75rem/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+    .edu-card h3 { margin: 14px 0 6px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase; letter-spacing: -.02em; line-height: 1.1; }
+    .edu-card .school { font: 400 .75rem/1.4 var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .edu-card .details { margin-top: 10px; font-size: .88rem; color: var(--dim); }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .skill-tag { border: var(--hair); padding: 5px 9px; font: 400 .72rem/1.25 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+
+    .cert-grid { counter-reset: cert; }
+    .cert-item { counter-increment: cert; }
+    .cert-item::before { content: counter(cert, decimal-leading-zero); display: block; margin-bottom: 14px; font: 700 .75rem/1 var(--mono); letter-spacing: .08em; color: var(--red); }
+    .cert-item strong { font-weight: 900; text-transform: uppercase; letter-spacing: -.02em; line-height: 1.15; display: inline-block; }
+    .cert-item span { display: block; margin-top: 4px; font-size: .85rem; color: var(--dim); }
+
+    .lang-name { font-weight: 900; text-transform: uppercase; letter-spacing: -.03em; font-size: 1.3rem; }
+    .lang-level { margin-top: 4px; font: 700 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
+    .lang-desc { margin-top: 10px; font-size: .85rem; color: var(--dim); min-height: 3.2em; }
+    .lang-bar { height: 12px; margin-top: 14px; border: var(--hair); background: repeating-linear-gradient(90deg, transparent 0 9px, var(--paper) 9px 10px); position: relative; }
+    .lang-bar::before { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--pct); background: var(--ink); }
+    .lang-bar::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 9px, var(--paper) 9px 10px); }
+
+    /* Kontakt */
+    .contact-mail {
+      display: block; padding: 8px 0 clamp(20px, 3vw, 36px); text-decoration: none;
+      font-weight: 900; text-transform: uppercase; letter-spacing: -.05em; line-height: .9;
+      font-size: clamp(1.5rem, 5.3vw, 5rem); overflow-wrap: anywhere;
     }
-    .lang-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      transition: all .2s;
+    .contact-mail:hover { color: var(--red); }
+    .contact-links { display: flex; flex-wrap: wrap; border: var(--line); width: fit-content; max-width: 100%; margin-bottom: clamp(28px, 4vw, 56px); }
+    .contact-links a { padding: 14px 20px; border-right: var(--hair); text-decoration: none; font: 700 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .contact-links a:last-child { border-right: 0; }
+    .contact-links a:hover { background: var(--ink); color: var(--paper); }
+
+    /* Footer */
+    footer { padding: 20px 0 48px; }
+    .foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: center; }
+    .legal-toggle { background: none; border: var(--hair); padding: 8px 12px; cursor: pointer; color: var(--ink); font: 700 .72rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .legal-toggle:hover { background: var(--ink); color: var(--paper); }
+    .legal-section { display: none; margin-top: 20px; padding: 20px; border: var(--line); background: var(--paper2); max-width: 80ch; font-size: .9rem; }
+    .legal-section.show { display: block; }
+    .legal-section h3 { font: 700 .8rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+    .legal-section p + p { margin-top: 8px; }
+
+    /* ── Intro-Splash (Canvas, native Auflösung) ── */
+    #hero-splash { position: fixed; inset: 0; z-index: 9999; display: none; }
+    html.splash-active #hero-splash { display: block; }
+    #hero-splash canvas { display: block; width: 100%; height: 100%; }
+
+    /* ── Reveal (hart, ohne Weichzeichnung) ── */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .25s steps(4, end), transform .3s steps(4, end); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .avatar { border-left: 0; border-top: var(--line); }
+      .avatar img { min-height: 0; aspect-ratio: 4 / 3; height: auto; }
+      .hero-main { padding-right: 0; }
+      .cells.c4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cells.c3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-    .lang-item:hover {
-      border-color: var(--accent);
+    @media (max-width: 640px) {
+      .sec-head, .about-grid { grid-template-columns: 1fr; }
+      .sec-num { padding-bottom: 12px; }
+      .indent { padding-left: 0; }
+      .timeline-item { grid-template-columns: 1fr; gap: 6px; }
+      .timeline-item .date { grid-row: auto; }
+      .cells.c2, .cells.c3, .cells.c4 { grid-template-columns: 1fr; }
+      nav .brand span { display: none; }
+      .header-links a, .pdf-download-btn { flex: 1 1 50%; border-bottom: var(--hair); }
+      .header-links { width: 100%; }
     }
-    .lang-item .lang-name {
-      font-weight: 600; font-size: .95rem;
-    }
-    .lang-item .lang-level {
-      font-size: .82rem; color: var(--accent2); font-weight: 600;
-    }
-    .lang-item .lang-desc {
-      font-size: .82rem; color: var(--text-dim); margin-top: 2px;
+    @media (max-width: 380px) {
+      .header-links a, .pdf-download-btn { flex-basis: 100%; }
     }
 
-    /* ── Projects ── */
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      transition: all .25s;
-    }
-    .project-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
-    }
-    .project-card h3 { font-size: 1rem; font-weight: 600; }
-    .project-card h3 a { color: var(--text); transition: color .2s; }
-    .project-card h3 a:hover { color: var(--accent2); }
-    .project-card .desc {
-      font-size: .88rem; color: var(--text-dim);
-      margin: 6px 0 10px; line-height: 1.6;
-    }
-    .project-card .tech-stack {
-      display: flex; flex-wrap: wrap; gap: 4px;
-    }
-    .project-card .tech-stack span {
-      font-size: .75rem; padding: 2px 8px;
-      border-radius: 4px;
-      background: rgba(255,255,255,.04);
-      color: var(--text-dim);
-    }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 40px 0 32px;
-      border-top: 1px solid var(--border);
-      color: var(--text-dim);
-      font-size: .85rem;
-    }
-    footer .legal-toggle {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: .8rem;
-      color: var(--text-dim);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-color: var(--border);
-      transition: color .2s;
-    }
-    footer .legal-toggle:hover { color: var(--accent2); }
-    footer .legal-section {
-      display: none;
-      margin-top: 20px;
-      padding: 20px 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      text-align: left;
-      font-size: .82rem;
-      line-height: 1.7;
-    }
-    footer .legal-section.show { display: block; }
-    footer .legal-section h3 {
-      font-size: .9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-    footer .legal-section p { margin-bottom: 6px; }
-    footer .legal-section p:last-child { margin-bottom: 0; }
-    footer .legal-section a { color: var(--accent2); }
-    footer .legal-section a:hover { color: #fff; }
-
-    /* ── Navigation ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      gap: 4px;
-      padding: 10px 16px;
-      background: rgba(10,10,15,.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    nav::-webkit-scrollbar { display: none; }
-    nav a {
-      font-size: .78rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      color: var(--text-dim);
-      white-space: nowrap;
-      transition: all .2s;
-    }
-    nav a:hover {
-      color: var(--text);
-      background: var(--bg-hover);
-    }
-
-    /* ── Padding für fixed Nav ── */
-    body { padding-top: 52px; }
-
-    /* ── Hero-Splash-Intro-Video ──
-       Standardmäßig aus; erst das Skript schaltet es frei (kein Intro ohne JS). */
-    #hero-splash {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: var(--bg);
-      transition: opacity .45s ease-out;
-    }
-    #hero-splash.on { display: block; }
-    #hero-splash video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transform: scale(1);
-      transition: transform .5s ease-out;
-    }
-    /* Übergabe: Video zieht sanft weiter nach vorn, während die Seite erscheint */
-    #hero-splash.hide {
-      opacity: 0;
-      pointer-events: none;
-    }
-    #hero-splash.hide video { transform: scale(1.06); }
-    html.splash-active, html.splash-active body { overflow: hidden; }
     @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
       #hero-splash { display: none !important; }
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
 
     /* ── Print ── */
     @media print {
-      /* Sonst kann der Druck-Snapshot mitten in einer Farb-/Opacity-Transition
-         (Breathing Glow, Scroll-Reveal, ...) entstehen und Karten wirken blass. */
       * { animation: none !important; transition: none !important; }
-      nav { display: none; }
-      .hero-terminal-wrap { display: none; }
+      nav, #progress-bar, #hero-splash, body::after, .pdf-download-btn, .legal-toggle, #services, #contact { display: none !important; }
+      body { padding-top: 0; background: #fff; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+      .legal-section { display: block !important; }
       .print-only { display: block; }
-      header .subtitle { color: #333; }
-      header .motto { color: #444; }
-      body { padding-top: 0; background: #fff; color: #111; }
-      header::before { display: none; }
-      header { padding: 32px 24px 20px; }
-      header h1 {
-        color: #111 !important;
-        -webkit-text-fill-color: #111 !important;
-        background: none !important;
-        -webkit-background-clip: initial !important;
-        background-clip: initial !important;
-      }
-      .avatar {
-        width: 80px; height: 80px;
-        box-shadow: none;
-        background: none;
-        border: 2px solid #999;
-        animation: none;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .avatar::before, .avatar::after { display: none; }
-      .about-text, .timeline-item p,
-      .timeline-item ul, .timeline-item .company,
-      .edu-card .school, .cert-item span,
-      .project-card .desc, .project-card .tech-stack span,
-      .lang-item .lang-desc { color: #333; }
-      .project-card h3 a { color: #111; }
-      .timeline-item, .edu-card, .skill-group,
-      .cert-item, .project-card, .lang-item {
-        background: #f5f5f5;
-        border-color: #ddd;
-        box-shadow: none;
-      }
-      .skill-tag { background: #e8e8ff; border-color: #ccc; color: #222; }
-      .timeline-item:hover, .edu-card:hover,
-      .cert-item:hover, .project-card:hover { transform: none; box-shadow: none; }
-      .timeline::before { background: #999; }
-      .timeline-item::before { background: #6c63ff; border-color: #fff; }
-      .legal-toggle { display: none; }
-      footer .legal-section { display: block !important; border-color: #ddd; background: #f5f5f5; }
-      footer .legal-section p, footer .legal-section h3 { color: #333; }
-      section { padding: 24px 0; page-break-inside: avoid; }
-      section h2 { color: #111; }
-      .header-links a { border-color: #ddd; }
-      footer { border-top-color: #ddd; color: #666; }
-      .date { color: #6c63ff !important; }
-      .skill-group h4 { color: #6c63ff !important; }
-      .lang-item .lang-level { color: #6c63ff !important; }
-      .pdf-download-btn { display: none !important; }
-      /* Scroll-Reveal ist beim Drucken irrelevant -- alles sofort sichtbar,
-         auch wenn die Sektion nie ins Sichtfeld gescrollt wurde. */
-      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    }
-
-    /* ── WOW: Animated Grid Background ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(108,99,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(108,99,255,.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: -1;
-      animation: gridPulse 8s ease-in-out infinite;
-    }
-    @keyframes gridPulse {
-      0%, 100% { opacity: .6; }
-      50% { opacity: 1; }
-    }
-
-    /* ── WOW: Verfügbar-Badge ── */
-    .badge-available {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 22px;
-      padding: 6px 16px;
-      border-radius: 100px;
-      font-size: .82rem; font-weight: 600;
-      background: rgba(0,212,170,.1);
-      border: 1px solid rgba(0,212,170,.25);
-      color: var(--accent2);
-      animation: pulseBadge 2s ease-in-out infinite;
-    }
-    .badge-available .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent2);
-      animation: pulseDot 2s ease-in-out infinite;
-    }
-    @keyframes pulseBadge {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,170,0); }
-      50% { box-shadow: 0 0 12px 0 rgba(0,212,170,.15); }
-    }
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: .4; }
-    }
-
-    /* ── WOW: Section Headers ── */
-    section h2 .icon {
-      display: inline-block;
-      transition: transform .3s ease;
-    }
-    section:hover h2 .icon {
-      transform: scale(1.2) rotate(-5deg);
-    }
-
-    /* ── WOW: Scroll Reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity .6s ease, transform .6s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── WOW: Timeline Dot Glow ── */
-    .timeline-item::before {
-      animation: glowDot 3s ease-in-out infinite;
-    }
-    @keyframes glowDot {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(108,99,255,.3); }
-      50% { box-shadow: 0 0 12px 4px rgba(108,99,255,.15); }
-    }
-    .timeline-item:nth-child(2)::before { animation-delay: .4s; }
-    .timeline-item:nth-child(3)::before { animation-delay: .8s; }
-    .timeline-item:nth-child(4)::before { animation-delay: 1.2s; }
-    .timeline-item:nth-child(5)::before { animation-delay: 1.6s; }
-    .timeline-item:nth-child(6)::before { animation-delay: 2s; }
-    .timeline-item:nth-child(7)::before { animation-delay: 2.4s; }
-
-    /* ── WOW: Card Glow on Hover ──
-       Der Verlauf wird auf den Rahmen ausgestanzt: gefuellt bliebe er ueber dem
-       Kartenhintergrund liegen (eigener Stacking Context) und schluckte den Text. */
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      padding: 1px;                 /* Staerke des Leuchtrahmens */
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, var(--accent), var(--accent2), transparent, var(--accent));
-      background-size: 300% 300%;
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-              mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-              mask-composite: exclude;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .4s ease;
-    }
-    /* Schimmern nur solange sichtbar - sonst laufen sieben Endlosanimationen leer */
-    .timeline-item:hover::after {
-      opacity: 1;
-      animation: shimmer 3s ease-in-out infinite;
-    }
-    /* Ohne Maskenunterstuetzung lieber kein Glow als unlesbarer Text */
-    @supports not ((-webkit-mask-composite: xor) or (mask-composite: exclude)) {
-      .timeline-item::after { display: none; }
-    }
-    .edu-card:hover, .cert-item:hover, .project-card:hover {
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: var(--shadow), 0 0 20px rgba(108,99,255,.1);
-    }
-    @keyframes shimmer {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* ── WOW: Skill Tags Stagger ── */
-    .skill-tag {
-      transition: all .25s ease;
-    }
-    .skill-tag:hover {
-      transform: translateY(-2px) scale(1.05);
-      background: rgba(108,99,255,.2);
-      box-shadow: 0 0 16px rgba(108,99,255,.15);
-    }
-
-    /* ── WOW: Language Bars ── */
-    .lang-item {
-      position: relative;
-      overflow: hidden;
-    }
-    .lang-item .lang-bar {
-      height: 3px;
-      border-radius: 2px;
-      margin-top: 8px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      transition: width 1s ease;
-      width: 0;
-    }
-    .lang-item.visible .lang-bar { width: var(--pct); }
-
-    /* ── WOW: Scroll Progress Bar ── */
-    #progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      z-index: 200;
-      transition: width .1s linear;
-      width: 0;
-    }
-
-    /* ── WOW: Animated Gradient Name ── */
-    header h1 {
-      background: linear-gradient(135deg, #fff 20%, var(--accent) 50%, var(--accent2) 80%);
-      background-size: 200% auto;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: textShimmer 4s ease-in-out infinite;
-    }
-    @keyframes textShimmer {
-      0% { background-position: 0% center; }
-      50% { background-position: 100% center; }
-      100% { background-position: 0% center; }
-    }
-
-    /* ── WOW: Futuristic Avatar Frame (Orbit-Ring + Scanline + Pulse) ── */
-    .avatar {
-      animation: avatarPulse 4.5s ease-in-out infinite;
-    }
-    @keyframes avatarPulse {
-      0%, 100% {
-        box-shadow: 0 0 0 1px rgba(108,99,255,.30),
-                    0 0 20px rgba(108,99,255,.24),
-                    0 0 46px rgba(0,212,170,.07);
-      }
-      50% {
-        box-shadow: 0 0 0 2px rgba(0,212,170,.32),
-                    0 0 32px rgba(108,99,255,.42),
-                    0 0 72px rgba(0,212,170,.15);
-      }
-    }
-
-    /* Rotierender Conic-Ring – der Kreis-Ausschnitt entsteht durch das Bild darüber */
-    .avatar::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      z-index: 0;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg,
-        transparent 0deg,
-        var(--accent) 45deg,
-        var(--accent2) 105deg,
-        transparent 165deg,
-        transparent 195deg,
-        var(--accent2) 255deg,
-        var(--accent) 315deg,
-        transparent 360deg);
-      animation: avatarOrbit 5.5s linear infinite;
-    }
-    @keyframes avatarOrbit {
-      to { transform: rotate(360deg); }
-    }
-
-    /* Holo-Overlay: feine Rasterlinien + durchlaufende Scanline */
-    .avatar::after {
-      content: '';
-      position: absolute;
-      inset: 3px;
-      z-index: 2;
-      border-radius: 50%;
-      pointer-events: none;
-      mix-blend-mode: screen;
-      background-image:
-        linear-gradient(180deg, transparent 0%, rgba(0,212,170,.45) 50%, transparent 100%),
-        repeating-linear-gradient(180deg, rgba(0,212,170,.055) 0 1px, transparent 1px 3px);
-      background-size: 100% 38%, 100% 100%;
-      background-repeat: no-repeat, repeat;
-      animation: avatarScan 5s ease-in-out infinite;
-    }
-    @keyframes avatarScan {
-      0%        { background-position: 0 -30%, 0 0; opacity: 0; }
-      12%       { opacity: 1; }
-      72%       { opacity: 1; }
-      85%, 100% { background-position: 0 130%, 0 0; opacity: 0; }
-    }
-
-    /* Hover: näher heranzoomen, Ring & Scan beschleunigen */
-    .avatar:hover {
-      transform: scale(1.06);
-      animation-duration: 2s;
-    }
-    .avatar:hover::before { animation-duration: 1.8s; }
-    .avatar:hover::after  { animation-duration: 2.2s; }
-    .avatar:hover img     { filter: saturate(1.15) contrast(1.04); }
-
-    /* ── Hero: Live Code Terminal ── */
-    .hero-terminal-wrap { margin: -8px auto 4px; }
-    .hero-terminal {
-      max-width: 560px;
-      margin: 0 auto;
-      background: #0d0d16;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow), 0 0 40px rgba(108,99,255,.08);
-      overflow: hidden;
-    }
-    .hero-titlebar {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 14px;
-      background: rgba(255,255,255,.02);
-      border-bottom: 1px solid var(--border);
-    }
-    .hero-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
-    .hero-dot.red { background: #ff5f57; }
-    .hero-dot.yellow { background: #febc2e; }
-    .hero-dot.green { background: #28c840; }
-    .hero-filename {
-      margin-left: 8px;
-      font-size: .78rem;
-      color: var(--text-dim);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-    .hero-code-area {
-      margin: 0;
-      padding: 16px 18px;
-      height: calc(9 * 1.7em + 32px);   /* 9 Codezeilen + Innenabstand */
-      overflow: hidden;
-      text-align: left;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: .86rem;
-      line-height: 1.7;
-      background: radial-gradient(ellipse at 100% 0%, rgba(108,99,255,.07), transparent 60%);
-    }
-    .hero-code-area code { display: block; white-space: pre; }
-    .hero-line { display: block; min-height: 1.7em; }
-    /* Syntax-Highlighting */
-    .ht-kw   { color: #c792ea; }
-    .ht-str  { color: #c3e88d; }
-    .ht-fn   { color: #82aaff; }
-    .ht-prop { color: #f78c6c; }
-    .ht-op, .ht-pun { color: #89ddff; }
-    .ht-com  { color: #6a6a85; font-style: italic; }
-    .ht-num  { color: #f78c6c; }
-    .hero-cursor {
-      display: inline-block;
-      width: 8px; height: 1.05em;
-      margin-left: 1px;
-      transform: translateY(2px);
-      background: var(--accent2);
-      animation: heroBlink 1.05s steps(1) infinite;
-    }
-    @keyframes heroBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
-
-    /* ── Responsive Overflow Safeguards ── */
-    .about-text, .timeline-item, .timeline-item p, .timeline-item ul,
-    .edu-card, .edu-card .details, .edu-card .school, .skill-group,
-    .cert-item, .lang-item, .lang-item .lang-desc, .project-card,
-    .project-card .desc, footer .legal-section, footer .legal-section p {
-      overflow-wrap: break-word;
-      word-break: break-word;
-    }
-    .cert-item > div { min-width: 0; }
-
-    /* ── Breathing Border Glow (permanent, dezent) ── */
-    .timeline-item, .edu-card, .cert-item,
-    .project-card, .skill-group, .lang-item {
-      --breath: 1; /* Intensitäts-Faktor, auf mobil reduziert */
-    }
-    .timeline-item:not(:hover), .edu-card:not(:hover), .cert-item:not(:hover),
-    .project-card:not(:hover), .skill-group:not(:hover), .lang-item:not(:hover) {
-      animation: cardBreath 7s ease-in-out infinite;
-    }
-    /* Versatz, damit die Karten nicht synchron „atmen" */
-    .edu-card:nth-child(2n), .cert-item:nth-child(2n),
-    .project-card:nth-child(2n), .skill-group:nth-child(2n),
-    .lang-item:nth-child(2n) { animation-delay: -2.3s; }
-    .edu-card:nth-child(3n), .cert-item:nth-child(3n),
-    .project-card:nth-child(3n), .skill-group:nth-child(3n),
-    .lang-item:nth-child(3n) { animation-delay: -4.6s; }
-    .timeline-item:nth-child(2n) { animation-delay: -2.8s; }
-    .timeline-item:nth-child(3n) { animation-delay: -5.1s; }
-
-    @keyframes cardBreath {
-      0%, 100% {
-        border-color: var(--border);
-        box-shadow: 0 0 0 1px rgba(108,99,255,0),
-                    0 0 0 0 rgba(108,99,255,0);
-      }
-      50% {
-        border-color: rgba(108,99,255, calc(.30 * var(--breath)));
-        box-shadow: 0 0 0 1px rgba(108,99,255, calc(.10 * var(--breath))),
-                    0 0 16px 0 rgba(0,212,170, calc(.055 * var(--breath)));
-      }
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      header h1 { font-size: 1.7rem; }
-      header { padding: 60px 24px 32px; }
-      .avatar { width: 96px; height: 96px; padding: 2px; }
-      .subtitle { font-size: .95rem; }
-      section { padding: 28px 0; }
-      .timeline { padding-left: 22px; }
-      .timeline-item { padding: 16px 18px; }
-      .timeline-item::before { left: -18px; width: 10px; height: 10px; }
-      .timeline-item h3 { font-size: 1rem; }
-      .skills-grid { grid-template-columns: 1fr 1fr; }
-      .lang-grid { grid-template-columns: 1fr 1fr; }
-      .header-links a { padding: 8px 14px; font-size: .82rem; }
-      nav a { padding: 6px 10px; font-size: .72rem; }
-      body::before { animation: none; opacity: .3; }
-      .timeline-item::before { animation: none; }
-      header h1 { animation: none; }
-      /* Mobil: Ring bleibt (GPU-günstiges rotate), Scanline aus */
-      .avatar::before { animation-duration: 7s; }
-      .avatar::after {
-        animation: none;
-        opacity: 1;
-        background-image: repeating-linear-gradient(180deg, rgba(0,212,170,.05) 0 1px, transparent 1px 3px);
-      }
-      /* Breathing bleibt aktiv, nur schwächer und langsamer */
-      .timeline-item, .edu-card, .cert-item,
-      .project-card, .skill-group, .lang-item {
-        --breath: .55;
-        animation-duration: 9s;
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .timeline-item:not(:hover), .edu-card:not(:hover), .cert-item:not(:hover),
-      .project-card:not(:hover), .skill-group:not(:hover), .lang-item:not(:hover) {
-        animation: none;
-      }
-      .timeline-item::before, .timeline-item::after { animation: none; }
-      .avatar, .avatar::before, .avatar::after { animation: none; }
-      .avatar {
-        box-shadow: 0 0 0 1px rgba(0,212,170,.3), 0 0 26px rgba(108,99,255,.28);
-      }
-      .avatar::before {
-        background: linear-gradient(135deg, var(--accent), var(--accent2));
-      }
-      .avatar::after {
-        background-image: repeating-linear-gradient(180deg, rgba(0,212,170,.05) 0 1px, transparent 1px 3px);
-      }
-      .avatar:hover { transform: none; }
-    }
-    @media (max-width: 480px) {
-      .container { padding: 0 16px; }
-      header h1 { font-size: 1.4rem; }
-      header { padding: 52px 16px 24px; }
-      .avatar { width: 80px; height: 80px; margin-bottom: 14px; }
-      .subtitle { font-size: .85rem; }
-      section { padding: 24px 0; }
-      section h2 { font-size: 1.2rem; margin-bottom: 20px; }
-      .timeline-item { margin-bottom: 24px; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .lang-grid { grid-template-columns: 1fr; }
-      .header-links { gap: 10px; }
-      .header-links a { padding: 6px 12px; font-size: .78rem; }
-      .cert-grid { grid-template-columns: 1fr; }
-      .project-grid { grid-template-columns: 1fr; }
-      .edu-grid { grid-template-columns: 1fr; }
-      .hero-terminal { max-width: 100%; }
-      .hero-code-area { font-size: .76rem; height: calc(9 * 1.7em + 28px); padding: 14px 14px; }
-      .hero-cursor { animation: none; }
-    }
-    @media (max-width: 380px) {
-      .container { padding: 0 12px; }
-      .skills-grid, .lang-grid, .cert-grid,
-      .project-grid, .edu-grid { grid-template-columns: 1fr; }
-      .timeline-item { padding: 14px 13px; }
-      section h2 { font-size: 1.1rem; }
-      /* Untergrenze mitskalieren, damit die laengste Zeile (location) nicht abreisst */
-      .hero-code-area { font-size: clamp(.62rem, 3.1vw, .72rem); padding: 12px 12px; }
+      section, .block { page-break-inside: avoid; }
     }
   </style>
+  <script>try{if(!sessionStorage.getItem('heroIntroShown')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('splash-active')}catch(e){}</script>
 </head>
 <body>
 
-  <div id="hero-splash" aria-hidden="true">
-    <video id="hero-splash-video" muted playsinline preload="auto"></video>
-  </div>
-  <script>
-    // ── Hero-Splash-Intro ──
-    // Läuft einmal pro Browser-Sitzung und blendet genau in dem Moment in die
-    // echte Seite über, in dem das Video sie fertig aufgebaut hat.
-    (function () {
-      var splash = document.getElementById('hero-splash');
-      var video  = document.getElementById('hero-splash-video');
-      if (!splash || !video) return;
-
-      var seen = false;
-      try { seen = !!sessionStorage.getItem('heroIntroShown'); } catch (e) {}
-      if (seen || matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        splash.remove();          // kein Video-Download bei Wiederbesuch
-        return;
-      }
-
-      // Hochformat für Handys, Breitformat für alles andere
-      video.src = matchMedia('(max-aspect-ratio: 1/1)').matches
-        ? 'hero-intro-portrait.mp4'
-        : 'hero-intro-wide.mp4';
-
-      splash.classList.add('on');
-      document.documentElement.classList.add('splash-active');
-
-      var HANDOFF = 1.10;         // Sekunde, ab der das Video ins Schwarz ausblendet
-      var done = false;
-
-      function finish() {
-        if (done) return;
-        done = true;
-        splash.classList.add('hide');
-        document.documentElement.classList.remove('splash-active');
-        try { sessionStorage.setItem('heroIntroShown', '1'); } catch (e) {}
-        setTimeout(function () { splash.remove(); }, 700);
-      }
-
-      function watch() {
-        if (done) return;
-        if (video.currentTime >= HANDOFF) { finish(); return; }
-        requestAnimationFrame(watch);
-      }
-
-      video.addEventListener('playing', function () { requestAnimationFrame(watch); });
-      video.addEventListener('ended', finish);
-      video.addEventListener('error', finish);
-      setTimeout(finish, 5000);   // Sicherheitsnetz, falls nichts davon greift
-
-      var p = video.play();
-      if (p && p.catch) p.catch(finish);   // Autoplay blockiert -> Seite sofort frei
-    })();
-  </script>
+  <div id="hero-splash" aria-hidden="true"><canvas></canvas></div>
 
   <div id="progress-bar"></div>
 
-  <nav>
-    <a href="#about">👤</a>
-    <a href="#experience">💼</a>
-    <a href="#education">🎓</a>
-    <a href="#skills">⚡</a>
-    <a href="#certifications">🏅</a>
-    <a href="#languages">🌐</a>
-    <a href="#projects">🚀</a>
+  <nav aria-label="Hauptnavigation">
+    <div class="wrap">
+      <a class="brand" href="#top"><b>&#9632;</b><span>SCHRANZ-IT.COM</span></a>
+      <ul>
+        <li><a href="#services"><span>01</span>Leistungen</a></li>
+        <li><a href="#projects"><span>02</span>Projekte</a></li>
+        <li><a href="#about"><span>03</span>Über mich</a></li>
+        <li><a href="#contact"><span>04</span>Kontakt</a></li>
+      </ul>
+    </div>
   </nav>
 
-  <header>
-    <div class="avatar"><img src="avatar.jpg" alt="Gerald Schranz"></div>
-    <h1>Gerald Schranz, MSc</h1>
-    <!-- Rolle, Ort und Motto stehen in der Terminal-Animation; im Ausdruck faellt
-         sie weg, daher hier die gedruckte Fassung. -->
-    <p class="subtitle print-only">IT-Security Management &bull; Cloud &amp; AI Specialist &bull; Wiener Neustadt, Österreich</p>
-    <p class="motto print-only">„Think twice, code once."</p>
-    <div class="badge-available">
-      <span class="dot"></span>
-      Für neue Projekte verfügbar
-    </div>
-    <div class="header-links">
-      <a href="https://at.linkedin.com/in/gerald-schranz-02083bab" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        LinkedIn
-      </a>
-      <a href="https://github.com/gschranz" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        GitHub
-      </a>
-      <a href="mailto:g.schranz@hotmail.com">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        E-Mail
-      </a>
-      <button type="button" class="pdf-download-btn" onclick="downloadCvPdf()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><polyline points="7,10 12,15 17,10"/><path d="M4 19h16"/></svg>
-        <span class="pdf-btn-label">PDF herunterladen</span>
-      </button>
+  <header id="top">
+    <div class="wrap">
+      <div class="hero-meta mono" aria-hidden="true">
+        <span>Unit / D-01</span>
+        <span>Wiener Neustadt, AT</span>
+        <span>Rev. 2026</span>
+      </div>
+      <div class="hero-grid">
+        <div class="hero-main">
+          <h1>Gerald <br>Schranz<span class="h1-suffix"><span class="cm">, </span>MSc</span></h1>
+          <p class="subtitle">IT-Security Management &bull; Cloud &amp; AI Specialist &bull; Wiener Neustadt, Österreich</p>
+          <p class="motto">„Think twice, code once."</p>
+          <div class="badge-available"><span class="dot"></span>Für neue Projekte verfügbar</div>
+          <div class="header-links">
+            <a href="https://at.linkedin.com/in/gerald-schranz-02083bab" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://github.com/gschranz" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              GitHub
+            </a>
+            <a href="mailto:g.schranz@hotmail.com">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              E-Mail
+            </a>
+            <button type="button" class="pdf-download-btn" onclick="downloadCvPdf()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"/><polyline points="7,10 12,15 17,10"/><path d="M4 19h16"/></svg>
+              <span class="pdf-btn-label">PDF herunterladen</span>
+            </button>
+          </div>
+        </div>
+        <figure class="avatar">
+          <img src="avatar.jpg" alt="Gerald Schranz">
+          <figcaption aria-hidden="true">FIG. 01 / G. SCHRANZ</figcaption>
+        </figure>
+      </div>
     </div>
   </header>
 
-  <div class="hero-terminal-wrap container">
-    <div class="hero-terminal" role="img"
-         aria-label="Animierter Code-Editor: const developer = { name: 'Gerald Schranz', profession: 'IT-Security Management', focus: 'Cloud &amp; AI Specialist', location: 'Wiener Neustadt, Österreich', motto: 'Think twice, code once' }; build().ship().repeat();">
-      <div class="hero-titlebar" aria-hidden="true">
-        <span class="hero-dot red"></span>
-        <span class="hero-dot yellow"></span>
-        <span class="hero-dot green"></span>
-        <span class="hero-filename">developer.ts</span>
-      </div>
-      <pre class="hero-code-area" aria-hidden="true"><code id="hero-code"></code></pre>
-    </div>
-  </div>
+  <main>
 
-  <main class="container">
-
-    <!-- About -->
-    <section id="about" class="reveal">
-      <h2><span class="icon">👤</span> Über mich</h2>
-      <div class="about-text">
-        <p>IT-Manager mit Leidenschaft für Cloud-Technologien, künstliche Intelligenz und moderne Softwareentwicklung. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und einem starken Fokus auf lösungsorientierte, pragmatische Architekturen.</p>
-        <p style="margin-top: 12px;">Ob Azure-Infrastruktur, AI-Integration oder Full-Stack-Entwicklung — ich bringe Projekte von der Konzeption bis zur produktiven Umsetzung. Als erfahrener IT-Generalist mit über einem Jahrzehnt Berufserfahrung schätze ich sauberen Code, effiziente Prozesse und den Austausch im Team.</p>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience" class="reveal">
-      <h2><span class="icon">💼</span> Berufserfahrung</h2>
-      <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="date">seit 2022</div>
-          <h3>IT-Manager</h3>
-          <div class="company">CANCOM Austria — Wien</div>
-          <p>Ganzheitliche IT-Beratung mit Fokus auf Microsoft-Technologien, Cloud-Transformation &amp; AI-Integration. Seit 2024 als Senior IT-Manager mit Schwerpunkt auf Cloud-Security, Modern Workplace und Copilot-Lösungen.</p>
-          <ul>
-            <li>Microsoft Copilot for Security — Early Access Program &amp; Implementierung</li>
-            <li>Azure Security &amp; Compliance Architektur</li>
-            <li>Azure-Infrastruktur-Design &amp; -Migration</li>
-            <li>Modern Workplace &amp; Microsoft 365 / Exchange Online / Teams Consulting</li>
-            <li>Automatisierung &amp; DevOps mit PowerShell &amp; Azure CLI</li>
-          </ul>
+    <!-- Leistungen -->
+    <section id="services">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="sec-num">01 /</span>
+          <h2>Leistungen</h2>
         </div>
-
-        <div class="timeline-item">
-          <div class="date">2018 – 2022</div>
-          <h3>System- &amp; Netzwerkadministrator</h3>
-          <div class="company">Great Wall Motor Austria Research &amp; Development GmbH — Bad Vöslau</div>
-          <p>Verantwortlich für die Konzeption, Entwicklung und Betreuung der IT-Infrastruktur im Forschungs- und Entwicklungsbetrieb.</p>
-          <ul>
-            <li>Systemadministration und Betreuung der gesamten IT-Umgebung</li>
-            <li>Entwicklung von Infrastrukturlösungen für den F&amp;E-Betrieb</li>
-            <li>DevOps-Weiterentwicklung, Automatisierung und Prozessoptimierung</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2014 – 2016</div>
-          <h3>System- &amp; Netzwerkadministrator</h3>
-          <div class="company">IMaGE Performing Arts GmbH — Wien</div>
-          <p>IT-Betreuung eines Unternehmens der Veranstaltungsbranche.</p>
-          <ul>
-            <li>Wartung und Erweiterung der IT/TK-Infrastruktur</li>
-            <li>Unterstützung bei Störfällen und Fragen im gesamten Unternehmen</li>
-            <li>Erstellung der EDV-Dokumentation</li>
-            <li>Bereitschaftsdienst </li>
-            <li>Zukauf und Einrichtung neuer Hardware</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2014</div>
-          <h3>Technischer Support</h3>
-          <div class="company">McShark Computervertriebs-GmbH — Wien</div>
-          <ul>
-            <li>Lösung von Anwenderproblemen im IT-Support</li>
-            <li>Information und Konfliktlösung</li>
-            <li>Aufrüstungen und Reparaturen</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2012 – 2013</div>
-          <h3>Verkauf &amp; technischer Support</h3>
-          <div class="company">macoffice, Hillisch und Partner GmbH — Wiener Neustadt</div>
-          <ul>
-            <li>Verkaufsberatung und Zusammenstellung maßgeschneiderter EDV-Lösungen</li>
-            <li>Technischer Support, Reparaturen, Aufrüstungen und Umbauten</li>
-            <li>Betreuung der Online-Präsenzen</li>
-            <li>Zertifizierung der Geschäftsstelle bei Apple und Adobe</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2011 – 2012</div>
-          <h3>Rettungssanitäter (Zivildienst)</h3>
-          <div class="company">Österreichisches Rotes Kreuz — Wiener Neustadt</div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Education -->
-    <section id="education" class="reveal">
-      <h2><span class="icon">🎓</span> Ausbildung</h2>
-      <div class="edu-grid">
-        <div class="edu-card">
-          <div class="date">2020 – 2022</div>
-          <h3>Master of Science in Engineering (MSc)</h3>
-          <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
-          <div class="details">Abschluss in der Mindeststudienzeit</div>
-        </div>
-        <div class="edu-card">
-          <div class="date">2016 – 2019</div>
-          <h3>Bachelor of Science in Engineering (BSc)</h3>
-          <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
-          <div class="details">
-            Bachelor-Arbeiten: <em>Customized Containers for Server Nodes of Multiphysics Simulation Applications</em> (Informatik) &amp; <em>Customizing the Usability-Engineering Lifecycle – Software Development for Users with a Low Level of Computer Skills</em> (Wirtschaftsinformatik)
-          </div>
-        </div>
-        <div class="edu-card">
-          <div class="date">2006 – 2011</div>
-          <h3>Reife- und Diplomprüfung</h3>
-          <div class="school">HLA für Produktmanagement und Präsentation — Mödling</div>
-          <div class="details">
-            Schwerpunkte: Web- und Printmediengestaltung, Betriebswirtschaft, 3 lebende Fremdsprachen, Eventorganisation
-          </div>
+        <div class="cells c3 reveal">
+          <article class="service">
+            <span class="n">L-01</span>
+            <h3>Azure Security &amp; Compliance</h3>
+            <p>Architektur für Cloud-Security und Compliance, Microsoft Copilot for Security.</p>
+          </article>
+          <article class="service">
+            <span class="n">L-02</span>
+            <h3>Azure-Infrastruktur</h3>
+            <p>Design und Migration von Infrastruktur in die Microsoft-Cloud.</p>
+          </article>
+          <article class="service">
+            <span class="n">L-03</span>
+            <h3>Modern Workplace</h3>
+            <p>Beratung zu Microsoft 365, Exchange Online und Teams.</p>
+          </article>
+          <article class="service">
+            <span class="n">L-04</span>
+            <h3>KI-Integration</h3>
+            <p>LLM-Integration, Copilot-Lösungen und KI-Agenten in bestehende Abläufe.</p>
+          </article>
+          <article class="service">
+            <span class="n">L-05</span>
+            <h3>Automatisierung &amp; DevOps</h3>
+            <p>PowerShell, Azure CLI und CI/CD für reproduzierbare Abläufe.</p>
+          </article>
+          <article class="service">
+            <span class="n">L-06</span>
+            <h3>Web-Entwicklung</h3>
+            <p>Websites und Web-Anwendungen mit Next.js und TypeScript.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- Skills -->
-    <section id="skills" class="reveal">
-      <h2><span class="icon">⚡</span> Skills (Auszug von Beispielen)</h2>
-      <div class="skills-grid">
-        <div class="skill-group">
-          <h4>Cloud &amp; Infrastructure</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Microsoft Azure</span>
-            <span class="skill-tag">Microsoft 365</span>
-            <span class="skill-tag">Windows Server</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">Railway</span>
-            <span class="skill-tag">Nagios</span>
-            <span class="skill-tag">Linux</span>
+    <!-- Projekte -->
+    <section id="projects">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="sec-num">02 /</span>
+          <h2>Projekte</h2>
+        </div>
+        <div class="cells c3 reveal">
+          <article class="project-card">
+            <span class="n">01</span>
+            <h3><a href="https://github.com/gschranz/KuklaApartment" target="_blank" rel="noopener">KuklaApartment ↗</a> · <a href="https://apartment-am-stadtpark.at" target="_blank" rel="noopener">Live ↗</a></h3>
+            <div class="desc">Vermietungs-Website für „Apartment am Stadtpark" in Wiener Neustadt mit modernem Booking-Flow.</div>
+            <div class="tech-stack"><span>Next.js</span><span>TypeScript</span><span>Tailwind CSS</span></div>
+          </article>
+          <article class="project-card">
+            <span class="n">02</span>
+            <h3><a href="https://github.com/gschranz/hermes-agent-fork" target="_blank" rel="noopener">Hermes Agent Fork ↗</a></h3>
+            <div class="desc">Custom Deployment des Hermes AI Agent auf Railway mit Discord- und Telegram-Integration, STT &amp; Multi-Provider-Support.</div>
+            <div class="tech-stack"><span>Python</span><span>Docker</span><span>Railway</span></div>
+          </article>
+          <article class="project-card">
+            <span class="n">03</span>
+            <h3><a href="https://github.com/gschranz/v0-eleven-labs-voice-agent" target="_blank" rel="noopener">ElevenLabs Voice Agent ↗</a></h3>
+            <div class="desc">Echtzeit-Sprachassistent mit ElevenLabs, WebSocket &amp; AudioWorklet — Browser-basiert.</div>
+            <div class="tech-stack"><span>TypeScript</span><span>WebSocket</span><span>AudioWorklet</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Über mich (CV) -->
+    <section id="about">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="sec-num">03 /</span>
+          <h2>Über mich</h2>
+        </div>
+        <div class="about-grid reveal">
+          <span></span>
+          <div class="about-text">
+            <p>IT-Manager mit Schwerpunkt auf Cloud-Security, Microsoft-Umfeld und KI-Integration. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und pragmatischen Architekturen.</p>
+            <p>Ob Azure-Infrastruktur, AI-Integration oder Full-Stack-Entwicklung: Ich begleite Projekte von der Konzeption bis zur produktiven Umsetzung. Über ein Jahrzehnt Berufserfahrung als IT-Generalist, mit Wert auf sauberen Code, effiziente Prozesse und die Arbeit im Team.</p>
           </div>
         </div>
-        <div class="skill-group">
-          <h4>AI &amp; Data</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">LLM Integration</span>
-            <span class="skill-tag">Copilot</span>
-            <span class="skill-tag">KI Agenten (Hermes, Openclaw, Claude Code, Codex, Copilot, etc.)</span>
-            <span class="skill-tag">etc.</span>
+
+        <!-- Experience -->
+        <div id="experience" class="reveal">
+          <div class="sub-head"><span class="mono">03.1</span><h3>Berufserfahrung</h3></div>
+          <div class="timeline">
+
+            <div class="timeline-item">
+              <div class="date">seit 2022</div>
+              <h3>IT-Manager</h3>
+              <div class="company">CANCOM Austria — Wien</div>
+              <p>Ganzheitliche IT-Beratung mit Fokus auf Microsoft-Technologien, Cloud-Transformation &amp; AI-Integration. Seit 2024 als Senior IT-Manager mit Schwerpunkt auf Cloud-Security, Modern Workplace und Copilot-Lösungen.</p>
+              <ul>
+                <li>Microsoft Copilot for Security — Early Access Program &amp; Implementierung</li>
+                <li>Azure Security &amp; Compliance Architektur</li>
+                <li>Azure-Infrastruktur-Design &amp; -Migration</li>
+                <li>Modern Workplace &amp; Microsoft 365 / Exchange Online / Teams Consulting</li>
+                <li>Automatisierung &amp; DevOps mit PowerShell &amp; Azure CLI</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2018 – 2022</div>
+              <h3>System- &amp; Netzwerkadministrator</h3>
+              <div class="company">Great Wall Motor Austria Research &amp; Development GmbH — Bad Vöslau</div>
+              <p>Verantwortlich für die Konzeption, Entwicklung und Betreuung der IT-Infrastruktur im Forschungs- und Entwicklungsbetrieb.</p>
+              <ul>
+                <li>Systemadministration und Betreuung der gesamten IT-Umgebung</li>
+                <li>Entwicklung von Infrastrukturlösungen für den F&amp;E-Betrieb</li>
+                <li>DevOps-Weiterentwicklung, Automatisierung und Prozessoptimierung</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2014 – 2016</div>
+              <h3>System- &amp; Netzwerkadministrator</h3>
+              <div class="company">IMaGE Performing Arts GmbH — Wien</div>
+              <p>IT-Betreuung eines Unternehmens der Veranstaltungsbranche.</p>
+              <ul>
+                <li>Wartung und Erweiterung der IT/TK-Infrastruktur</li>
+                <li>Unterstützung bei Störfällen und Fragen im gesamten Unternehmen</li>
+                <li>Erstellung der EDV-Dokumentation</li>
+                <li>Bereitschaftsdienst</li>
+                <li>Zukauf und Einrichtung neuer Hardware</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2014</div>
+              <h3>Technischer Support</h3>
+              <div class="company">McShark Computervertriebs-GmbH — Wien</div>
+              <ul>
+                <li>Lösung von Anwenderproblemen im IT-Support</li>
+                <li>Information und Konfliktlösung</li>
+                <li>Aufrüstungen und Reparaturen</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2012 – 2013</div>
+              <h3>Verkauf &amp; technischer Support</h3>
+              <div class="company">macoffice, Hillisch und Partner GmbH — Wiener Neustadt</div>
+              <ul>
+                <li>Verkaufsberatung und Zusammenstellung maßgeschneiderter EDV-Lösungen</li>
+                <li>Technischer Support, Reparaturen, Aufrüstungen und Umbauten</li>
+                <li>Betreuung der Online-Präsenzen</li>
+                <li>Zertifizierung der Geschäftsstelle bei Apple und Adobe</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="date">2011 – 2012</div>
+              <h3>Rettungssanitäter (Zivildienst)</h3>
+              <div class="company">Österreichisches Rotes Kreuz — Wiener Neustadt</div>
+            </div>
+
           </div>
         </div>
-        <div class="skill-group">
-          <h4>Development</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">Next.js</span>
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">HTML/CSS</span>
-            <span class="skill-tag">C# / .NET</span>
-            <span class="skill-tag">SQL</span>
-            <span class="skill-tag">C / C++</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">Prolog</span>
-            <span class="skill-tag">Matlab</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">etc.</span>
+
+        <!-- Education -->
+        <div id="education" class="reveal">
+          <div class="sub-head"><span class="mono">03.2</span><h3>Ausbildung</h3></div>
+          <div class="cells c3">
+            <div class="edu-card">
+              <div class="date">2020 – 2022</div>
+              <h3>Master of Science in Engineering (MSc)</h3>
+              <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
+              <div class="details">Abschluss in der Mindeststudienzeit</div>
+            </div>
+            <div class="edu-card">
+              <div class="date">2016 – 2019</div>
+              <h3>Bachelor of Science in Engineering (BSc)</h3>
+              <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
+              <div class="details">
+                Bachelor-Arbeiten: <em>Customized Containers for Server Nodes of Multiphysics Simulation Applications</em> (Informatik) &amp; <em>Customizing the Usability-Engineering Lifecycle – Software Development for Users with a Low Level of Computer Skills</em> (Wirtschaftsinformatik)
+              </div>
+            </div>
+            <div class="edu-card">
+              <div class="date">2006 – 2011</div>
+              <h3>Reife- und Diplomprüfung</h3>
+              <div class="school">HLA für Produktmanagement und Präsentation — Mödling</div>
+              <div class="details">
+                Schwerpunkte: Web- und Printmediengestaltung, Betriebswirtschaft, 3 lebende Fremdsprachen, Eventorganisation
+              </div>
+            </div>
           </div>
         </div>
-        <div class="skill-group">
-          <h4>DevOps &amp; Tools</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Git / GitHub</span>
-            <span class="skill-tag">CI/CD</span>
-            <span class="skill-tag">PowerShell</span>
-            <span class="skill-tag">Azure CLI</span>
-            <span class="skill-tag">Bash</span>
-            <span class="skill-tag">DNS/DHCP</span>
-            <span class="skill-tag">ISO-OSI</span>
+
+        <!-- Skills -->
+        <div id="skills" class="reveal">
+          <div class="sub-head"><span class="mono">03.3</span><h3>Skills</h3></div>
+          <div class="cells c2">
+            <div class="skill-group">
+              <h4>Cloud &amp; Infrastructure</h4>
+              <div class="skill-tags">
+                <span class="skill-tag">Microsoft Azure</span>
+                <span class="skill-tag">Microsoft 365</span>
+                <span class="skill-tag">Windows Server</span>
+                <span class="skill-tag">Docker</span>
+                <span class="skill-tag">Railway</span>
+                <span class="skill-tag">Nagios</span>
+                <span class="skill-tag">Linux</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h4>AI &amp; Data</h4>
+              <div class="skill-tags">
+                <span class="skill-tag">LLM Integration</span>
+                <span class="skill-tag">Copilot</span>
+                <span class="skill-tag">KI Agenten (Hermes, Openclaw, Claude Code, Codex, Copilot)</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h4>Development</h4>
+              <div class="skill-tags">
+                <span class="skill-tag">TypeScript</span>
+                <span class="skill-tag">Next.js</span>
+                <span class="skill-tag">React</span>
+                <span class="skill-tag">HTML/CSS</span>
+                <span class="skill-tag">C# / .NET</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">C / C++</span>
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Prolog</span>
+                <span class="skill-tag">Matlab</span>
+                <span class="skill-tag">Python</span>
+              </div>
+            </div>
+            <div class="skill-group">
+              <h4>DevOps &amp; Tools</h4>
+              <div class="skill-tags">
+                <span class="skill-tag">Git / GitHub</span>
+                <span class="skill-tag">CI/CD</span>
+                <span class="skill-tag">PowerShell</span>
+                <span class="skill-tag">Azure CLI</span>
+                <span class="skill-tag">Bash</span>
+                <span class="skill-tag">DNS/DHCP</span>
+                <span class="skill-tag">ISO-OSI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div id="certifications" class="reveal">
+          <div class="sub-head"><span class="mono">03.4</span><h3>Zertifizierungen</h3></div>
+          <div class="cells c4 cert-grid">
+            <div class="cert-item"><strong>Azure Fundamentals (AZ-900)</strong><span>Security &amp; Network Security Features</span></div>
+            <div class="cert-item"><strong>Azure Fundamentals (AZ-900)</strong><span>Identity, Governance &amp; Compliance</span></div>
+            <div class="cert-item"><strong>MCSA: Windows Server 2012</strong><span>Microsoft Certified Solutions Associate</span></div>
+            <div class="cert-item"><strong>MCPS: Microsoft Certified Professional</strong></div>
+            <div class="cert-item"><strong>Microsoft TA</strong><span>Microsoft Technical Associate</span></div>
+            <div class="cert-item"><strong>PMA Level D</strong><span>Projektmanagement-Assistent</span></div>
+            <div class="cert-item"><strong>Apple Zertifikate</strong><span>macOS Support &amp; Sales Certification</span></div>
+            <div class="cert-item"><strong>Learn4D365</strong><span>Badge of Achievement &amp; Certificate of Achievement</span></div>
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div id="languages" class="reveal">
+          <div class="sub-head"><span class="mono">03.5</span><h3>Sprachen</h3></div>
+          <div class="cells c4">
+            <div class="lang-item">
+              <div class="lang-name">Deutsch</div>
+              <div class="lang-level">Muttersprache</div>
+              <div class="lang-desc">fließend in Wort und Schrift</div>
+              <div class="lang-bar" style="--pct:100%"></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-name">Englisch</div>
+              <div class="lang-level">C2</div>
+              <div class="lang-desc">fließend in Wort und Schrift</div>
+              <div class="lang-bar" style="--pct:90%"></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-name">Französisch</div>
+              <div class="lang-level">B1</div>
+              <div class="lang-desc">sehr gutes Verständnis, Phrasen in Wort und Schrift</div>
+              <div class="lang-bar" style="--pct:50%"></div>
+            </div>
+            <div class="lang-item">
+              <div class="lang-name">Spanisch</div>
+              <div class="lang-level">A1</div>
+              <div class="lang-desc">gutes Verständnis, Phrasen in Wort und Schrift</div>
+              <div class="lang-bar" style="--pct:30%"></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Certifications -->
-    <section id="certifications" class="reveal">
-      <h2><span class="icon">🏅</span> Zertifizierungen</h2>
-      <div class="cert-grid">
-        <div class="cert-item">
-          <div class="badge badge-azure">☁️</div>
-          <div>
-            <strong>Azure Fundamentals (AZ-900)</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Security &amp; Network Security Features</span>
-          </div>
+    <!-- Kontakt -->
+    <section id="contact">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="sec-num">04 /</span>
+          <h2>Kontakt</h2>
         </div>
-        <div class="cert-item">
-          <div class="badge badge-azure">☁️</div>
-          <div>
-            <strong>Azure Fundamentals (AZ-900)</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Identity, Governance &amp; Compliance</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div class="badge badge-ms">🪟</div>
-          <div>
-            <strong>MCSA: Windows Server 2012</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Microsoft Certified Solutions Associate</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div class="badge badge-ms">🪟</div>
-          <div>
-            <strong>MCPS: Microsoft Certified Professional</strong>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div class="badge badge-ms">🪟</div>
-          <div>
-            <strong>Microsoft TA</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Microsoft Technical Associate</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div class="badge badge-pma">📋</div>
-          <div>
-            <strong>PMA Level D</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Projektmanagement-Assistent</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div class="badge badge-apple">🍏</div>
-          <div>
-            <strong>Apple Zertifikate</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">macOS Support &amp; Sales Certification</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div class="badge badge-d365">📊</div>
-          <div>
-            <strong>Learn4D365</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Badge of Achievement &amp; Certificate of Achievement</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Languages -->
-    <section id="languages" class="reveal">
-      <h2><span class="icon">🌐</span> Sprachen</h2>
-      <div class="lang-grid">
-        <div class="lang-item reveal">
-          <div class="lang-name">🇩🇪 Deutsch</div>
-          <div class="lang-level">Muttersprache</div>
-          <div class="lang-desc">fließend in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:100%"></div>
-        </div>
-        <div class="lang-item reveal">
-          <div class="lang-name">🇬🇧 Englisch</div>
-          <div class="lang-level">C2</div>
-          <div class="lang-desc">fließend in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:90%"></div>
-        </div>
-        <div class="lang-item reveal">
-          <div class="lang-name">🇫🇷 Französisch</div>
-          <div class="lang-level">B1</div>
-          <div class="lang-desc">sehr gutes Verständnis, Phrasen in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:50%"></div>
-        </div>
-        <div class="lang-item reveal">
-          <div class="lang-name">🇪🇸 Spanisch</div>
-          <div class="lang-level">A1</div>
-          <div class="lang-desc">gutes Verständnis, Phrasen in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:30%"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section id="projects" class="reveal">
-      <h2><span class="icon">🚀</span> Hobbyprojekte</h2>
-      <div class="project-grid">
-        <div class="project-card">
-          <h3><a href="https://github.com/gschranz/KuklaApartment" target="_blank" rel="noopener">KuklaApartment ↗</a> · <a href="https://apartment-am-stadtpark.at" target="_blank" rel="noopener">Live ↗</a></h3>
-          <div class="desc">Vermietungs-Website für „Apartment am Stadtpark" in Wiener Neustadt mit modernem Booking-Flow.</div>
-          <div class="tech-stack">
-            <span>Next.js</span><span>TypeScript</span><span>Tailwind CSS</span>
-          </div>
-        </div>
-        <div class="project-card">
-          <h3><a href="https://github.com/gschranz/hermes-agent-fork" target="_blank" rel="noopener">Hermes Agent Fork ↗</a></h3>
-          <div class="desc">Custom Deployment des Hermes AI Agent auf Railway mit Discord- und Telegram-Integration, STT &amp; Multi-Provider-Support.</div>
-          <div class="tech-stack">
-            <span>Python</span><span>Docker</span><span>Railway</span>
-          </div>
-        </div>
-        <div class="project-card">
-          <h3><a href="https://github.com/gschranz/v0-eleven-labs-voice-agent" target="_blank" rel="noopener">ElevenLabs Voice Agent ↗</a></h3>
-          <div class="desc">Echtzeit-Sprachassistent mit ElevenLTS, WebSocket &amp; AudioWorklet — Browser-basiert.</div>
-          <div class="tech-stack">
-            <span>TypeScript</span><span>WebSocket</span><span>AudioWorklet</span>
-          </div>
+        <a class="contact-mail reveal" href="mailto:g.schranz@hotmail.com">g.schranz@<wbr>hotmail.com &rarr;</a>
+        <div class="contact-links reveal">
+          <a href="https://at.linkedin.com/in/gerald-schranz-02083bab" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://github.com/gschranz" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </section>
@@ -1360,9 +684,12 @@ header {
   </main>
 
   <footer>
-    <div class="container">
-      <p>© 2026 Gerald Schranz, MSc &bull; Mit Hilfe von KI erstellt &bull; Built with ❤️</p>
-      <span class="legal-toggle" onclick="document.getElementById('legal-info').classList.toggle('show')">📋 Impressum &amp; Datenschutz</span>
+    <div class="wrap">
+      <div class="foot-row">
+        <span class="mono">&copy; 2026 Gerald Schranz, MSc</span>
+        <button type="button" class="legal-toggle" aria-expanded="false" aria-controls="legal-info"
+                onclick="var s=document.getElementById('legal-info');this.setAttribute('aria-expanded', s.classList.toggle('show'))">Impressum &amp; Datenschutz</button>
+      </div>
       <div id="legal-info" class="legal-section">
         <h3>Impressum</h3>
         <p><strong>Gerald Schranz, MSc</strong><br>
@@ -1370,7 +697,7 @@ header {
 
         <h3 style="margin-top:16px;">Datenschutzerklärung</h3>
         <p><strong>Verantwortlicher:</strong> Gerald Schranz, MSc (<a href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a>)</p>
-        <p><strong>Personenbezogene Daten:</strong> Diese Website erhebt und verarbeitet keine personenbezogenen Daten. Es werden keine Cookies, Tracking-Tools oder Analyse-Dienste eingesetzt. Die Schriftart Inter wird lokal vom Server ausgeliefert — es erfolgt keine Verbindung zu externen Schriftarten-Servern.</p>
+        <p><strong>Personenbezogene Daten:</strong> Diese Website erhebt und verarbeitet keine personenbezogenen Daten. Es werden keine Cookies, Tracking-Tools oder Analyse-Dienste eingesetzt. Die Schriftarten Inter und JetBrains Mono werden lokal vom Server ausgeliefert — es erfolgt keine Verbindung zu externen Schriftarten-Servern.</p>
         <p><strong>Kontaktaufnahme:</strong> Bei E-Mail-Kontakt wird die Korrespondenz vertraulich behandelt und nicht an Dritte weitergegeben.</p>
         <p><strong>Server-Logfiles:</strong> Beim Abruf der Seite werden durch den Hosting-Anbieter technisch notwendige Logdaten (IP, Uhrzeit, aufgerufene Seite) verarbeitet. Diese Daten werden nicht mit anderen Datenquellen zusammengeführt.</p>
         <p><strong>Ihre Rechte:</strong> Ihnen stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit zu. Bei Fragen kontaktieren Sie mich bitte per E-Mail.</p>
@@ -1465,7 +792,7 @@ header {
         let y = marginTop;
 
         const TEXT = [26, 26, 31], DIM = [100, 100, 115],
-              ACCENT = [108, 99, 255], ACCENT2 = [0, 130, 110], LINE = [222, 222, 232];
+              ACCENT = [230, 25, 25], ACCENT2 = [17, 17, 17], LINE = [17, 17, 17];
 
         function ensureSpace(h) {
           if (y + h > pageH - marginBottom) { doc.addPage(); y = marginTop; }
@@ -1676,7 +1003,7 @@ header {
         // ── Hobbyprojekte ──
         const projectCards = document.querySelectorAll('#projects .project-card');
         if (projectCards.length) {
-          sectionHeading('Hobbyprojekte');
+          sectionHeading('Projekte');
           projectCards.forEach((card) => {
             ensureSpace(16);
             const linkEls = Array.from(card.querySelectorAll('h3 a'));
@@ -1747,14 +1074,14 @@ header {
       });
     }
 
-    // Scroll Progress Bar
+    // ── Scroll-Fortschritt ──
     const bar = document.getElementById('progress-bar');
     window.addEventListener('scroll', () => {
       const h = document.documentElement.scrollHeight - window.innerHeight;
       bar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
     }, { passive: true });
 
-    // Scroll Reveal
+    // ── Scroll-Reveal ──
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -1764,84 +1091,100 @@ header {
       });
     }, { threshold: .1 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    // Lazy init for lang bars
-    document.querySelectorAll('.lang-item.reveal').forEach(el => observer.observe(el));
 
-    // ── Hero: Live Code Typing ──
+    // ── Intro-Splash: Canvas in nativer Geräteauflösung ──
     (function () {
-      const codeEl = document.getElementById('hero-code');
-      if (!codeEl) return;
+      var root = document.documentElement;
+      var splash = document.getElementById('hero-splash');
+      if (!splash) return;
+      if (!root.classList.contains('splash-active')) { splash.remove(); return; }
 
-      // Jede Zeile = Liste von Tokens { t: Text, c: Highlight-Klasse }
-      const lines = [
-        [{t:'const',c:'kw'},{t:' developer ',c:''},{t:'=',c:'op'},{t:' {',c:'pun'}],
-        [{t:'  name',c:'prop'},{t:': ',c:'pun'},{t:'"Gerald Schranz"',c:'str'},{t:',',c:'pun'}],
-        [{t:'  profession',c:'prop'},{t:': ',c:'pun'},{t:'"IT-Security Management"',c:'str'},{t:',',c:'pun'}],
-        [{t:'  focus',c:'prop'},{t:': ',c:'pun'},{t:'"Cloud & AI Specialist"',c:'str'},{t:',',c:'pun'}],
-        [{t:'  location',c:'prop'},{t:': ',c:'pun'},{t:'"Wiener Neustadt, Österreich"',c:'str'},{t:',',c:'pun'}],
-        [{t:'  motto',c:'prop'},{t:': ',c:'pun'},{t:'"Think twice, code once"',c:'str'},{t:',',c:'pun'}],
-        [{t:'}',c:'pun'},{t:';',c:'pun'}],
-        [{t:'',c:''}],
-        [{t:'build',c:'fn'},{t:'()',c:'pun'},{t:'.',c:'pun'},{t:'ship',c:'fn'},{t:'()',c:'pun'},{t:'.',c:'pun'},{t:'repeat',c:'fn'},{t:'()',c:'pun'},{t:';',c:'pun'},{t:'  // \u{1F680}',c:'com'}]
-      ];
+      var canvas = splash.querySelector('canvas');
+      var ctx = canvas.getContext('2d');
+      var INK = '#111111', PAPER = '#F4F4F0', RED = '#E61919';
+      var COLS = 12, DUR = 1300;
+      var W = 0, H = 0, dpr = 1, done = false, t0 = 0;
 
-      const esc = s => s.replace(/[&<>]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
-      const tokHtml = tok => '<span class="ht-' + tok.c + '">' + esc(tok.t) + '</span>';
-      const cursor = '<span class="hero-cursor"></span>';
-
-      // Statische Vollansicht (fallback / reduced motion)
-      function renderStatic() {
-        codeEl.innerHTML = lines.map(line =>
-          '<span class="hero-line">' + line.map(tokHtml).join('') + '</span>'
-        ).join('');
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 3);
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = Math.round(W * dpr);
+        canvas.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
+      function stepped(x, n) { return Math.floor(x * n) / n; }
 
-      const reduce = window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) { renderStatic(); return; }
+      function draw(t) {
+        var load = Math.min(t / 0.55, 1);
+        var lift = Math.max((t - 0.55) / 0.45, 0);
+        ctx.clearRect(0, 0, W, H);
 
-      let li = 0, ti = 0, ci = 0;
-      const built = lines.map(() => '');
-
-      function render() {
-        let html = '';
-        for (let i = 0; i < lines.length; i++) {
-          let lineHtml = built[i];
-          if (i === li && ti < lines[i].length) {
-            const tok = lines[i][ti];
-            lineHtml += '<span class="ht-' + tok.c + '">' + esc(tok.t.slice(0, ci)) + '</span>';
-          }
-          const showCursor = (i === li) || (li >= lines.length && i === lines.length - 1);
-          html += '<span class="hero-line">' + lineHtml + (showCursor ? cursor : '') + '</span>';
+        var cw = W / COLS;
+        ctx.fillStyle = INK;
+        for (var i = 0; i < COLS; i++) {
+          var delay = (i / (COLS - 1)) * 0.5;
+          var p = stepped(Math.min(Math.max((lift - delay) / 0.5, 0), 1), 6);
+          var h = Math.ceil(H * (1 - p));
+          if (h > 0) ctx.fillRect(Math.floor(i * cw), 0, Math.ceil(cw) + 1, h);
         }
-        codeEl.innerHTML = html;
+        if (lift > 0) return;
+
+        var m = Math.max(16, W * 0.03);
+        ctx.fillStyle = PAPER;
+        ctx.textBaseline = 'top';
+        ctx.font = '700 12px "JetBrains Mono", ui-monospace, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('SCHRANZ-IT.COM', m, m);
+        ctx.textAlign = 'right';
+        ctx.fillText('REV. 2026 / UNIT D-01', W - m, m);
+
+        var pct = Math.round(load * 100);
+        var label = ('00' + pct).slice(-3);
+        var size = Math.min(W * 0.28, H * 0.5);
+        ctx.font = '900 ' + size + 'px Inter, "Helvetica Neue", Arial, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(label, m - size * 0.04, H - m - 12);
+
+        ctx.fillStyle = RED;
+        ctx.fillRect(0, H - 8, W * load, 8);
+
+        ctx.fillStyle = PAPER;
+        ctx.font = '700 16px "JetBrains Mono", ui-monospace, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        [[m, 84], [W - m, 84], [m, H - 84], [W - m, H - 84]].forEach(function (c) { ctx.fillText('+', c[0], c[1]); });
       }
 
-      function reset() {
-        li = 0; ti = 0; ci = 0;
-        for (let i = 0; i < built.length; i++) built[i] = '';
-        render();
-        setTimeout(tick, 500);
+      function finish() {
+        if (done) return;
+        done = true;
+        root.classList.remove('splash-active');
+        try { sessionStorage.setItem('heroIntroShown', '1'); } catch (e) {}
+        splash.remove();
       }
 
-      function tick() {
-        if (li >= lines.length) { render(); setTimeout(reset, 2600); return; }
-        const line = lines[li];
-        if (ti >= line.length) { li++; ti = 0; ci = 0; render(); setTimeout(tick, 130); return; }
-        const tok = line[ti];
-        if (ci >= tok.t.length) {
-          built[li] += tokHtml(tok);
-          ti++; ci = 0;
-          setTimeout(tick, 0);
-          return;
-        }
-        ci++;
-        render();
-        setTimeout(tick, 24 + Math.random() * 42);
+      function frame(now) {
+        if (done) return;
+        if (!t0) t0 = now;
+        var t = (now - t0) / DUR;
+        if (t >= 1) { finish(); return; }
+        draw(t);
+        requestAnimationFrame(frame);
       }
 
-      render();
-      setTimeout(tick, 600);
+      resize();
+      if (window.ResizeObserver) new ResizeObserver(resize).observe(splash);
+      else window.addEventListener('resize', resize);
+
+      setTimeout(finish, 4000);
+      var fontsReady = document.fonts && document.fonts.load
+        ? Promise.race([
+            Promise.all([document.fonts.load('900 64px Inter'), document.fonts.load('700 12px "JetBrains Mono"')]),
+            new Promise(function (r) { setTimeout(r, 400); })
+          ])
+        : Promise.resolve();
+      fontsReady.then(function () { requestAnimationFrame(frame); }, function () { requestAnimationFrame(frame); });
     })();
   </script>
 </body>
