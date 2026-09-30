@@ -25,6 +25,7 @@
   cards.forEach(function (card, i) {
     var isCta = card.classList.contains('svc-cta');
     var title = isCta ? 'Ihr Thema?' : textOf(card, 'h3');
+    var label = isCta ? title : (card.getAttribute('data-short') || title);
     var s = document.createElement('button');
     s.type = 'button';
     s.className = 'fan-strip';
@@ -41,7 +42,7 @@
     else cap.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
     var name = document.createElement('span');
     name.className = 'fan-name';
-    name.textContent = title;
+    name.textContent = label;
     s.appendChild(cap);
     s.appendChild(name);
     s.addEventListener('click', function () { userTouched = true; select(i, true); });
