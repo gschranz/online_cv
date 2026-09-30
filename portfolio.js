@@ -1,6 +1,6 @@
-// Projekt-Portfolio: interaktive Netzkarte + abstrakte Animationen je Projekt.
-// Canvas 2D in nativer Geräteauflösung, keine Abhängigkeiten. Die Inhalte stehen
-// als semantische Karten (.project-card) in #pf-list und werden hier nur gelesen.
+// Projekt-Portfolio: Übersicht als Patchfeld im Serverrack (echte Fotos, Higgsfield),
+// nach Klick eine schematische Canvas-Animation je Projekt. Inhalte stehen als
+// semantische Karten (.project-card) in #pf-list und werden hier nur gelesen.
 (function () {
   'use strict';
   var root = document.getElementById('pf');
@@ -11,25 +11,16 @@
   var ctx = canvas.getContext('2d');
   var panel = root.querySelector('.pf-panel');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SVGNS = 'http://www.w3.org/2000/svg';
   document.documentElement.classList.add('pf-on');
 
   var C = { line: '#1e1e32', text: '#e4e4ed', dim: '#8888a0', a: '#6c63ff', b: '#00d4aa', c: '#ffb454', bad: '#ff6b6b' };
   var CLUSTERS = {
-    data: { name: 'Betriebsdaten', color: C.a },
-    web:  { name: 'Web',           color: C.b },
-    ai:   { name: 'KI & Automation', color: C.c }
+    data: { name: 'Betriebsdaten',   color: C.a, plug: 'violet' },
+    web:  { name: 'Web',             color: C.b, plug: 'teal' },
+    ai:   { name: 'KI & Automation', color: C.c, plug: 'amber' }
   };
-  // Positionen (0..1) für Quer- und Hochformat
-  var LAYOUT = {
-    kosten: { l: [.17, .30], p: [.27, .09] },
-    api:    { l: [.27, .70], p: [.72, .19] },
-    web:    { l: [.50, .24], p: [.27, .37] },
-    kukla:  { l: [.58, .66], p: [.74, .46] },
-    voice:  { l: [.82, .28], p: [.26, .65] },
-    agent:  { l: [.87, .62], p: [.74, .72] },
-    bot:    { l: [.70, .86], p: [.46, .90] }
-  };
-  var LINKS = [['kosten', 'api'], ['kosten', 'web'], ['web', 'kukla'], ['voice', 'agent'], ['agent', 'bot'], ['voice', 'bot']];
+  var ORDER = ['data', 'web', 'ai'];
 
   // ── Helfer ──
   function rgba(hex, a) {
@@ -50,48 +41,122 @@
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
   }
   function dot(x, y, r, col) { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); }
+  function mk(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+  function svg(tag, attrs) {
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  // Position relativ zur Bühne aus Layout-Maßen (unabhängig von CSS-Transformationen wie im Intro)
+  function offsetIn(el, anc) {
+    var x = 0, y = 0;
+    while (el && el !== anc) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; }
+    return { x: x, y: y };
+  }
 
-  // ── Knoten aus den Karten ──
-  var nodes = [];
+  // ── Patchfeld aus den Karten bauen ──
+  var nodes = [], byId = {};
+  var rack = mk('div', 'pf-rack');
+  var face = mk('div', 'rack-panel');
+  var cables = svg('svg', { 'class': 'rack-cables', 'aria-hidden': 'true' });
+  var defs = svg('defs', {});
+  var fade = svg('linearGradient', { id: 'rack-fade', x1: '0', y1: '0', x2: '0', y2: '1' });
+  fade.appendChild(svg('stop', { offset: '0', 'stop-color': '#fff', 'stop-opacity': '1' }));
+  fade.appendChild(svg('stop', { offset: '.62', 'stop-color': '#fff', 'stop-opacity': '1' }));
+  fade.appendChild(svg('stop', { offset: '1', 'stop-color': '#fff', 'stop-opacity': '0' }));
+  var mask = svg('mask', { id: 'rack-mask', maskUnits: 'userSpaceOnUse' });
+  var maskRect = svg('rect', { x: '0', y: '0', width: '100%', height: '100%', fill: 'url(#rack-fade)' });
+  mask.appendChild(maskRect);
+  defs.appendChild(fade); defs.appendChild(mask);
+  cables.appendChild(defs);
+  var cableGroup = svg('g', { mask: 'url(#rack-mask)' });
+  cables.appendChild(cableGroup);
+
+  var sections = {};
+  ORDER.forEach(function (k) {
+    var sec = mk('div', 'rack-sec');
+    sec.style.setProperty('--sec', CLUSTERS[k].color);
+    var lab = mk('span', 'rack-sec-label', CLUSTERS[k].name);
+    var ports = mk('div', 'rack-ports');
+    sec.appendChild(lab); sec.appendChild(ports);
+    face.appendChild(sec);
+    sections[k] = { el: sec, ports: ports };
+  });
+
   Array.prototype.forEach.call(list.querySelectorAll('.project-card'), function (card, i) {
-    var id = card.getAttribute('data-id');
-    if (!LAYOUT[id]) return;
-    // Unsichtbare Buttons nur für Tastatur und Screenreader; Maus/Touch treffen den Canvas.
-    var btn = document.createElement('button');
+    var id = card.getAttribute('data-id'), cl = card.getAttribute('data-cluster');
+    if (!id || !CLUSTERS[cl]) return;
+    var btn = mk('button', 'rack-port');
     btn.type = 'button';
-    btn.className = 'pf-node';
-    btn.textContent = card.getAttribute('data-short') + ' – ' + CLUSTERS[card.getAttribute('data-cluster')].name + ', Animation öffnen';
-    stage.appendChild(btn);
-    var n = {
-      id: id, card: card, btn: btn, cluster: card.getAttribute('data-cluster'),
-      short: card.getAttribute('data-short'), ph: i * 1.7,
-      x: 0, y: 0, bx: 0, by: 0, ox: 0, oy: 0, vx: 0, vy: 0
-    };
-    btn.addEventListener('click', function () { select(n); });
-    btn.addEventListener('focus', function () { if (btn.matches(':focus-visible')) { focused = n; requestDraw(); } });
-    btn.addEventListener('blur', function () { if (focused === n) focused = null; requestDraw(); });
-    nodes.push(n);
+    btn.setAttribute('aria-label', card.getAttribute('data-short') + ' – ' + CLUSTERS[cl].name + ', Animation öffnen');
+    btn.style.setProperty('--blink', (1.6 + (i * 0.73) % 1.9).toFixed(2) + 's');
+    btn.style.setProperty('--blink-delay', (-(i * 1.37) % 2).toFixed(2) + 's');
+    // Weiche Trennstellen an Wortfugen, damit lange Namen sauber umbrechen
+    var short = card.getAttribute('data-short')
+      .replace('Kostenrechnung', 'Kosten\u00ADrechnung')
+      .replace('Systemanbindung', 'System\u00ADanbindung')
+      .replace('KuklaApartment', 'Kukla\u00ADApartment');
+    var lab = mk('span', 'rack-label', short);
+    var jack = mk('span', 'rack-jack');
+    var led = mk('span', 'rack-led');
+    var plug = mk('span', 'rack-plug rack-plug-' + CLUSTERS[cl].plug);
+    jack.appendChild(led); jack.appendChild(plug);
+    btn.appendChild(lab); btn.appendChild(jack);
+    sections[cl].ports.appendChild(btn);
+    var n = { id: id, card: card, btn: btn, plug: plug, cluster: cl, paths: null };
+    btn.addEventListener('click', function () { choose(n); });
+    nodes.push(n); byId[id] = n;
   });
   if (!nodes.length) return;
-  var byId = {};
-  nodes.forEach(function (n) { byId[n.id] = n; });
-  var NEIGH = {};
-  nodes.forEach(function (n) { NEIGH[n.id] = []; });
-  LINKS.forEach(function (l) {
-    if (byId[l[0]] && byId[l[1]]) { NEIGH[l[0]].push(byId[l[1]]); NEIGH[l[1]].push(byId[l[0]]); }
-  });
+  rack.appendChild(face);
+  rack.appendChild(cables);
+  stage.appendChild(rack);
 
   // ── Zustand ──
-  var W = 0, H = 0, dpr = 1, portrait = false;
-  var mapBox = { x: 0, w: 0 }, sceneBox = { x: 0, w: 0 };   // Karte über die ganze Breite, Szene in der Textspalte
-  var sel = null, lastSel = null, hover = null, focused = null;
-  var drag = null;            // { n, id, sx, sy, moved, px, py }
-  var mt = 0;                 // Übergang Karte (0) -> Szene (1)
-  var clock = 0, sceneT = 0, S = {};
+  var W = 0, H = 0, dpr = 1;
+  var sceneBox = { x: 0, w: 0 };
+  var sel = null, lastSel = null, pending = 0;
+  var mt = 0;                 // Übergang Patchfeld (0) -> Szene (1)
+  var sceneT = 0, S = {};
   var running = false, raf = 0, visible = false, prev = 0;
 
-  // Layout-Maße statt getBoundingClientRect: Während des Intros ist die Seite per CSS skaliert,
-  // gemessene Rechtecke wären dann dauerhaft um diesen Faktor zu groß.
+  // Kabel: vom Kabelausgang jedes Steckers in sanftem Bogen nach unten zu einem Bündel je Thema
+  function layoutCables() {
+    while (cableGroup.firstChild) cableGroup.removeChild(cableGroup.firstChild);
+    cables.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    cables.setAttribute('width', W); cables.setAttribute('height', H);
+    maskRect.setAttribute('width', W); maskRect.setAttribute('height', H);
+    ORDER.forEach(function (k) {
+      var ns = nodes.filter(function (n) { return n.cluster === k; });
+      var so = offsetIn(sections[k].el, stage);
+      var cx = so.x + sections[k].el.offsetWidth / 2;
+      ns.forEach(function (n, j) {
+        var po = offsetIn(n.plug, stage);
+        var pw = n.plug.offsetWidth, ph = n.plug.offsetHeight;
+        var cw = pw * .44;
+        var x0 = po.x + pw * .745, y0 = po.y + ph - 1;
+        var bx = cx + (j - (ns.length - 1) / 2) * cw * 1.15, by = H + 30;
+        var dy = by - y0;
+        var d = 'M' + x0.toFixed(1) + ' ' + y0.toFixed(1) +
+          ' C' + x0.toFixed(1) + ' ' + (y0 + dy * .5).toFixed(1) + ' ' + bx.toFixed(1) + ' ' + (by - dy * .42).toFixed(1) +
+          ' ' + bx.toFixed(1) + ' ' + by.toFixed(1);
+        var g = svg('g', {});
+        g.appendChild(svg('path', { d: d, fill: 'none', stroke: '#2a2a31', 'stroke-width': (cw + 2).toFixed(1), 'stroke-linecap': 'round' }));
+        g.appendChild(svg('path', { d: d, fill: 'none', stroke: '#8a8a93', 'stroke-width': cw.toFixed(1), 'stroke-linecap': 'round' }));
+        g.appendChild(svg('path', { d: d, fill: 'none', stroke: 'rgba(255,255,255,.26)', 'stroke-width': (cw * .26).toFixed(1), 'stroke-linecap': 'round', transform: 'translate(' + (-cw * .2).toFixed(1) + ' 0)' }));
+        var pulse = svg('path', { d: d, fill: 'none', stroke: CLUSTERS[k].color, 'stroke-width': (cw * .55).toFixed(1), 'stroke-linecap': 'round', 'class': 'rack-pulse' });
+        g.appendChild(pulse);
+        cableGroup.appendChild(g);
+        n.paths = { pulse: pulse };
+      });
+    });
+  }
+
   function resize() {
     var r = stage.getBoundingClientRect();
     var k = r.width / (stage.clientWidth || r.width) || 1;
@@ -99,86 +164,15 @@
     dpr = Math.min(window.devicePixelRatio || 1, 3);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
-    portrait = W / H < .9;
     var cont = stage.closest('.container');
     var cr = cont ? cont.getBoundingClientRect() : r;
     var pad = cont ? parseFloat(getComputedStyle(cont).paddingLeft) || 0 : 0;
     var colLeft = Math.max(16, (cr.left - r.left) / k + pad), colW = Math.max(240, (cont ? cont.clientWidth : W) - 2 * pad);
     root.style.setProperty('--col-left', colLeft.toFixed(1) + 'px');
     root.style.setProperty('--col-w', colW.toFixed(1) + 'px');
-    var mw = Math.min(W, 1500);
-    mapBox = { x: (W - mw) / 2, w: mw };
     sceneBox = W > 900 ? { x: colLeft, w: Math.max(320, colW - 350) } : { x: 0, w: W };
+    layoutCables();
     requestDraw();
-  }
-
-  // ── Karte ──
-  // Ruhelage + Drift + Feder-Auslenkung. Gezogene Knoten folgen dem Zeiger,
-  // ihre Nachbarn werden ein Stück mitgezogen, danach federt alles zurück.
-  function place(t, dt) {
-    var amp = reduced ? 0 : 6;
-    nodes.forEach(function (n) {
-      var p = LAYOUT[n.id][portrait ? 'p' : 'l'];
-      n.bx = mapBox.x + p[0] * mapBox.w + Math.sin(t * .6 + n.ph) * amp;
-      n.by = p[1] * H + Math.cos(t * .5 + n.ph * 1.3) * amp;
-    });
-    var d = drag && drag.moved ? drag.n : null;
-    nodes.forEach(function (n) {
-      if (n === d) {
-        n.ox = clamp(drag.px, 12, W - 12) - n.bx;
-        n.oy = clamp(drag.py, 12, H - 12) - n.by;
-        n.vx = n.vy = 0;
-        return;
-      }
-      var tx = 0, ty = 0;
-      if (d && NEIGH[d.id].indexOf(n) >= 0) { tx = d.ox * .22; ty = d.oy * .22; }
-      if (dt > 0) {
-        n.vx += ((tx - n.ox) * 120 - n.vx * 13) * dt;
-        n.vy += ((ty - n.oy) * 120 - n.vy * 13) * dt;
-        n.ox += n.vx * dt; n.oy += n.vy * dt;
-      }
-    });
-    nodes.forEach(function (n) { n.x = n.bx + n.ox; n.y = n.by + n.oy; });
-  }
-  function drawMap(t) {
-    Object.keys(CLUSTERS).forEach(function (k) {
-      var ns = nodes.filter(function (n) { return n.cluster === k; });
-      if (!ns.length) return;
-      var cx = 0, cy = 0;
-      ns.forEach(function (n) { cx += n.x; cy += n.y; });
-      cx /= ns.length; cy /= ns.length;
-      var r = Math.min(W, H) * .30;
-      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      g.addColorStop(0, rgba(CLUSTERS[k].color, .13));
-      g.addColorStop(1, rgba(CLUSTERS[k].color, 0));
-      ctx.fillStyle = g; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
-      var top = Math.min.apply(null, ns.map(function (n) { return n.y; }));
-      label(CLUSTERS[k].name.toUpperCase(), cx, Math.max(14, top - 34), rgba(CLUSTERS[k].color, .85), 10.5);
-    });
-    LINKS.forEach(function (l, i) {
-      var a = byId[l[0]], b = byId[l[1]];
-      if (!a || !b) return;
-      var h = hover || focused || (drag && drag.n);
-      var hot = h && (h === a || h === b);
-      line(a.x, a.y, b.x, b.y, rgba(C.a, hot ? .6 : .22), hot ? 1.4 : 1);
-      var u = (t * .18 + i * .29) % 1;
-      dot(a.x + (b.x - a.x) * u, a.y + (b.y - a.y) * u, 2, rgba(C.b, hot ? 1 : .6));
-    });
-    nodes.forEach(function (n) {
-      var col = CLUSTERS[n.cluster].color;
-      var held = drag && drag.n === n;
-      var hot = hover === n || focused === n || held;
-      var pulse = reduced ? 0 : (Math.sin(t * 1.6 + n.ph) + 1) / 2;
-      dot(n.x, n.y, hot ? 28 : 18 + pulse * 3, rgba(col, hot ? .22 : .10));
-      ctx.strokeStyle = rgba(col, hot ? 1 : .55); ctx.lineWidth = held ? 2 : 1.2;
-      ctx.beginPath(); ctx.arc(n.x, n.y, hot ? 13 : 9, 0, Math.PI * 2); ctx.stroke();
-      dot(n.x, n.y, hot ? 5.5 : 4, col);
-      if (focused === n) {
-        ctx.strokeStyle = C.b; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.arc(n.x, n.y, 20, 0, Math.PI * 2); ctx.stroke();
-      }
-      label(n.short, n.x, n.y + 27, hot ? C.text : C.dim, 12);
-    });
   }
 
   // ── Szenen ──
@@ -387,25 +381,13 @@
 
   var SCENES = { kosten: sKosten, web: sWeb, api: sApi, voice: sVoice, agent: sAgent, bot: sBot, kukla: sKukla };
 
-  // ── Zeichnen ──
+  // ── Zeichnen (nur Szenen; das Patchfeld ist HTML/CSS) ──
   function frame(dt) {
-    clock += dt;
     var target = sel ? 1 : 0;
     if (reduced) mt = target; else mt += clamp(target - mt, -dt / .55, dt / .55);
-    place(clock, dt);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     var focus = sel || lastSel;
-    if (mt < 1) {
-      ctx.save();
-      ctx.globalAlpha = 1 - ease(mt);
-      if (focus && mt > 0) {
-        var k = 1 + ease(mt) * 1.8;
-        ctx.translate(focus.x, focus.y); ctx.scale(k, k); ctx.translate(-focus.x, -focus.y);
-      }
-      drawMap(clock);
-      ctx.restore();
-    }
     if (mt > 0 && focus) {
       sceneT += dt;
       ctx.save();
@@ -419,10 +401,7 @@
   }
 
   function requestDraw() {
-    if (!running) {
-      if (reduced) { frame(0); return; }
-      if (!raf) raf = requestAnimationFrame(function (now) { raf = 0; prev = now; frame(0); });
-    }
+    if (!running && !raf) raf = requestAnimationFrame(function (now) { raf = 0; prev = now; frame(0); });
   }
   function loop(now) {
     raf = 0;
@@ -430,21 +409,17 @@
     var dt = Math.min((now - prev) / 1000, .05);
     prev = now;
     frame(dt);
+    if (!sel && mt === 0) { running = false; return; }
     raf = requestAnimationFrame(loop);
   }
   function updateRunning() {
-    var want = visible && !document.hidden && !reduced;
-    if (want && !running) { running = true; prev = performance.now(); raf = requestAnimationFrame(loop); }
+    var want = visible && !document.hidden && !reduced && (sel || mt > 0);
+    if (want && !running) { running = true; prev = performance.now(); if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(loop); }
     else if (!want && running) { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
   }
 
   // ── Panel ──
-  function el(tag, cls, text) {
-    var e = document.createElement(tag);
-    if (cls) e.className = cls;
-    if (text) e.textContent = text;
-    return e;
-  }
+  var el = mk;
   function showOverview() { panel.textContent = ''; }
   function showProject(n) {
     var card = n.card;
@@ -470,8 +445,25 @@
     return h;
   }
 
+  // Klick: LED leuchtet, ein Impuls läuft durchs Kabel, dann öffnet die Szene
+  function choose(n) {
+    if (sel || pending) return;
+    if (reduced) { select(n); return; }
+    n.btn.classList.add('is-hot');
+    var p = n.paths && n.paths.pulse;
+    if (p && p.getTotalLength && p.animate) {
+      var L = p.getTotalLength();
+      p.style.strokeDasharray = '46 ' + (L + 60);
+      p.animate([{ strokeDashoffset: 46, opacity: 1 }, { strokeDashoffset: -L, opacity: .2 }], { duration: 650, easing: 'cubic-bezier(.4,0,.2,1)' });
+    }
+    pending = setTimeout(function () { pending = 0; select(n); }, 430);
+  }
+
   function select(n) {
     sel = n; lastSel = n; sceneT = 0; S = {};
+    var o = offsetIn(n.btn, stage);
+    rack.style.setProperty('--ox', (o.x + n.btn.offsetWidth / 2).toFixed(0) + 'px');
+    rack.style.setProperty('--oy', (o.y + n.btn.offsetHeight / 2).toFixed(0) + 'px');
     root.setAttribute('data-state', 'scene');
     var h = showProject(n);
     if (reduced) {
@@ -480,6 +472,7 @@
     }
     try { history.replaceState(null, '', '#projekt-' + n.id); } catch (e) {}
     h.focus({ preventScroll: true });
+    updateRunning();
     requestDraw();
   }
   function deselect() {
@@ -487,71 +480,21 @@
     sel = null;
     root.setAttribute('data-state', 'map');
     showOverview();
+    if (n) n.btn.classList.remove('is-hot');
     try { history.replaceState(null, '', location.pathname + location.search + '#projects'); } catch (e) {}
     if (n) n.btn.focus({ preventScroll: true });
-    requestDraw();
+    if (reduced) { mt = 0; frame(0); }
+    updateRunning();
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sel) deselect(); });
-
-  // ── Zeiger: Treffer auf Knoten oder Beschriftung, Klick vs. Ziehen ──
-  function pos(e) {
-    var r = stage.getBoundingClientRect();
-    return { x: (e.clientX - r.left) * W / (r.width || W), y: (e.clientY - r.top) * H / (r.height || H) };
-  }
-  function hit(x, y) {
-    var best = null, bd = Infinity;
-    nodes.forEach(function (n) {
-      var dx = x - n.x, dy = y - n.y;
-      var d = Math.hypot(dx, dy);
-      var onLabel = Math.abs(dx) < 62 && dy > 14 && dy < 38;
-      if ((d < 34 || onLabel) && d < bd) { best = n; bd = d; }
-    });
-    return best;
-  }
-  function setCursor() {
-    stage.style.cursor = sel ? 'default' : drag && drag.moved ? 'grabbing' : hover ? 'pointer' : 'default';
-  }
-  stage.addEventListener('pointermove', function (e) {
-    if (sel) return;
-    var p = pos(e);
-    if (drag && e.pointerId === drag.id) {
-      drag.px = p.x; drag.py = p.y;
-      if (!drag.moved && drag.touch === false && Math.hypot(p.x - drag.sx, p.y - drag.sy) > 6) drag.moved = true;
-    } else {
-      var h = hit(p.x, p.y);
-      if (h !== hover) { hover = h; requestDraw(); }
-    }
-    setCursor();
-    if (!running) requestDraw();
-  });
-  stage.addEventListener('pointerleave', function () {
-    if (!drag && hover) { hover = null; setCursor(); requestDraw(); }
-  });
-  stage.addEventListener('pointerdown', function (e) {
-    if (sel || (e.pointerType === 'mouse' && e.button !== 0)) return;
-    var p = pos(e), n = hit(p.x, p.y);
-    if (!n) return;
-    drag = { n: n, id: e.pointerId, sx: p.x, sy: p.y, px: p.x, py: p.y, moved: false, touch: e.pointerType === 'touch' || reduced };
-    if (!drag.touch) { try { stage.setPointerCapture(e.pointerId); } catch (err) {} }
-    hover = n;
-    requestDraw();
-  });
-  function endDrag(e, cancelled) {
-    if (!drag || e.pointerId !== drag.id) return;
-    var d = drag;
-    drag = null;
-    if (!cancelled && !d.moved) select(d.n);
-    setCursor();
-    requestDraw();
-  }
-  stage.addEventListener('pointerup', function (e) { endDrag(e, false); });
-  stage.addEventListener('pointercancel', function (e) { endDrag(e, true); });
 
   // ── Start ──
   showOverview();
   resize();
   if (window.ResizeObserver) new ResizeObserver(resize).observe(stage);
   else window.addEventListener('resize', resize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resize);
+  window.addEventListener('load', resize);
   if (window.IntersectionObserver) {
     new IntersectionObserver(function (es) { visible = es[0].isIntersecting; updateRunning(); }, { threshold: 0 }).observe(stage);
   } else { visible = true; updateRunning(); }

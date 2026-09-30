@@ -338,11 +338,142 @@ section h2::after {
   touch-action: pan-y; -webkit-user-select: none; user-select: none;
 }
 .pf-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.pf-node {
-  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+.pf-stage canvas { pointer-events: none; }
+
+/* ── Patchfeld (Übersicht) ──
+   Frontplatte, Buchse und Stecker sind freigestellte Fotos (Higgsfield). Die Platte wird per
+   9-Slice gestreckt: Rack-Ohren bleiben unverzerrt, die Mitte folgt der Bürstung. */
+.pf-rack {
+  position: absolute; inset: 0;
+  --ox: 50%; --oy: 30%;
+  transform-origin: var(--ox) var(--oy);
+  transition: opacity .45s ease, transform .6s cubic-bezier(.3,.7,.2,1), visibility 0s;
 }
-.pf[data-state="scene"] .pf-node { display: none; }
+.pf[data-state="scene"] .pf-rack {
+  opacity: 0; transform: scale(1.35); visibility: hidden; pointer-events: none;
+  transition: opacity .45s ease, transform .6s cubic-bezier(.3,.7,.2,1), visibility 0s .6s;
+}
+.rack-panel {
+  --ear: 60px;
+  position: relative; z-index: 1;
+  width: min(var(--col-w), 1040px);
+  margin: 36px 0 0 var(--col-left);
+  height: 166px;
+  display: flex;
+  padding: 0 calc(var(--ear) + 8px);
+  border-style: solid; border-color: transparent; border-width: 0;
+  border-image-source: url('assets/rack-panel.webp');
+  border-image-slice: 0 120 0 120 fill;
+  border-image-width: 0 var(--ear);
+  border-image-repeat: stretch;
+  filter: drop-shadow(0 14px 18px rgba(0,0,0,.6));
+}
+.rack-sec {
+  flex: var(--n, 1) 1 0; min-width: 0;
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: 16px 6px 0;
+  position: relative;
+}
+.rack-sec:nth-child(1) { --n: 2; }
+.rack-sec:nth-child(2) { --n: 2; }
+.rack-sec:nth-child(3) { --n: 3; }
+.rack-sec + .rack-sec::before {
+  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 1px;
+  background: rgba(0,0,0,.55); box-shadow: 1px 0 0 rgba(255,255,255,.07);
+}
+.rack-sec-label {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(222,222,232,.62);
+  text-shadow: 0 1px 0 rgba(0,0,0,.6);
+}
+.rack-sec-label::before {
+  content: ''; width: 7px; height: 7px; border-radius: 2px; background: var(--sec);
+  box-shadow: 0 0 6px var(--sec);
+}
+.rack-ports { display: flex; justify-content: space-around; gap: 4px; margin-top: 10px; }
+.rack-port {
+  --jack: 46px; --plug-w: 34px;
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  flex: 1 1 0; min-width: 0; max-width: 124px;
+  padding: 2px 2px 0; margin: 0;
+  background: none; border: 0; cursor: pointer; color: inherit; font: inherit;
+  border-radius: 8px;
+}
+.rack-label {
+  font-size: .6rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  line-height: 1.15; text-align: center; min-height: 2.3em; display: flex; align-items: flex-end; justify-content: center;
+  max-width: 100%; -webkit-hyphens: manual; hyphens: manual;
+  color: rgba(222,222,232,.72); text-shadow: 0 1px 0 rgba(0,0,0,.65);
+  transition: color .2s;
+}
+.rack-jack {
+  position: relative; display: block;
+  width: var(--jack); height: var(--jack);
+  background: url('assets/rack-port.webp') center / contain no-repeat;
+  filter: brightness(.9);
+  transition: filter .2s;
+}
+/* Link-/Aktivitäts-LED oben links an der Buchse */
+.rack-led {
+  position: absolute; left: -9px; top: 2px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: #0d4a3e;
+  box-shadow: inset 0 0 1px rgba(0,0,0,.8);
+}
+.rack-led::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: #33f5c8; box-shadow: 0 0 6px 1px rgba(0,212,170,.8);
+  opacity: 0;
+  animation: rackBlink var(--blink, 2s) steps(1, end) var(--blink-delay, 0s) infinite;
+}
+@keyframes rackBlink {
+  0%, 100% { opacity: .95; } 12% { opacity: .2; } 20% { opacity: .95; } 46% { opacity: .95; }
+  52% { opacity: .15; } 58% { opacity: .9; } 80% { opacity: .95; } 86% { opacity: .3; }
+}
+/* Eingesteckter Stecker: der klare Kopf steckt in der Buchse (oben abgeschnitten), Tülle und Kabel hängen nach unten */
+.rack-plug {
+  position: absolute; z-index: 2; pointer-events: none;
+  width: var(--plug-w); height: calc(var(--plug-w) * 3.62);
+  left: calc(var(--jack) / 2 - var(--plug-w) * .47);
+  top: calc(var(--jack) * .5 - var(--plug-w) * 3.62 * .2);
+  background: center top / 100% 100% no-repeat;
+  clip-path: inset(20% 0 0 0);
+  filter: drop-shadow(-2px 4px 3px rgba(0,0,0,.55));
+  transition: transform .25s;
+}
+.rack-plug-violet { background-image: url('assets/rack-plug-violet.webp'); }
+.rack-plug-teal { background-image: url('assets/rack-plug-teal.webp'); }
+.rack-plug-amber { background-image: url('assets/rack-plug-amber.webp'); }
+.rack-port:hover .rack-label, .rack-port:focus-visible .rack-label, .rack-port.is-hot .rack-label { color: #fff; }
+.rack-port:hover .rack-jack, .rack-port:focus-visible .rack-jack { filter: brightness(1.15); }
+.rack-port:hover .rack-plug { transform: translateY(1px); }
+.rack-port.is-hot .rack-led::after { animation: none; opacity: 1; box-shadow: 0 0 10px 3px rgba(0,212,170,.95); }
+.rack-port:focus-visible { outline: 2px solid var(--accent2); outline-offset: 4px; }
+.rack-cables { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.rack-pulse { opacity: 0; }
+@media (max-width: 900px) {
+  .rack-panel { width: calc(100% - 2 * var(--col-left)); }
+  .rack-port { --jack: 40px; --plug-w: 30px; }
+}
+@media (max-width: 640px) {
+  .rack-panel {
+    --ear: 26px; height: auto; flex-wrap: wrap; padding-bottom: 14px;
+    margin-top: 20px;
+  }
+  .rack-sec { flex: 1 1 50%; padding-top: 12px; }
+  .rack-sec:nth-child(3) { flex-basis: 100%; }
+  .rack-sec:nth-child(3)::before { display: none; }
+  .rack-sec:nth-child(3) { border-top: 1px solid rgba(0,0,0,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.06); margin-top: 60px; }
+  .rack-port { --jack: 36px; --plug-w: 27px; }
+  .rack-label { font-size: .54rem; letter-spacing: .02em; min-height: 3.45em; }
+  .rack-sec-label { font-size: .54rem; letter-spacing: .1em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rack-led::after { animation: none; opacity: .9; }
+  .pf-rack, .pf[data-state="scene"] .pf-rack { transition: none; }
+}
 .pf-panel {
   position: absolute; z-index: 2;
   display: flex; flex-direction: column; gap: 10px; align-content: flex-start;
