@@ -126,9 +126,12 @@
 
   <div id="progress-bar"></div>
 
-  <nav aria-label="Hauptnavigation">
-    <a class="nav-brand" href="index.html" aria-label="Schranz IT – Startseite"><span class="nav-mark" aria-hidden="true"></span>Schranz IT</a>
-    <div class="nav-links">
+  <nav id="site-nav" aria-label="Hauptnavigation">
+    <a class="nav-brand" href="#top" aria-label="Schranz IT – Startseite"><span class="nav-mark" aria-hidden="true"></span>Schranz IT</a>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menü öffnen">
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+    <div class="nav-links" id="nav-links">
       <a href="#services">Leistungen</a>
       <a href="#approach">Arbeitsweise</a>
       <a href="#projects">Projekte</a>

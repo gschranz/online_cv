@@ -13,16 +13,16 @@
 
   <div id="progress-bar"></div>
 
-  <nav aria-label="Hauptnavigation">
+  <nav id="site-nav" aria-label="Hauptnavigation">
     <a class="nav-brand" href="index.html" aria-label="Schranz IT – Startseite"><span class="nav-mark" aria-hidden="true"></span>Schranz IT</a>
-    <div class="nav-links">
-      <a href="index.html">Startseite</a>
-      <a href="#about">Über mich</a>
-      <a href="#experience">Erfahrung</a>
-      <a href="#education">Ausbildung</a>
-      <a href="#skills">Skills</a>
-      <a href="#certifications">Zertifikate</a>
-      <a href="#languages">Sprachen</a>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menü öffnen">
+      <span class="nav-toggle-bar" aria-hidden="true"></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html#services">Leistungen</a>
+      <a href="index.html#approach">Arbeitsweise</a>
+      <a href="index.html#projects">Projekte</a>
+      <a href="ueber-mich.html" aria-current="page">Über mich</a>
       <a href="index.html#contact">Kontakt</a>
     </div>
   </nav>
@@ -57,6 +57,15 @@
   </header>
 
   <main class="container">
+
+    <nav class="subnav" aria-label="Abschnitte dieser Seite">
+      <a href="#about">Über mich</a>
+      <a href="#experience">Erfahrung</a>
+      <a href="#education">Ausbildung</a>
+      <a href="#skills">Skills</a>
+      <a href="#certifications">Zertifikate</a>
+      <a href="#languages">Sprachen</a>
+    </nav>
 
     <!-- About -->
     <section id="about" class="reveal">
