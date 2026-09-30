@@ -846,49 +846,73 @@ section h2.teaser-title::after { display: none; }
   align-items: center;
 }
 .fan-stage {
-  --h: 360px; --w: 58px; --step: 11.5deg; --c: 3.5;
+  --h: 400px; --w: 56px; --step: 11deg; --c: 3.5;
   position: relative;
-  height: calc(var(--h) + 56px);
+  height: calc(var(--h) + 50px);
   min-width: 0;
 }
 .fan-strip {
-  --a: calc((var(--i) - var(--c)) * var(--step));
+  /* Echte Blätter aus eloxiertem Aluminium (Higgsfield-Aufnahmen), per 9-Slice auf Länge gebracht,
+     damit Rundung und Bohrung unverzerrt bleiben. Drehpunkt = Mitte der Bohrung. */
+  --a: calc((var(--i) - var(--c)) * var(--step) + var(--shift, 0deg));
+  --img: url('assets/fan-violet.webp');
   --col: var(--accent);
   position: absolute; left: 50%; bottom: 0;
   width: var(--w); height: var(--h); margin-left: calc(var(--w) / -2);
-  padding: 0; cursor: pointer; text-align: center; color: var(--text-dim);
-  background: var(--bg-card);
-  border: 1px solid var(--border); border-radius: 10px;
-  transform-origin: 50% 100%;
+  padding: 0; cursor: pointer; text-align: center;
+  background: none;
+  border-style: solid; border-color: transparent;
+  border-image-source: var(--img);
+  border-image-slice: 100 0 220 0 fill;
+  border-image-width: calc(var(--w) * .4167) 0 calc(var(--w) * .9167) 0;
+  border-image-repeat: stretch;
+  border-width: 0;
+  transform-origin: 50% calc(100% - var(--w) * .45);
   transform: rotate(0deg);
+  filter: drop-shadow(-3px 5px 5px rgba(0,0,0,.55)) brightness(.92) saturate(.95);
   display: flex; flex-direction: column; align-items: center;
-  overflow: hidden;
-  transition: transform .9s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 60ms), border-color .25s, color .25s;
+  transition: transform .9s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 60ms), filter .3s;
 }
-.fan-strip:nth-child(3n+2) { --col: var(--accent2); }
-.fan-strip:nth-child(3n) { --col: #ffb454; }
+.fan-strip:nth-child(3n+2) { --img: url('assets/fan-teal.webp'); --col: var(--accent2); }
+.fan-strip:nth-child(3n) { --img: url('assets/fan-amber.webp'); --col: #ffb454; }
 .fan-stage.is-open .fan-strip { transform: rotate(var(--a)); }
+.fan-stage.is-ready .fan-strip { transition-delay: 0s; transition-duration: .55s; }
 .fan-stage.is-open .fan-strip:hover:not(.is-sel), .fan-stage.is-open .fan-strip:focus-visible:not(.is-sel) {
-  transform: rotate(var(--a)) translateY(-16px);
-  transition-delay: 0s; transition-duration: .3s;
-  color: var(--text); border-color: var(--col);
+  filter: drop-shadow(-4px 8px 8px rgba(0,0,0,.6)) brightness(1.04);
 }
 .fan-stage.is-open .fan-strip.is-sel {
-  transform: rotate(var(--a)) translateY(-38px);
-  transition-delay: 0s; transition-duration: .45s;
-  color: var(--text); border-color: var(--col); z-index: 5;
+  transition-delay: 0s; transition-duration: .55s;
+  filter: drop-shadow(-6px 16px 14px rgba(0,0,0,.65)) brightness(1.1) saturate(1.05);
+  z-index: 5;
 }
-.fan-strip:focus-visible { outline: 2px solid var(--accent2); outline-offset: 3px; }
+.fan-strip:focus-visible { outline: none; }
+.fan-strip:focus-visible::after {
+  content: ''; position: absolute; inset: -5px; border-radius: 14px;
+  border: 2px solid var(--accent2); pointer-events: none;
+}
+/* Gravur: dunkel eingelassen mit heller Unterkante */
 .fan-cap {
-  flex: none; width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
-  background: var(--col); color: #0a0a0f;
+  flex: none; width: 100%; padding-top: calc(var(--w) * .34);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(8,8,14,.62);
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.28));
 }
-.fan-cap svg { width: 46%; height: 46%; }
+.fan-cap svg { width: calc(var(--w) * .46); height: calc(var(--w) * .46); stroke-width: 2; color: inherit; }
 .fan-name {
   flex: 1; display: flex; align-items: center; justify-content: flex-end; min-height: 0;
   writing-mode: vertical-rl; transform: rotate(180deg);
-  font-size: .8rem; font-weight: 600; letter-spacing: .03em; white-space: nowrap;
-  padding: 12px 0;
+  font-size: .8rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap;
+  color: rgba(8,8,14,.66);
+  text-shadow: 0 -1px 0 rgba(255,255,255,.3);
+  padding: 14px 0 calc(var(--w) * 1.05);
+}
+.fan-pivot {
+  position: absolute; left: 50%; bottom: calc(var(--w) * .45); z-index: 10;
+  width: calc(var(--w) * .62); height: calc(var(--w) * .62);
+  transform: translate(-50%, 50%);
+  background: url('assets/fan-pivot.webp') center / contain no-repeat;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,.7));
+  pointer-events: none;
 }
 .fan-detail { min-width: 0; min-height: 250px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
 .fan-detail.swap > * { animation: fanSwap .45s cubic-bezier(.2,.8,.2,1) both; }
@@ -904,9 +928,9 @@ html.fan-on .svc-grid {
 }
 @media (max-width: 860px) {
   .fan-wrap { grid-template-columns: 1fr; }
-  .fan-stage { --h: 250px; --w: 42px; --step: 10deg; }
+  .fan-stage { --h: 270px; --w: 40px; --step: 10deg; }
+  .fan-name { font-size: .64rem; letter-spacing: .06em; }
   .fan-detail { min-height: 0; }
-  .fan-name { font-size: .72rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .fan-strip, .fan-stage.is-open .fan-strip { transition: none; }

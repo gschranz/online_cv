@@ -61,6 +61,10 @@
     stage.appendChild(s);
     strips.push(s);
   });
+  var pivot = document.createElement('span');
+  pivot.className = 'fan-pivot';
+  pivot.setAttribute('aria-hidden', 'true');
+  stage.appendChild(pivot);
   detail.id = uid + '-panel';
 
   function select(i, animate) {
@@ -68,6 +72,9 @@
     current = i;
     strips.forEach(function (s, k) {
       var on = k === i;
+      // Nachbarn weichen seitlich aus, das gewählte Blatt liegt frei (wie beim echten Fächer)
+      s.style.setProperty('--shift', k < i ? '-7deg' : k > i ? '7deg' : '0deg');
+      s.style.zIndex = on ? '5' : '';
       s.classList.toggle('is-sel', on);
       s.setAttribute('aria-selected', on ? 'true' : 'false');
       s.tabIndex = on ? 0 : -1;
@@ -110,10 +117,11 @@
 
   function open() {
     stage.classList.add('is-open');
+    setTimeout(function () { stage.classList.add('is-ready'); }, 900 + cards.length * 60);
     if (!reduced) schedule(3800);
   }
   if (reduced || !('IntersectionObserver' in window)) {
-    stage.classList.add('is-open');
+    stage.classList.add('is-open', 'is-ready');
   } else {
     new IntersectionObserver(function (es, obs) {
       visible = es[0].isIntersecting;

@@ -15,6 +15,12 @@ Statische Website (reines HTML/CSS/JS, kein Build-Schritt), gehostet über GitHu
 - `fonts/`, `vendor/` – lokal eingebundene Schrift (Inter) und jsPDF
 - `avatar.jpg`, `favicon.svg`, `CNAME`, `.github/workflows/deploy.yml`
 
+## Leistungs-Fächer (Assets)
+
+- `assets/fan-violet.webp`, `fan-teal.webp`, `fan-amber.webp`: freigestellte Fächerblätter aus eloxiertem Aluminium, erzeugt mit der Higgsfield-CLI (GPT Image 2.5, `--background transparent`, `--quality high`). Violett zuerst, Türkis und Bernstein mit Violett als Referenzbild für identische Form und Licht. Zugeschnitten und auf 240 px Breite skaliert.
+- `assets/fan-pivot.webp`: Schraube als Drehpunkt (gleiches Modell, 1:1).
+- Im CSS per `border-image` (9-Slice) auf Länge gezogen, damit Rundung und Bohrung nicht verzerren; Drehpunkt = Mitte der Bohrung (45 % der Blattbreite über der Unterkante).
+
 ## Platinen-Effekt (Assets)
 
 - `assets/circuit-3840.webp` / `circuit-1920.webp`: Standbild, erzeugt mit Higgsfield (Nano Banana, 4K, 16:9, dunkle Leiterplatte mit violetten/türkisen Leiterbahnen). Scharfe Basis des Effekts.
