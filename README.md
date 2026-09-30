@@ -4,9 +4,10 @@ Statische Website (reines HTML/CSS/JS, kein Build-Schritt), gehostet über GitHu
 
 ## Struktur
 
-- `index.html` – gesamte Seite inkl. Styles und Skripte
+- `index.html` – Seite inkl. Styles und Skripte (Intro-Canvas als Warp-Tunnel in nativer Auflösung)
+- `portfolio.js` – Projekt-Netzkarte mit einer abstrakten Canvas-Animation je Projekt (Inhalte stehen als `.project-card` in `index.html`, der PDF-Export liest sie)
 - `fonts/`, `vendor/` – lokal eingebundene Schrift (Inter) und `jspdf` für die PDF-Erzeugung
-- `avatar.jpg`, `favicon.svg`, `hero-intro-*.mp4` – Medien
+- `avatar.jpg`, `favicon.svg` – Medien
 - `CNAME` – Custom Domain
 - `.github/workflows/deploy.yml` – Deployment auf GitHub Pages bei Push auf `main`
 
