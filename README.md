@@ -5,17 +5,16 @@ Statische Website (reines HTML/CSS/JS, kein Build-Schritt), gehostet über GitHu
 ## Struktur
 
 - `index.html` – gesamte Seite inkl. Styles und Skripte
-- `fonts/`, `vendor/` – lokal eingebundene Schriften (Inter, JetBrains Mono) und `jspdf` für die PDF-Erzeugung
-- `avatar.jpg`, `favicon.svg` – Medien
-- Intro-Animation: Canvas-2D in nativer Geräteauflösung (kein Video), läuft einmal pro Sitzung, entfällt bei `prefers-reduced-motion`
+- `fonts/`, `vendor/` – lokal eingebundene Schrift (Inter) und `jspdf` für die PDF-Erzeugung
+- `avatar.jpg`, `favicon.svg`, `hero-intro-*.mp4` – Medien
 - `CNAME` – Custom Domain
 - `.github/workflows/deploy.yml` – Deployment auf GitHub Pages bei Push auf `main`
 
-## Design
+## Design-Richtung
 
-- Stil: Industrial/Swiss-Print (heller Papier-Hintergrund, Tinte, eine rote Akzentfarbe, sichtbares Raster, Inter Black + JetBrains Mono, keine Gradients/Glows/Emojis).
-- Aufbau: Hero → Leistungen → Projekte → Über mich (CV) → Kontakt. Der PDF-Download baut den Lebenslauf per JS aus den Klassen/IDs im Abschnitt „Über mich" und im Hero (`header h1`, `.subtitle`, `.motto`, `.timeline-item`, `.edu-card`, `.skill-group`, `.cert-item`, `.lang-item`, `.project-card`) – bei Umbauten diese Selektoren beibehalten.
-- Offen: echte Kundenreferenzen (aktuell nur Eigenprojekte unter „Projekte").
+- Dunkles Neon-Design bleibt. Entfernt werden nur die Merkmale, die nach „AI-Slop" aussehen (generische Effekte, Emoji-Icons, Standard-Floskeln).
+- Projekte werden als abstrakt gestaltetes, animiertes Portfolio präsentiert (Inhalte werden gemeinsam erarbeitet).
+- Der PDF-Download-Link bleibt erhalten.
 
 ## Lokal entwickeln
 
