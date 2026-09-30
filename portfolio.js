@@ -90,9 +90,12 @@
   var clock = 0, sceneT = 0, S = {};
   var running = false, raf = 0, visible = false, prev = 0;
 
+  // Layout-Maße statt getBoundingClientRect: Während des Intros ist die Seite per CSS skaliert,
+  // gemessene Rechtecke wären dann dauerhaft um diesen Faktor zu groß.
   function resize() {
     var r = stage.getBoundingClientRect();
-    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    var k = r.width / (stage.clientWidth || r.width) || 1;
+    W = Math.max(1, stage.clientWidth); H = Math.max(1, stage.clientHeight);
     dpr = Math.min(window.devicePixelRatio || 1, 3);
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
@@ -100,7 +103,7 @@
     var cont = stage.closest('.container');
     var cr = cont ? cont.getBoundingClientRect() : r;
     var pad = cont ? parseFloat(getComputedStyle(cont).paddingLeft) || 0 : 0;
-    var colLeft = Math.max(16, cr.left + pad - r.left), colW = Math.max(240, cr.width - 2 * pad);
+    var colLeft = Math.max(16, (cr.left - r.left) / k + pad), colW = Math.max(240, (cont ? cont.clientWidth : W) - 2 * pad);
     root.style.setProperty('--col-left', colLeft.toFixed(1) + 'px');
     root.style.setProperty('--col-w', colW.toFixed(1) + 'px');
     var mw = Math.min(W, 1500);
@@ -493,7 +496,7 @@
   // ── Zeiger: Treffer auf Knoten oder Beschriftung, Klick vs. Ziehen ──
   function pos(e) {
     var r = stage.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
+    return { x: (e.clientX - r.left) * W / (r.width || W), y: (e.clientY - r.top) * H / (r.height || H) };
   }
   function hit(x, y) {
     var best = null, bd = Infinity;
