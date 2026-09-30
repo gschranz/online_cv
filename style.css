@@ -326,22 +326,36 @@ section h2::after {
 }
 
 /* ── Projekt-Netzkarte ── */
-.pf { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: stretch; }
+/* Offen und randlos über die volle Fensterbreite; --col-left/--col-w setzt portfolio.js */
+.pf {
+  position: relative;
+  width: 100vw; margin-left: calc(50% - 50vw);
+  --col-left: 24px; --col-w: 952px;
+  padding-bottom: 104px;
+}
 .pf-stage {
-  position: relative; height: 480px; min-width: 0;
-  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden;
+  position: relative; height: 560px; min-width: 0;
+  touch-action: pan-y; -webkit-user-select: none; user-select: none;
 }
 .pf-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.pf-stage { touch-action: pan-y; -webkit-user-select: none; user-select: none; }
 .pf-node {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 .pf[data-state="scene"] .pf-node { display: none; }
 .pf-panel {
-  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 22px; display: flex; flex-direction: column; gap: 10px; align-content: flex-start;
+  position: absolute; z-index: 2;
+  display: flex; flex-direction: column; gap: 10px; align-content: flex-start;
+}
+/* Übersicht: Hinweis und Legende unter der Karte, linksbündig zur Textspalte */
+.pf[data-state="map"] .pf-panel {
+  left: var(--col-left); bottom: 0; width: min(var(--col-w), 64ch);
+}
+.pf[data-state="map"] .pf-legend { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+/* Projekt: Text rechts neben der Animation, ohne Kasten */
+.pf[data-state="scene"] .pf-panel {
+  left: calc(var(--col-left) + var(--col-w) - 320px); width: 320px;
+  top: 280px; transform: translateY(-50%);
 }
 .pf-eyebrow { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent2); font-weight: 600; }
 .pf-title { font-size: 1.25rem; font-weight: 700; outline: none; }
@@ -367,8 +381,12 @@ section h2::after {
 .pf-back:hover { border-color: var(--accent); }
 html.pf-on .pf-list { display: none; }
 @media (max-width: 900px) {
-  .pf { grid-template-columns: 1fr; }
-  .pf-stage { height: 560px; }
+  .pf { padding-bottom: 0; }
+  .pf-stage { height: 540px; }
+  .pf-panel, .pf[data-state="map"] .pf-panel, .pf[data-state="scene"] .pf-panel {
+    position: static; transform: none;
+    width: auto; margin: 8px var(--col-left) 0;
+  }
 }
 @media (max-width: 480px) { .pf-stage { height: 520px; } }
 
@@ -812,7 +830,6 @@ section h2.teaser-title::after { display: none; }
 .contact-links a:hover { border-color: var(--accent); color: var(--text); }
 
 /* Karten auf der Startseite leicht transparent, damit der Schaltkreis dezent durchscheint */
-.page-home .pf-stage, .page-home .pf-panel { background: rgba(18,18,26,.86); }
 
 /* ── Platinen-Effekt (Klick in den Hintergrund) ── */
 #circuit-fx {

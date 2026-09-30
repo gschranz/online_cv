@@ -83,6 +83,7 @@
 
   // ── Zustand ──
   var W = 0, H = 0, dpr = 1, portrait = false;
+  var mapBox = { x: 0, w: 0 }, sceneBox = { x: 0, w: 0 };   // Karte über die ganze Breite, Szene in der Textspalte
   var sel = null, lastSel = null, hover = null, focused = null;
   var drag = null;            // { n, id, sx, sy, moved, px, py }
   var mt = 0;                 // Übergang Karte (0) -> Szene (1)
@@ -96,6 +97,15 @@
     canvas.width = Math.round(W * dpr);
     canvas.height = Math.round(H * dpr);
     portrait = W / H < .9;
+    var cont = stage.closest('.container');
+    var cr = cont ? cont.getBoundingClientRect() : r;
+    var pad = cont ? parseFloat(getComputedStyle(cont).paddingLeft) || 0 : 0;
+    var colLeft = Math.max(16, cr.left + pad - r.left), colW = Math.max(240, cr.width - 2 * pad);
+    root.style.setProperty('--col-left', colLeft.toFixed(1) + 'px');
+    root.style.setProperty('--col-w', colW.toFixed(1) + 'px');
+    var mw = Math.min(W, 1500);
+    mapBox = { x: (W - mw) / 2, w: mw };
+    sceneBox = W > 900 ? { x: colLeft, w: Math.max(320, colW - 350) } : { x: 0, w: W };
     requestDraw();
   }
 
@@ -106,7 +116,7 @@
     var amp = reduced ? 0 : 6;
     nodes.forEach(function (n) {
       var p = LAYOUT[n.id][portrait ? 'p' : 'l'];
-      n.bx = p[0] * W + Math.sin(t * .6 + n.ph) * amp;
+      n.bx = mapBox.x + p[0] * mapBox.w + Math.sin(t * .6 + n.ph) * amp;
       n.by = p[1] * H + Math.cos(t * .5 + n.ph * 1.3) * amp;
     });
     var d = drag && drag.moved ? drag.n : null;
@@ -398,8 +408,8 @@
       ctx.save();
       ctx.globalAlpha = ease(mt);
       var sc = .92 + .08 * ease(mt);
-      ctx.translate(W / 2, H / 2); ctx.scale(sc, sc); ctx.translate(-W / 2, -H / 2);
-      SCENES[focus.id](W, H, sceneT, dt);
+      ctx.translate(sceneBox.x + sceneBox.w / 2, H / 2); ctx.scale(sc, sc); ctx.translate(-sceneBox.w / 2, -H / 2);
+      SCENES[focus.id](sceneBox.w, H, sceneT, dt);
       ctx.restore();
     }
     if (mt === 0) lastSel = null;
@@ -475,7 +485,7 @@
     root.setAttribute('data-state', 'scene');
     var h = showProject(n);
     if (reduced) {
-      for (var i = 0; i < 120; i++) { sceneT += 1 / 30; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); SCENES[n.id](W, H, sceneT, 1 / 30); }
+      for (var i = 0; i < 120; i++) { sceneT += 1 / 30; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H); ctx.translate(sceneBox.x, 0); SCENES[n.id](sceneBox.w, H, sceneT, 1 / 30); }
       mt = 1;
     }
     try { history.replaceState(null, '', '#projekt-' + n.id); } catch (e) {}
