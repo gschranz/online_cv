@@ -1,6 +1,7 @@
-// Leistungen als Probenfächer: Jede Leistung ist ein Streifen, der sich beim Sichtbarwerden
-// aus einem Stapel auffächert. Die Inhalte stehen als .svc-card in #svc-list und werden
-// hier nur gelesen (ohne JS bleibt die normale Kartenliste sichtbar).
+// Leistungen als Probenfächer: Blätter aus eloxiertem Aluminium, gehalten von einer Schraube
+// unten links. Die Reihenfolge der Blätter ändert sich nie; ein gewähltes Blatt klappt ganz
+// nach außen und liegt dort frei, erst dann erscheint der Text dazu.
+// Die Inhalte stehen als .svc-card in #svc-list (ohne JS bleibt diese Liste sichtbar).
 (function () {
   'use strict';
   var wrap = document.getElementById('fan');
@@ -13,9 +14,14 @@
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var uid = 'fan-' + Math.random().toString(36).slice(2, 7);
-  var strips = [], current = -1, timer = 0, userTouched = false, visible = false;
+  var strips = [], current = -1;
   document.documentElement.classList.add('fan-on');
-  stage.style.setProperty('--c', ((cards.length - 1) / 2).toString());
+  stage.style.setProperty('--n', String(cards.length));
+  stage.removeAttribute('role');
+  stage.removeAttribute('aria-label');
+  detail.removeAttribute('role');
+  detail.id = uid + '-detail';
+  detail.setAttribute('aria-hidden', 'true');
 
   function textOf(card, sel) {
     var e = card.querySelector(sel);
@@ -29,11 +35,9 @@
     var s = document.createElement('button');
     s.type = 'button';
     s.className = 'fan-strip';
-    s.id = uid + '-t' + i;
-    s.setAttribute('role', 'tab');
-    s.setAttribute('aria-selected', 'false');
+    s.setAttribute('aria-expanded', 'false');
+    s.setAttribute('aria-controls', detail.id);
     s.setAttribute('aria-label', title);
-    s.tabIndex = -1;
     s.style.setProperty('--i', i);
     var cap = document.createElement('span');
     cap.className = 'fan-cap';
@@ -45,42 +49,24 @@
     name.textContent = label;
     s.appendChild(cap);
     s.appendChild(name);
-    s.addEventListener('click', function () { userTouched = true; select(i, true); });
-    s.addEventListener('mouseenter', function () { userTouched = true; });
+    s.addEventListener('click', function () { select(i === current ? -1 : i); });
     s.addEventListener('keydown', function (e) {
       var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
-      if (e.key === 'Home') d = -cards.length;
-      if (e.key === 'End') d = cards.length;
       if (!d) return;
       e.preventDefault();
-      userTouched = true;
-      var n = Math.max(0, Math.min(cards.length - 1, i + d));
-      select(n, true);
-      strips[n].focus();
+      strips[Math.max(0, Math.min(cards.length - 1, i + d))].focus();
     });
     stage.appendChild(s);
     strips.push(s);
   });
+
   var pivot = document.createElement('span');
   pivot.className = 'fan-pivot';
   pivot.setAttribute('aria-hidden', 'true');
   stage.appendChild(pivot);
-  detail.id = uid + '-panel';
 
-  function select(i, animate) {
-    if (i === current) return;
-    current = i;
-    strips.forEach(function (s, k) {
-      var on = k === i;
-      // Nachbarn weichen seitlich aus, das gewählte Blatt liegt frei (wie beim echten Fächer)
-      s.style.setProperty('--shift', k < i ? '-7deg' : k > i ? '7deg' : '0deg');
-      s.style.zIndex = on ? '5' : '';
-      s.classList.toggle('is-sel', on);
-      s.setAttribute('aria-selected', on ? 'true' : 'false');
-      s.tabIndex = on ? 0 : -1;
-    });
+  function fill(i) {
     var card = cards[i], isCta = card.classList.contains('svc-cta');
-    detail.setAttribute('aria-labelledby', strips[i].id);
     detail.textContent = '';
     var num = document.createElement('span');
     num.className = 'fan-num';
@@ -97,35 +83,42 @@
       a.textContent = 'Kontakt aufnehmen';
       detail.appendChild(a);
     }
-    if (animate && !reduced) {
+    if (!reduced) {
       detail.classList.remove('swap');
       void detail.offsetWidth;
       detail.classList.add('swap');
     }
   }
 
-  // Automatisch durchblättern, bis die Besucherin oder der Besucher selbst wählt
-  function tick() {
-    timer = 0;
-    if (userTouched || !visible || document.hidden) return schedule(1500);
-    select((current + 1) % cards.length, true);
-    schedule(4200);
+  function select(i) {
+    current = i;
+    strips.forEach(function (s, k) {
+      var on = k === i;
+      s.classList.toggle('is-sel', on);
+      s.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+    wrap.classList.toggle('has-sel', i >= 0);
+    detail.setAttribute('aria-hidden', i >= 0 ? 'false' : 'true');
+    if (i >= 0) fill(i);
   }
-  function schedule(ms) { if (!timer) timer = setTimeout(tick, ms); }
 
-  select(Math.floor(cards.length / 2), false);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && current >= 0) {
+      var s = strips[current];
+      select(-1);
+      s.focus();
+    }
+  });
 
   function open() {
     stage.classList.add('is-open');
-    setTimeout(function () { stage.classList.add('is-ready'); }, 900 + cards.length * 60);
-    if (!reduced) schedule(3800);
+    setTimeout(function () { stage.classList.add('is-ready'); }, 900 + cards.length * 70);
   }
   if (reduced || !('IntersectionObserver' in window)) {
     stage.classList.add('is-open', 'is-ready');
   } else {
     new IntersectionObserver(function (es, obs) {
-      visible = es[0].isIntersecting;
-      if (visible && !stage.classList.contains('is-open')) { setTimeout(open, 250); }
+      if (es[0].isIntersecting) { obs.disconnect(); setTimeout(open, 200); }
     }, { threshold: .35 }).observe(wrap);
   }
 })();

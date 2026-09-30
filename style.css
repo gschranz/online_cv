@@ -838,27 +838,23 @@ section h2.teaser-title::after { display: none; }
   #circuit-fx, #hero-splash { display: none !important; }
 }
 
-/* ── Leistungen: Probenfächer ── */
-.fan-wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: 24px 40px;
-  align-items: center;
-}
+/* ── Leistungen: Probenfächer ──
+   Drehpunkt unten links (--px/--py = Mitte der Bohrung). Die Blätter liegen in fester
+   Reihenfolge zwischen 0° und --spread; ein gewähltes Blatt klappt auf --out nach außen. */
+.fan-wrap { position: relative; }
 .fan-stage {
-  --h: 400px; --w: 56px; --step: 11deg; --c: 3.5;
-  position: relative;
-  height: calc(var(--h) + 50px);
-  min-width: 0;
+  --h: 420px; --w: 56px; --n: 8; --spread: 54deg; --out: 87deg;
+  --px: 72px; --py: 44px;
+  position: relative; height: calc(var(--h) + 36px); min-width: 0;
 }
 .fan-strip {
-  /* Echte Blätter aus eloxiertem Aluminium (Higgsfield-Aufnahmen), per 9-Slice auf Länge gebracht,
-     damit Rundung und Bohrung unverzerrt bleiben. Drehpunkt = Mitte der Bohrung. */
-  --a: calc((var(--i) - var(--c)) * var(--step) + var(--shift, 0deg));
+  /* Echte Blätter aus eloxiertem Aluminium (Higgsfield-Aufnahmen), per 9-Slice auf Länge gebracht */
+  --a: calc(var(--i) * var(--spread) / (var(--n) - 1));
   --img: url('assets/fan-violet.webp');
-  --col: var(--accent);
-  position: absolute; left: 50%; bottom: 0;
-  width: var(--w); height: var(--h); margin-left: calc(var(--w) / -2);
+  position: absolute;
+  left: calc(var(--px) - var(--w) / 2);
+  bottom: calc(var(--py) - var(--w) * .45);
+  width: var(--w); height: var(--h);
   padding: 0; cursor: pointer; text-align: center;
   background: none;
   border-style: solid; border-color: transparent;
@@ -868,53 +864,66 @@ section h2.teaser-title::after { display: none; }
   border-image-repeat: stretch;
   border-width: 0;
   transform-origin: 50% calc(100% - var(--w) * .45);
-  transform: rotate(0deg);
-  filter: drop-shadow(-3px 5px 5px rgba(0,0,0,.55)) brightness(.92) saturate(.95);
+  transform: rotate(-2deg);
+  filter: drop-shadow(-3px 4px 4px rgba(0,0,0,.5)) brightness(.94);
   display: flex; flex-direction: column; align-items: center;
-  transition: transform .9s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 60ms), filter .3s;
+  transition: transform .9s cubic-bezier(.2,.8,.2,1) calc(var(--i) * 70ms), filter .3s;
 }
-.fan-strip:nth-child(3n+2) { --img: url('assets/fan-teal.webp'); --col: var(--accent2); }
-.fan-strip:nth-child(3n) { --img: url('assets/fan-amber.webp'); --col: #ffb454; }
+.fan-strip:nth-child(3n+2) { --img: url('assets/fan-teal.webp'); }
+.fan-strip:nth-child(3n) { --img: url('assets/fan-amber.webp'); }
 .fan-stage.is-open .fan-strip { transform: rotate(var(--a)); }
-.fan-stage.is-ready .fan-strip { transition-delay: 0s; transition-duration: .55s; }
-.fan-stage.is-open .fan-strip:hover:not(.is-sel), .fan-stage.is-open .fan-strip:focus-visible:not(.is-sel) {
-  filter: drop-shadow(-4px 8px 8px rgba(0,0,0,.6)) brightness(1.04);
+.fan-stage.is-ready .fan-strip { transition: transform .7s cubic-bezier(.2,.8,.2,1), filter .3s; }
+.fan-stage.is-ready .fan-strip:not(.is-sel):hover,
+.fan-stage.is-ready .fan-strip:not(.is-sel):focus-visible {
+  transform: rotate(calc(var(--a) + 2deg));
+  filter: drop-shadow(-4px 6px 6px rgba(0,0,0,.55)) brightness(1.06);
 }
 .fan-stage.is-open .fan-strip.is-sel {
-  transition-delay: 0s; transition-duration: .55s;
-  filter: drop-shadow(-6px 16px 14px rgba(0,0,0,.65)) brightness(1.1) saturate(1.05);
-  z-index: 5;
+  transform: rotate(var(--out));
+  filter: drop-shadow(-2px 10px 10px rgba(0,0,0,.6)) brightness(1.08);
 }
 .fan-strip:focus-visible { outline: none; }
 .fan-strip:focus-visible::after {
   content: ''; position: absolute; inset: -5px; border-radius: 14px;
   border: 2px solid var(--accent2); pointer-events: none;
 }
-/* Gravur: dunkel eingelassen mit heller Unterkante */
+/* Lasergravur: legt das blanke Aluminium frei, daher hell mit feiner Schattenkante */
 .fan-cap {
   flex: none; width: 100%; padding-top: calc(var(--w) * .34);
   display: flex; align-items: center; justify-content: center;
-  color: rgba(8,8,14,.62);
-  filter: drop-shadow(0 1px 0 rgba(255,255,255,.28));
+  color: rgba(238,238,244,.94);
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.55));
 }
 .fan-cap svg { width: calc(var(--w) * .46); height: calc(var(--w) * .46); stroke-width: 2; color: inherit; }
 .fan-name {
-  flex: 1; display: flex; align-items: center; justify-content: flex-end; min-height: 0;
+  align-self: flex-start; margin-left: calc(var(--w) * .16);
+  display: flex; align-items: center; min-height: 0;
   writing-mode: vertical-rl; transform: rotate(180deg);
-  font-size: .8rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap;
-  color: rgba(8,8,14,.66);
-  text-shadow: 0 -1px 0 rgba(255,255,255,.3);
-  padding: 14px 0 calc(var(--w) * 1.05);
+  margin-top: 14px;
+  font-size: .82rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+  color: rgba(238,238,244,.94);
+  text-shadow: 0 1px 1px rgba(0,0,0,.55), 0 0 1px rgba(0,0,0,.4);
 }
 .fan-pivot {
-  position: absolute; left: 50%; bottom: calc(var(--w) * .45); z-index: 10;
+  position: absolute; left: var(--px); bottom: var(--py); z-index: 30;
   width: calc(var(--w) * .62); height: calc(var(--w) * .62);
   transform: translate(-50%, 50%);
   background: url('assets/fan-pivot.webp') center / contain no-repeat;
   filter: drop-shadow(0 3px 4px rgba(0,0,0,.7));
   pointer-events: none;
 }
-.fan-detail { min-width: 0; min-height: 250px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+/* Text erscheint nur bei Auswahl, im freien Bereich rechts oberhalb des ausgeklappten Blatts */
+.fan-detail {
+  position: absolute; top: 0; right: 0; bottom: 120px;
+  left: calc(var(--px) + var(--h) * .81 + 40px);
+  display: flex; flex-direction: column; justify-content: center; gap: 12px;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity .35s, transform .35s, visibility 0s .35s;
+}
+.fan-wrap.has-sel .fan-detail {
+  opacity: 1; visibility: visible; transform: none;
+  transition: opacity .4s .25s, transform .4s .25s;
+}
 .fan-detail.swap > * { animation: fanSwap .45s cubic-bezier(.2,.8,.2,1) both; }
 .fan-detail.swap > *:nth-child(2) { animation-delay: .05s; }
 .fan-detail.swap > *:nth-child(3) { animation-delay: .1s; }
@@ -926,13 +935,17 @@ section h2.teaser-title::after { display: none; }
 html.fan-on .svc-grid {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
-@media (max-width: 860px) {
-  .fan-wrap { grid-template-columns: 1fr; }
-  .fan-stage { --h: 270px; --w: 40px; --step: 10deg; }
-  .fan-name { font-size: .64rem; letter-spacing: .06em; }
-  .fan-detail { min-height: 0; }
+@media (max-width: 900px) {
+  .fan-stage { --h: 330px; --w: 46px; --px: 56px; --py: 38px; }
+  .fan-name { font-size: .7rem; letter-spacing: .08em; }
+  .fan-detail h3 { font-size: 1.4rem; }
+}
+@media (max-width: 640px) {
+  .fan-stage { --h: 270px; --w: 40px; --px: 40px; --py: 34px; --spread: 48deg; --out: 86deg; }
+  .fan-name { font-size: .64rem; letter-spacing: .06em; margin-top: 10px; }
+  .fan-detail { position: static; min-height: 210px; margin-top: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fan-strip, .fan-stage.is-open .fan-strip { transition: none; }
+  .fan-strip, .fan-stage.is-ready .fan-strip, .fan-detail, .fan-wrap.has-sel .fan-detail { transition: none; }
   .fan-detail.swap > * { animation: none; }
 }
