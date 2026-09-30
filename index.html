@@ -133,7 +133,6 @@
     </button>
     <div class="nav-links" id="nav-links">
       <a href="#services">Leistungen</a>
-      <a href="#approach">Arbeitsweise</a>
       <a href="#projects">Projekte</a>
       <a href="ueber-mich.html">Über mich</a>
       <a href="#contact">Kontakt</a>
@@ -157,7 +156,11 @@
     <!-- Leistungen -->
     <section id="services" class="reveal">
       <h2>Leistungen</h2>
-      <div class="svc-grid">
+      <div class="fan-wrap" id="fan">
+        <div class="fan-stage" role="tablist" aria-label="Leistungen"></div>
+        <div class="fan-detail" role="tabpanel" aria-live="polite"></div>
+      </div>
+      <div class="svc-grid" id="svc-list">
         <article class="svc-card">
           <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/></svg>
           <h3>Prozessoptimierung</h3>
@@ -201,20 +204,10 @@
       </div>
     </section>
 
-    <!-- Arbeitsweise -->
-    <section id="approach" class="reveal">
-      <h2>Arbeitsweise</h2>
-      <ol class="steps">
-        <li><span class="step-n">01</span><h3>Verstehen</h3><p>Ich sehe mir an, wie Ihr Betrieb heute arbeitet und wo es hakt, bevor ich eine Lösung vorschlage.</p></li>
-        <li><span class="step-n">02</span><h3>Umsetzen</h3><p>Schrittweise und nachvollziehbar, mit Zwischenständen, die Sie prüfen können.</p></li>
-        <li><span class="step-n">03</span><h3>Übergeben & betreuen</h3><p>Mit Dokumentation und Übergabe, auf Wunsch auch mit laufender Betreuung.</p></li>
-      </ol>
-    </section>
-
     <!-- Projects -->
     <section id="projects" class="reveal">
       <h2>Projekte</h2>
-      <p class="sec-lead">Eine Auswahl aus Kundenprojekten und eigener Entwicklung. Kundenprojekte sind anonymisiert.</p>
+      <p class="sec-lead">Eine Auswahl aus Kundenprojekten und eigener Entwicklung. Kundenprojekte sind anonymisiert. Ein Klick zoomt hinein und zeigt, wie es funktioniert.</p>
       <div class="pf" id="pf" data-state="map">
         <div class="pf-stage">
           <canvas aria-hidden="true"></canvas>
@@ -308,6 +301,7 @@
   </footer>
 
   <script src="site.js"></script>
+  <script src="services.js" defer></script>
   <script src="portfolio.js" defer></script>
   <script src="circuit.js" defer></script>
 </body>

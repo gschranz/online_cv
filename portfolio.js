@@ -442,20 +442,7 @@
     if (text) e.textContent = text;
     return e;
   }
-  function showOverview() {
-    panel.textContent = '';
-    panel.appendChild(el('p', 'pf-eyebrow', 'Netzkarte'));
-    panel.appendChild(el('p', 'pf-text', 'Jeder Knoten ist ein Projekt. Ein Klick zoomt hinein und zeigt, wie es funktioniert. Die Knoten lassen sich auch mit der Maus verschieben.'));
-    var ul = el('ul', 'pf-legend');
-    Object.keys(CLUSTERS).forEach(function (k) {
-      var li = el('li');
-      var sw = el('i'); sw.style.background = CLUSTERS[k].color;
-      li.appendChild(sw);
-      li.appendChild(document.createTextNode(CLUSTERS[k].name));
-      ul.appendChild(li);
-    });
-    panel.appendChild(ul);
-  }
+  function showOverview() { panel.textContent = ''; }
   function showProject(n) {
     var card = n.card;
     panel.textContent = '';
