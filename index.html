@@ -3,667 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Gerald Schranz, MSc – IT-Security Management, Cloud &amp; AI Specialist in Wiener Neustadt, Österreich. Online CV & Portfolio.">
-  <title>Gerald Schranz, MSc – IT-Manager</title>
+  <meta name="description" content="Schranz IT – IT-Dienstleistungen aus Wiener Neustadt: Prozessoptimierung, Softwareentwicklung, System- und Netzwerk-Infrastruktur, Informationssicherheit und Assessments.">
+  <title>Schranz IT – IT-Dienstleistungen | Gerald Schranz, MSc</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" href="favicon.svg">
-  <style>
-    /* ── Fonts (lokal gehostet) ── */
-    @font-face {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 100 900;
-      font-display: swap;
-      src: url('fonts/Inter-latin-ext.woff2') format('woff2');
-      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-    }
-    @font-face {
-      font-family: 'Inter';
-      font-style: normal;
-      font-weight: 100 900;
-      font-display: swap;
-      src: url('fonts/Inter-latin.woff2') format('woff2');
-      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-    }
-
-    /* ── Reset & Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:        #0a0a0f;
-      --bg-card:   #12121a;
-      --bg-hover:  #1a1a2e;
-      --border:    #1e1e32;
-      --text:      #e4e4ed;
-      --text-dim:  #8888a0;
-      --accent:    #6c63ff;
-      --accent2:   #00d4aa;
-      --accent3:   #ff6b6b;
-      --radius:    12px;
-      --shadow:    0 4px 24px rgba(0,0,0,.4);
-    }
-    html { scroll-behavior: smooth; overflow-x: hidden; scrollbar-gutter: stable; }
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      overflow-x: hidden;
-      overflow-wrap: break-word;
-    }
-    a { color: var(--accent2); text-decoration: none; transition: color .2s; }
-    a:hover { color: #fff; }
-
-    /* ── Layout ── */
-    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
-
-    /* ── Header / Hero ── */
-header {
-      padding: 80px 24px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      display: inline-block;
-      padding: 3px;
-      margin-bottom: 20px;
-      background: var(--accent);
-    }
-    .avatar img {
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: 63% 29%;
-      display: block;
-    }
-    header h1 {
-      font-size: 2.8rem; font-weight: 800;
-      letter-spacing: -.02em;
-    }
-    header .subtitle {
-      font-size: 1.15rem; color: var(--text-dim);
-      margin-top: 8px; font-weight: 400;
-    }
-    header .motto {
-      margin-top: 12px;
-      font-size: .95rem; color: var(--accent2);
-      font-style: italic;
-    }
-    .print-only { display: none; }
-    .header-links {
-      margin-top: 24px;
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
-    }
-    .header-links a, .header-links button {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 8px 18px;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: .9rem; font-weight: 500;
-      transition: all .25s;
-    }
-    .header-links button {
-      background: none;
-      color: inherit;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    .header-links button:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-    .header-links a:hover, .header-links button:hover {
-      border-color: var(--accent);
-      background: var(--bg-hover);
-      transform: translateY(-2px);
-    }
-
-    /* ── Sections ── */
-    section { padding: 48px 0; }
-    section h2 {
-      font-size: 1.5rem; font-weight: 700;
-      margin-bottom: 28px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    section h2::after {
-      content: '';
-      position: absolute; left: 0; bottom: -1px;
-      width: 48px; height: 2px;
-      background: var(--accent);
-    }
-
-    /* ── About ── */
-    .about-text {
-      color: var(--text-dim);
-      font-size: 1.1rem;
-      max-width: 720px;
-      line-height: 1.9;
-      letter-spacing: .01em;
-      font-weight: 350;
-      padding: 0 2px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      opacity: .96;
-    }
-
-    /* ── Experience ── */
-    .timeline { position: relative; padding-left: 32px; }
-    .timeline::before {
-      content: '';
-      position: absolute; left: 8px; top: 8px; bottom: 8px;
-      width: 2px;
-      background: var(--border);
-    }
-    .timeline-item {
-      position: relative; z-index: 1;
-      margin-bottom: 36px;
-      padding: 20px 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: all .25s;
-    }
-    .timeline-item:hover {
-      border-color: var(--accent);   /* traegt den Hover, falls der Leuchtrahmen entfaellt */
-      box-shadow: var(--shadow);
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -28px; top: 24px;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: 3px solid var(--bg);
-    }
-    .timeline-item .date {
-      font-size: .82rem; color: var(--accent2);
-      font-weight: 600; margin-bottom: 4px;
-    }
-    .timeline-item h3 { font-size: 1.1rem; font-weight: 600; }
-    .timeline-item .company {
-      font-size: .92rem; color: var(--text-dim); margin-bottom: 8px;
-    }
-    .timeline-item p { color: var(--text-dim); font-size: .92rem; line-height: 1.7; }
-    .timeline-item ul {
-      margin-top: 8px; padding-left: 20px;
-      color: var(--text-dim); font-size: .9rem;
-    }
-    .timeline-item ul li { margin-bottom: 4px; }
-
-    /* ── Education ── */
-    .edu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .edu-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      transition: all .25s;
-    }
-    .edu-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-    }
-    .edu-card .date { font-size: .82rem; color: var(--accent2); font-weight: 600; }
-    .edu-card h3 { font-size: 1rem; font-weight: 600; margin: 4px 0; }
-    .edu-card .school { font-size: .88rem; color: var(--text-dim); }
-    .edu-card .details {
-      font-size: .82rem; color: var(--text-dim);
-      margin-top: 6px; line-height: 1.5;
-    }
-
-    /* ── Skills ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-    }
-    .skill-group {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-    }
-    .skill-group h4 {
-      font-size: .82rem; text-transform: uppercase; letter-spacing: .06em;
-      color: var(--accent2); margin-bottom: 10px;
-    }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .skill-tag {
-      padding: 4px 12px;
-      border-radius: 100px;
-      font-size: .82rem;
-      background: rgba(108,99,255,.1);
-      border: 1px solid rgba(108,99,255,.2);
-      color: var(--text);
-      transition: border-color .2s, background .2s;
-    }
-    .skill-tag:hover {
-      background: rgba(108,99,255,.2);
-      border-color: var(--accent);
-    }
-
-    /* ── Certifications ── */
-    .cert-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-    }
-    .cert-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 18px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      font-size: .9rem;
-      border-left: 3px solid var(--accent);
-      transition: all .2s;
-    }
-    .cert-item:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-    }
-
-    /* ── Languages ── */
-    .lang-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-    }
-    .lang-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      transition: all .2s;
-    }
-    .lang-item:hover {
-      border-color: var(--accent);
-    }
-    .lang-item .lang-name {
-      font-weight: 600; font-size: .95rem;
-    }
-    .lang-item .lang-level {
-      font-size: .82rem; color: var(--accent2); font-weight: 600;
-    }
-    .lang-item .lang-desc {
-      font-size: .82rem; color: var(--text-dim); margin-top: 2px;
-    }
-
-    /* ── Projects ── */
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .project-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      transition: all .25s;
-    }
-    .project-card:hover {
-      border-color: var(--accent);
-      box-shadow: var(--shadow);
-      transform: translateY(-2px);
-    }
-    .project-card h3 { font-size: 1rem; font-weight: 600; }
-    .project-card h3 a { color: var(--text); transition: color .2s; }
-    .project-card h3 a:hover { color: var(--accent2); }
-    .project-card .desc {
-      font-size: .88rem; color: var(--text-dim);
-      margin: 6px 0 10px; line-height: 1.6;
-    }
-    .project-card .tech-stack {
-      display: flex; flex-wrap: wrap; gap: 4px;
-    }
-    .project-card .tech-stack span {
-      font-size: .75rem; padding: 2px 8px;
-      border-radius: 4px;
-      background: rgba(255,255,255,.04);
-      color: var(--text-dim);
-    }
-
-    /* ── Projekt-Netzkarte ── */
-    .pf { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: stretch; }
-    .pf-stage {
-      position: relative; height: 480px; min-width: 0;
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .pf-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-    .pf-node {
-      position: absolute; left: 0; top: 0; width: 52px; height: 52px; border-radius: 50%;
-      background: transparent; border: 0; cursor: pointer; color: var(--text-dim);
-      transition: opacity .35s ease;
-    }
-    .pf-node span {
-      position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
-      margin-top: -6px; white-space: nowrap; font-size: .74rem; font-weight: 500; letter-spacing: .02em;
-      transition: color .2s;
-    }
-    .pf-node:hover span, .pf-node:focus-visible span { color: var(--text); }
-    .pf-node:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
-    .pf[data-state="scene"] .pf-node { opacity: 0; pointer-events: none; }
-    .pf-panel {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 22px; display: flex; flex-direction: column; gap: 10px; align-content: flex-start;
-    }
-    .pf-eyebrow { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent2); font-weight: 600; }
-    .pf-title { font-size: 1.25rem; font-weight: 700; outline: none; }
-    .pf-status {
-      align-self: flex-start; font-size: .75rem; font-weight: 600; color: #ffb454;
-      border: 1px solid rgba(255,180,84,.4); border-radius: 6px; padding: 2px 8px;
-    }
-    .pf-text { font-size: .9rem; line-height: 1.7; color: var(--text-dim); }
-    .pf-legend { list-style: none; display: grid; gap: 8px; margin-top: 6px; font-size: .85rem; color: var(--text-dim); }
-    .pf-legend li { display: flex; align-items: center; gap: 10px; }
-    .pf-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-    .pf-panel .tech-stack { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
-    .pf-panel .tech-stack span {
-      font-size: .75rem; padding: 2px 8px; border-radius: 4px;
-      background: rgba(255,255,255,.04); color: var(--text-dim);
-    }
-    .pf-link { font-size: .85rem; }
-    .pf-back {
-      align-self: flex-start; background: none; border: 1px solid var(--border); border-radius: 100px;
-      color: var(--text); font: inherit; font-size: .8rem; padding: 5px 12px; cursor: pointer;
-      transition: border-color .2s;
-    }
-    .pf-back:hover { border-color: var(--accent); }
-    html.pf-on .pf-list { display: none; }
-    @media (max-width: 900px) {
-      .pf { grid-template-columns: 1fr; }
-      .pf-stage { height: 560px; }
-    }
-    @media (max-width: 480px) { .pf-stage { height: 520px; } }
-
-    /* ── Footer ── */
-    footer {
-      text-align: center;
-      padding: 40px 0 32px;
-      border-top: 1px solid var(--border);
-      color: var(--text-dim);
-      font-size: .85rem;
-    }
-    footer .legal-toggle {
-      background: none; border: 0; font-family: inherit;
-      display: inline-block;
-      margin-top: 12px;
-      font-size: .8rem;
-      color: var(--text-dim);
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      text-decoration-color: var(--border);
-      transition: color .2s;
-    }
-    footer .legal-toggle:hover { color: var(--accent2); }
-    footer .legal-section {
-      display: none;
-      margin-top: 20px;
-      padding: 20px 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      text-align: left;
-      font-size: .82rem;
-      line-height: 1.7;
-    }
-    footer .legal-section.show { display: block; }
-    footer .legal-section h3 {
-      font-size: .9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-    footer .legal-section p { margin-bottom: 6px; }
-    footer .legal-section p:last-child { margin-bottom: 0; }
-    footer .legal-section a { color: var(--accent2); }
-    footer .legal-section a:hover { color: #fff; }
-
-    /* ── Navigation ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: safe center;
-      gap: 4px;
-      padding: 10px 16px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    nav::-webkit-scrollbar { display: none; }
-    nav a {
-      font-size: .78rem;
-      font-weight: 500;
-      padding: 6px 12px;
-      border-radius: 8px;
-      color: var(--text-dim);
-      white-space: nowrap;
-      transition: all .2s;
-    }
-    nav a:hover {
-      color: var(--text);
-      background: var(--bg-hover);
-    }
-
-    /* ── Padding für fixed Nav ── */
-    body { padding-top: 52px; }
-
-    /* ── Hero-Intro: Warp-Tunnel als Canvas in nativer Auflösung ──
-       Standardmäßig aus; ein Skript im <head> setzt splash-active (kein Intro ohne JS). */
-    #hero-splash {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: var(--bg);
-      transition: opacity .8s ease-out;
-    }
-    html.splash-active #hero-splash, #hero-splash.hide { display: block; }
-    #hero-splash canvas { display: block; width: 100%; height: 100%; }
-    #hero-splash.hide { opacity: 0; pointer-events: none; }
-    /* Übergang: die Seite fliegt aus dem Tunnel heran, solange er noch sichtbar ist */
-    html.intro-run nav, html.intro-run header, html.intro-run main, html.intro-run footer {
-      transform-origin: 50% 0;
-      transition: opacity 1.1s ease, transform 1.4s cubic-bezier(.16, .84, .3, 1);
-    }
-    html.intro-hold nav, html.intro-hold header, html.intro-hold main, html.intro-hold footer {
-      opacity: 0;
-      transform: scale(1.06);
-    }
-    html.splash-active, html.splash-active body { overflow: hidden; }
-    @media (prefers-reduced-motion: reduce) {
-      #hero-splash { display: none !important; }
-    }
-
-    /* ── Print ── */
-    @media print {
-      /* Sonst kann der Druck-Snapshot mitten in einer Farb-/Opacity-Transition
-         (Breathing Glow, Scroll-Reveal, ...) entstehen und Karten wirken blass. */
-      * { animation: none !important; transition: none !important; }
-      nav { display: none; }
-      .print-only { display: block; }
-      header .subtitle { color: #333; }
-      header .motto { color: #444; }
-      body { padding-top: 0; background: #fff; color: #111; }
-      header::before { display: none; }
-      header { padding: 32px 24px 20px; }
-      header h1 {
-        color: #111 !important;
-        -webkit-text-fill-color: #111 !important;
-        background: none !important;
-        -webkit-background-clip: initial !important;
-        background-clip: initial !important;
-      }
-      .avatar {
-        width: 80px; height: 80px;
-        box-shadow: none;
-        background: none;
-        border: 2px solid #999;
-        animation: none;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .about-text, .timeline-item p,
-      .timeline-item ul, .timeline-item .company,
-      .edu-card .school, .cert-item span,
-      .project-card .desc, .project-card .tech-stack span,
-      .lang-item .lang-desc { color: #333; }
-      .project-card h3 a { color: #111; }
-      .timeline-item, .edu-card, .skill-group,
-      .cert-item, .project-card, .lang-item {
-        background: #f5f5f5;
-        border-color: #ddd;
-        box-shadow: none;
-      }
-      .skill-tag { background: #e8e8ff; border-color: #ccc; color: #222; }
-      .timeline-item:hover, .edu-card:hover,
-      .cert-item:hover, .project-card:hover { transform: none; box-shadow: none; }
-      .timeline::before { background: #999; }
-      .timeline-item::before { background: #6c63ff; border-color: #fff; }
-      .legal-toggle { display: none; }
-      footer .legal-section { display: block !important; border-color: #ddd; background: #f5f5f5; }
-      footer .legal-section p, footer .legal-section h3 { color: #333; }
-      section { padding: 24px 0; page-break-inside: avoid; }
-      section h2 { color: #111; }
-      .header-links a { border-color: #ddd; }
-      footer { border-top-color: #ddd; color: #666; }
-      .date { color: #6c63ff !important; }
-      .skill-group h4 { color: #6c63ff !important; }
-      .lang-item .lang-level { color: #6c63ff !important; }
-      .pdf-download-btn { display: none !important; }
-      /* Scroll-Reveal ist beim Drucken irrelevant -- alles sofort sichtbar,
-         auch wenn die Sektion nie ins Sichtfeld gescrollt wurde. */
-      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-    }
-
-    /* ── Verfügbar-Badge ── */
-    .badge-available {
-      display: inline-flex; align-items: center; gap: 8px;
-      margin-top: 22px;
-      padding: 6px 14px;
-      border-radius: 6px;
-      font-size: .82rem; font-weight: 600;
-      background: rgba(0,212,170,.08);
-      border: 1px solid rgba(0,212,170,.3);
-      color: var(--accent2);
-    }
-    .badge-available .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent2);
-    }
-
-    /* ── Scroll Reveal ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity .5s ease, transform .5s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── Sprachbalken ── */
-    .lang-item .lang-bar {
-      height: 3px;
-      margin-top: 8px;
-      background: var(--accent);
-      transition: width .8s ease;
-      width: 0;
-    }
-    .lang-item.visible .lang-bar { width: var(--pct); }
-
-    /* ── Scroll-Fortschritt ── */
-    #progress-bar {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      background: var(--accent);
-      z-index: 200;
-      width: 0;
-    }
-
-
-
-    /* ── Responsive Overflow Safeguards ── */
-    .about-text, .timeline-item, .timeline-item p, .timeline-item ul,
-    .edu-card, .edu-card .details, .edu-card .school, .skill-group,
-    .cert-item, .lang-item, .lang-item .lang-desc, .project-card,
-    .project-card .desc, footer .legal-section, footer .legal-section p {
-      overflow-wrap: break-word;
-      word-break: break-word;
-    }
-    .cert-item > div { min-width: 0; }
-
-
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      header h1 { font-size: 1.7rem; }
-      header { padding: 60px 24px 32px; }
-      .avatar { width: 96px; height: 96px; padding: 2px; }
-      .subtitle { font-size: .95rem; }
-      section { padding: 28px 0; }
-      .timeline { padding-left: 22px; }
-      .timeline-item { padding: 16px 18px; }
-      .timeline-item::before { left: -18px; width: 10px; height: 10px; }
-      .timeline-item h3 { font-size: 1rem; }
-      .skills-grid { grid-template-columns: 1fr 1fr; }
-      .lang-grid { grid-template-columns: 1fr 1fr; }
-      .header-links a { padding: 8px 14px; font-size: .82rem; }
-      nav a { padding: 6px 10px; font-size: .72rem; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      .reveal { opacity: 1; transform: none; transition: none; }
-      .lang-item .lang-bar { transition: none; }
-    }
-    @media (max-width: 480px) {
-      .container { padding: 0 16px; }
-      header h1 { font-size: 1.4rem; }
-      header { padding: 52px 16px 24px; }
-      .avatar { width: 80px; height: 80px; margin-bottom: 14px; }
-      .subtitle { font-size: .85rem; }
-      section { padding: 24px 0; }
-      section h2 { font-size: 1.2rem; margin-bottom: 20px; }
-      .timeline-item { margin-bottom: 24px; }
-      .skills-grid { grid-template-columns: 1fr; }
-      .lang-grid { grid-template-columns: 1fr; }
-      .header-links { gap: 10px; }
-      .header-links a { padding: 6px 12px; font-size: .78rem; }
-      .cert-grid { grid-template-columns: 1fr; }
-      .project-grid { grid-template-columns: 1fr; }
-      .edu-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 380px) {
-      .container { padding: 0 12px; }
-      .skills-grid, .lang-grid, .cert-grid,
-      .project-grid, .edu-grid { grid-template-columns: 1fr; }
-      .timeline-item { padding: 14px 13px; }
-      section h2 { font-size: 1.1rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
   <script>try{if(!sessionStorage.getItem('heroIntroShown')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){var r=document.documentElement;r.classList.add('splash-active','intro-hold','intro-run');setTimeout(function(){r.classList.remove('splash-active','intro-hold','intro-run')},7000)}}catch(e){}</script>
 </head>
-<body>
+<body class="page-home">
 
   <div id="hero-splash" aria-hidden="true"><canvas></canvas></div>
   <script>
@@ -775,307 +122,96 @@ header {
     })();
   </script>
 
+  <div id="circuit-fx" aria-hidden="true"></div>
+
   <div id="progress-bar"></div>
 
   <nav aria-label="Hauptnavigation">
-    <a href="#about">Über mich</a>
-    <a href="#experience">Erfahrung</a>
-    <a href="#education">Ausbildung</a>
-    <a href="#skills">Skills</a>
-    <a href="#certifications">Zertifikate</a>
-    <a href="#languages">Sprachen</a>
-    <a href="#projects">Projekte</a>
+    <a class="nav-brand" href="index.html" aria-label="Schranz IT – Startseite"><span class="nav-mark" aria-hidden="true"></span>Schranz IT</a>
+    <div class="nav-links">
+      <a href="#services">Leistungen</a>
+      <a href="#approach">Arbeitsweise</a>
+      <a href="#projects">Projekte</a>
+      <a href="ueber-mich.html">Über mich</a>
+      <a href="#contact">Kontakt</a>
+    </div>
   </nav>
 
-  <header>
-    <div class="avatar"><img src="avatar.jpg" alt="Gerald Schranz"></div>
-    <h1>Gerald Schranz, MSc</h1>
-    <p class="subtitle">IT-Security Management &bull; Cloud &amp; AI Specialist &bull; Wiener Neustadt, Österreich</p>
-    <p class="motto">„Think twice, code once."</p>
-    <div class="badge-available">
-      <span class="dot"></span>
-      Für neue Projekte verfügbar
-    </div>
-    <div class="header-links">
-      <a href="https://at.linkedin.com/in/gerald-schranz-02083bab" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        LinkedIn
-      </a>
-      <a href="https://github.com/gschranz" target="_blank" rel="noopener">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        GitHub
-      </a>
-      <a href="mailto:g.schranz@hotmail.com">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        E-Mail
-      </a>
-      <button type="button" class="pdf-download-btn" onclick="downloadCvPdf()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><polyline points="7,10 12,15 17,10"/><path d="M4 19h16"/></svg>
-        <span class="pdf-btn-label">PDF herunterladen</span>
-      </button>
+  <header class="hero" id="top">
+    <div class="container">
+      <p class="hero-eyebrow">Schranz IT · Wiener Neustadt</p>
+      <h1>IT-Dienstleistungen<br>aus einer Hand.</h1>
+      <p class="hero-lead">Von der Analyse bis zum sicheren Betrieb: Prozesse, Software, Infrastruktur und Informationssicherheit, umgesetzt von Gerald Schranz, MSc.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contact">Kontakt aufnehmen</a>
+        <a class="btn" href="#services">Leistungen ansehen</a>
+      </div>
     </div>
   </header>
 
   <main class="container">
 
-    <!-- About -->
-    <section id="about" class="reveal">
-      <h2>Über mich</h2>
-      <div class="about-text">
-        <p>IT-Manager mit Schwerpunkt auf Cloud-Security, Microsoft-Umfeld und KI-Integration. Ich verbinde fundiertes Know-how in der Microsoft-Welt mit agilen Entwicklungspraktiken und pragmatischen Architekturen.</p>
-        <p style="margin-top: 12px;">Ob Azure-Infrastruktur, AI-Integration oder Full-Stack-Entwicklung: Ich begleite Projekte von der Konzeption bis zur produktiven Umsetzung. Über ein Jahrzehnt Berufserfahrung als IT-Generalist, mit Wert auf sauberen Code, effiziente Prozesse und die Arbeit im Team.</p>
+    <!-- Leistungen -->
+    <section id="services" class="reveal">
+      <h2>Leistungen</h2>
+      <div class="svc-grid">
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 8l5 8M18 8l-5 8"/></svg>
+          <h3>Prozessoptimierung</h3>
+          <p>Abläufe analysieren, Medienbrüche und Doppelerfassungen aufdecken und dort automatisieren, wo es sich rechnet.</p>
+        </article>
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4M13.5 5l-3 14"/></svg>
+          <h3>Softwareentwicklung</h3>
+          <p>Web-Anwendungen, Schnittstellen und Auswertungen, von der Ablöse gewachsener Excel- und Access-Lösungen bis zur eigenen Anwendung.</p>
+        </article>
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01M12 10v4"/></svg>
+          <h3>System- & Netzwerk-Infrastruktur</h3>
+          <p>Planung, Konfiguration und Betreuung von Servern, Netzwerken und Clients, inklusive Diensten wie DNS und DHCP.</p>
+        </article>
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          <h3>Informationssicherheit</h3>
+          <p>Sicherheitskonzepte, Härtung, Rechte- und Identitätsmanagement sowie Security-Lösungen im Microsoft-Umfeld.</p>
+        </article>
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h6v3H9z"/><path d="M8 5H6v16h12V5h-2"/><path d="M9 12h6M9 16h4"/></svg>
+          <h3>Assessments</h3>
+          <p>Bestandsaufnahme von IT, Sicherheit und Prozessen, mit priorisierten und umsetzbaren Empfehlungen statt dicker Berichte.</p>
+        </article>
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .5-8 6 6 0 0 0-11.4 1.5A3.3 3.3 0 0 0 7 18z"/></svg>
+          <h3>Cloud & Microsoft 365</h3>
+          <p>Azure-Infrastruktur und Migration, Modern Workplace mit Microsoft 365, Exchange Online und Teams.</p>
+        </article>
+        <article class="svc-card">
+          <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/><path d="M10 10h4v4h-4z"/></svg>
+          <h3>KI-Integration & Automatisierung</h3>
+          <p>KI-Assistenten, Agenten und Workflows, die sich in bestehende Abläufe und Systeme einfügen.</p>
+        </article>
+        <a class="svc-card svc-cta" href="#contact">
+          <h3>Ihr Thema fehlt?</h3>
+          <p>Schreiben Sie mir, worum es geht. Viele Aufgaben liegen zwischen diesen Feldern.</p>
+          <span class="svc-cta-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
     </section>
 
-    <!-- Experience -->
-    <section id="experience" class="reveal">
-      <h2>Berufserfahrung</h2>
-      <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="date">seit 2022</div>
-          <h3>Senior Group Security Office Manager</h3>
-          <div class="company">CANCOM Austria — Wien</div>
-          <p>Ganzheitliche IT-Beratung mit Fokus auf Microsoft-Technologien, Cloud-Transformation &amp; AI-Integration. Seit 2024 als Senior IT-Manager mit Schwerpunkt auf Cloud-Security, Modern Workplace und Copilot-Lösungen.</p>
-          <ul>
-            <li>Microsoft Copilot for Security — Early Access Program &amp; Implementierung</li>
-            <li>Azure Security &amp; Compliance Architektur</li>
-            <li>Azure-Infrastruktur-Design &amp; -Migration</li>
-            <li>Modern Workplace &amp; Microsoft 365 / Exchange Online / Teams Consulting</li>
-            <li>Automatisierung &amp; DevOps mit PowerShell &amp; Azure CLI</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2018 – 2022</div>
-          <h3>System- &amp; Netzwerkadministrator</h3>
-          <div class="company">Great Wall Motor Austria Research &amp; Development GmbH — Bad Vöslau</div>
-          <p>Verantwortlich für die Konzeption, Entwicklung und Betreuung der IT-Infrastruktur im Forschungs- und Entwicklungsbetrieb.</p>
-          <ul>
-            <li>Systemadministration und Betreuung der gesamten IT-Umgebung</li>
-            <li>Entwicklung von Infrastrukturlösungen für den F&amp;E-Betrieb</li>
-            <li>DevOps-Weiterentwicklung, Automatisierung und Prozessoptimierung</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2014 – 2016</div>
-          <h3>System- &amp; Netzwerkadministrator</h3>
-          <div class="company">IMaGE Performing Arts GmbH — Wien</div>
-          <p>IT-Betreuung eines Unternehmens der Veranstaltungsbranche.</p>
-          <ul>
-            <li>Wartung und Erweiterung der IT/TK-Infrastruktur</li>
-            <li>Unterstützung bei Störfällen und Fragen im gesamten Unternehmen</li>
-            <li>Erstellung der EDV-Dokumentation</li>
-            <li>Bereitschaftsdienst </li>
-            <li>Zukauf und Einrichtung neuer Hardware</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2014</div>
-          <h3>Technischer Support</h3>
-          <div class="company">McShark Computervertriebs-GmbH — Wien</div>
-          <ul>
-            <li>Lösung von Anwenderproblemen im IT-Support</li>
-            <li>Information und Konfliktlösung</li>
-            <li>Aufrüstungen und Reparaturen</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2012 – 2013</div>
-          <h3>Verkauf &amp; technischer Support</h3>
-          <div class="company">macoffice, Hillisch und Partner GmbH — Wiener Neustadt</div>
-          <ul>
-            <li>Verkaufsberatung und Zusammenstellung maßgeschneiderter EDV-Lösungen</li>
-            <li>Technischer Support, Reparaturen, Aufrüstungen und Umbauten</li>
-            <li>Betreuung der Online-Präsenzen</li>
-            <li>Zertifizierung der Geschäftsstelle bei Apple und Adobe</li>
-          </ul>
-        </div>
-
-        <div class="timeline-item">
-          <div class="date">2011 – 2012</div>
-          <h3>Rettungssanitäter (Zivildienst)</h3>
-          <div class="company">Österreichisches Rotes Kreuz — Wiener Neustadt</div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Education -->
-    <section id="education" class="reveal">
-      <h2>Ausbildung</h2>
-      <div class="edu-grid">
-        <div class="edu-card">
-          <div class="date">2020 – 2022</div>
-          <h3>Master of Science in Engineering (MSc)</h3>
-          <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
-          <div class="details">Abschluss in der Mindeststudienzeit</div>
-        </div>
-        <div class="edu-card">
-          <div class="date">2016 – 2019</div>
-          <h3>Bachelor of Science in Engineering (BSc)</h3>
-          <div class="school">Fachhochschule Wiener Neustadt — Informatik</div>
-          <div class="details">
-            Bachelor-Arbeiten: <em>Customized Containers for Server Nodes of Multiphysics Simulation Applications</em> (Informatik) &amp; <em>Customizing the Usability-Engineering Lifecycle – Software Development for Users with a Low Level of Computer Skills</em> (Wirtschaftsinformatik)
-          </div>
-        </div>
-        <div class="edu-card">
-          <div class="date">2006 – 2011</div>
-          <h3>Reife- und Diplomprüfung</h3>
-          <div class="school">HLA für Produktmanagement und Präsentation — Mödling</div>
-          <div class="details">
-            Schwerpunkte: Web- und Printmediengestaltung, Betriebswirtschaft, 3 lebende Fremdsprachen, Eventorganisation
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="reveal">
-      <h2>Skills</h2>
-      <div class="skills-grid">
-        <div class="skill-group">
-          <h4>Cloud &amp; Infrastructure</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Microsoft Azure</span>
-            <span class="skill-tag">Microsoft 365</span>
-            <span class="skill-tag">Windows Server</span>
-            <span class="skill-tag">Docker</span>
-            <span class="skill-tag">Railway</span>
-            <span class="skill-tag">Nagios</span>
-            <span class="skill-tag">Linux</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h4>AI &amp; Data</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">LLM Integration</span>
-            <span class="skill-tag">Copilot</span>
-            <span class="skill-tag">KI Agenten (Hermes, Openclaw, Claude Code, Codex, Copilot)</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h4>Development</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">Next.js</span>
-            <span class="skill-tag">React</span>
-            <span class="skill-tag">HTML/CSS</span>
-            <span class="skill-tag">C# / .NET</span>
-            <span class="skill-tag">SQL</span>
-            <span class="skill-tag">C / C++</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">Prolog</span>
-            <span class="skill-tag">Matlab</span>
-            <span class="skill-tag">Python</span>
-          </div>
-        </div>
-        <div class="skill-group">
-          <h4>DevOps &amp; Tools</h4>
-          <div class="skill-tags">
-            <span class="skill-tag">Git / GitHub</span>
-            <span class="skill-tag">CI/CD</span>
-            <span class="skill-tag">PowerShell</span>
-            <span class="skill-tag">Azure CLI</span>
-            <span class="skill-tag">Bash</span>
-            <span class="skill-tag">DNS/DHCP</span>
-            <span class="skill-tag">ISO-OSI</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Certifications -->
-    <section id="certifications" class="reveal">
-      <h2>Zertifizierungen</h2>
-      <div class="cert-grid">
-        <div class="cert-item">
-          <div>
-            <strong>Azure Fundamentals (AZ-900)</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Security &amp; Network Security Features</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>Azure Fundamentals (AZ-900)</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Identity, Governance &amp; Compliance</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>MCSA: Windows Server 2012</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Microsoft Certified Solutions Associate</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>MCPS: Microsoft Certified Professional</strong>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>Microsoft TA</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Microsoft Technical Associate</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>PMA Level D</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Projektmanagement-Assistent</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>Apple Zertifikate</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">macOS Support &amp; Sales Certification</span>
-          </div>
-        </div>
-        <div class="cert-item">
-          <div>
-            <strong>Learn4D365</strong><br>
-            <span style="font-size:.82rem;color:var(--text-dim);">Badge of Achievement &amp; Certificate of Achievement</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Languages -->
-    <section id="languages" class="reveal">
-      <h2>Sprachen</h2>
-      <div class="lang-grid">
-        <div class="lang-item reveal">
-          <div class="lang-name">Deutsch</div>
-          <div class="lang-level">Muttersprache</div>
-          <div class="lang-desc">fließend in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:100%"></div>
-        </div>
-        <div class="lang-item reveal">
-          <div class="lang-name">Englisch</div>
-          <div class="lang-level">C2</div>
-          <div class="lang-desc">fließend in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:90%"></div>
-        </div>
-        <div class="lang-item reveal">
-          <div class="lang-name">Französisch</div>
-          <div class="lang-level">B1</div>
-          <div class="lang-desc">sehr gutes Verständnis, Phrasen in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:50%"></div>
-        </div>
-        <div class="lang-item reveal">
-          <div class="lang-name">Spanisch</div>
-          <div class="lang-level">A1</div>
-          <div class="lang-desc">gutes Verständnis, Phrasen in Wort und Schrift</div>
-          <div class="lang-bar" style="--pct:30%"></div>
-        </div>
-      </div>
+    <!-- Arbeitsweise -->
+    <section id="approach" class="reveal">
+      <h2>Arbeitsweise</h2>
+      <ol class="steps">
+        <li><span class="step-n">01</span><h3>Verstehen</h3><p>Ich sehe mir an, wie Ihr Betrieb heute arbeitet und wo es hakt, bevor ich eine Lösung vorschlage.</p></li>
+        <li><span class="step-n">02</span><h3>Umsetzen</h3><p>Schrittweise und nachvollziehbar, mit Zwischenständen, die Sie prüfen können.</p></li>
+        <li><span class="step-n">03</span><h3>Übergeben & betreuen</h3><p>Mit Dokumentation und Übergabe, auf Wunsch auch mit laufender Betreuung.</p></li>
+      </ol>
     </section>
 
     <!-- Projects -->
     <section id="projects" class="reveal">
       <h2>Projekte</h2>
+      <p class="sec-lead">Eine Auswahl aus Kundenprojekten und eigener Entwicklung. Kundenprojekte sind anonymisiert.</p>
       <div class="pf" id="pf" data-state="map">
         <div class="pf-stage">
           <canvas aria-hidden="true"></canvas>
@@ -1121,20 +257,46 @@ header {
       </div>
     </section>
 
+    <!-- Über mich (Teaser) -->
+    <section id="about-teaser" class="reveal">
+      <div class="teaser">
+        <img class="teaser-img" src="avatar.jpg" alt="Gerald Schranz" width="96" height="96">
+        <div>
+          <h2 class="teaser-title">Gerald Schranz, MSc</h2>
+          <p>Über zehn Jahre IT-Erfahrung, von Support und Netzwerkadministration bis zur Cloud-Security-Beratung. Heute Senior Group Security Office Manager bei CANCOM Austria.</p>
+          <a class="teaser-link" href="ueber-mich.html">Mehr über mich, Werdegang und Lebenslauf →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="contact" class="reveal">
+      <h2>Kontakt</h2>
+      <p class="sec-lead">Beschreiben Sie kurz Ihr Anliegen, dann vereinbaren wir ein erstes Gespräch.</p>
+      <a class="contact-mail" href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a>
+      <div class="contact-links">
+        <a href="https://at.linkedin.com/in/gerald-schranz-02083bab" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/gschranz" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </section>
+
   </main>
 
   <footer>
     <div class="container">
-      <p>© 2026 Gerald Schranz, MSc</p>
+      <p>© 2026 Schranz IT · Gerald Schranz, MSc</p>
       <button type="button" class="legal-toggle" aria-expanded="false" aria-controls="legal-info" onclick="this.setAttribute('aria-expanded', document.getElementById('legal-info').classList.toggle('show'))">Impressum &amp; Datenschutz</button>
       <div id="legal-info" class="legal-section">
         <h3>Impressum</h3>
-        <p><strong>Gerald Schranz, MSc</strong><br>
+        <p><strong>Schranz IT – Gerald Schranz, MSc</strong> (Einzelunternehmen)<br>
+        Moosgasse 8, 2700 Wiener Neustadt, Österreich<br>
         E-Mail: <a href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a></p>
+        <p><strong>Unternehmensgegenstand:</strong> IT-Dienstleistungen<br>
+        <strong>Steuernummer:</strong> 09 365/3061</p>
 
         <h3 style="margin-top:16px;">Datenschutzerklärung</h3>
-        <p><strong>Verantwortlicher:</strong> Gerald Schranz, MSc (<a href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a>)</p>
-        <p><strong>Personenbezogene Daten:</strong> Diese Website erhebt und verarbeitet keine personenbezogenen Daten. Es werden keine Cookies, Tracking-Tools oder Analyse-Dienste eingesetzt. Die Schriftart Inter wird lokal vom Server ausgeliefert — es erfolgt keine Verbindung zu externen Schriftarten-Servern.</p>
+        <p><strong>Verantwortlicher:</strong> Gerald Schranz, MSc, Moosgasse 8, 2700 Wiener Neustadt (<a href="mailto:g.schranz@hotmail.com">g.schranz@hotmail.com</a>)</p>
+        <p><strong>Personenbezogene Daten:</strong> Diese Website erhebt und verarbeitet keine personenbezogenen Daten. Es werden keine Cookies, Tracking-Tools oder Analyse-Dienste eingesetzt. Schrift, Bilder und Videos werden lokal vom Server ausgeliefert — es erfolgt keine Verbindung zu Servern Dritter.</p>
         <p><strong>Kontaktaufnahme:</strong> Bei E-Mail-Kontakt wird die Korrespondenz vertraulich behandelt und nicht an Dritte weitergegeben.</p>
         <p><strong>Server-Logfiles:</strong> Beim Abruf der Seite werden durch den Hosting-Anbieter technisch notwendige Logdaten (IP, Uhrzeit, aufgerufene Seite) verarbeitet. Diese Daten werden nicht mit anderen Datenquellen zusammengeführt.</p>
         <p><strong>Ihre Rechte:</strong> Ihnen stehen die Rechte auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung und Datenübertragbarkeit zu. Bei Fragen kontaktieren Sie mich bitte per E-Mail.</p>
@@ -1142,396 +304,8 @@ header {
     </div>
   </footer>
 
-<script>
-    // ── PDF-Download ──
-    // Baut den Lebenslauf direkt aus den Inhalten der Seite als eigenes,
-    // sauber layoutetes PDF (jsPDF, lokal eingebunden -- kein CDN, kein
-    // Backend). Bewusst kein window.print(): der Browser-Druckdialog liefert
-    // kein konsistentes Layout und würde auch das (auf der Seite versteckte)
-    // Impressum/Datenschutz mit ausgeben. jsPDF wird erst beim ersten Klick
-    // nachgeladen, damit der Erstbesuch nicht mit ~400 KB belastet wird.
-    let jsPdfLoadPromise = null;
-    function loadJsPdf() {
-      if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
-      if (jsPdfLoadPromise) return jsPdfLoadPromise;
-      jsPdfLoadPromise = new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = 'vendor/jspdf.umd.min.js';
-        s.onload = () => resolve();
-        s.onerror = () => reject(new Error('jsPDF konnte nicht geladen werden'));
-        document.head.appendChild(s);
-      });
-      return jsPdfLoadPromise;
-    }
-
-    function downloadCvPdf() {
-      const btn = document.querySelector('.pdf-download-btn');
-      const label = btn && btn.querySelector('.pdf-btn-label');
-      const originalLabel = label ? label.textContent : '';
-      if (btn) btn.disabled = true;
-      if (label) label.textContent = 'Wird erstellt …';
-
-      loadJsPdf()
-        .then(buildCvPdf)
-        .catch((err) => {
-          console.error('PDF-Erstellung fehlgeschlagen:', err);
-          alert('Die PDF konnte leider nicht erstellt werden. Bitte versuchen Sie es erneut.');
-        })
-        .then(() => {
-          if (btn) btn.disabled = false;
-          if (label) label.textContent = originalLabel;
-        });
-    }
-
-    function loadAvatarDataUrl() {
-      return new Promise((resolve) => {
-        const img = document.querySelector('header .avatar img');
-        if (!img) { resolve(null); return; }
-        function draw() {
-          try {
-            const size = 240;
-            const canvas = document.createElement('canvas');
-            canvas.width = size; canvas.height = size;
-            const ctx = canvas.getContext('2d');
-            ctx.beginPath();
-            ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.clip();
-            const iw = img.naturalWidth, ih = img.naturalHeight;
-            const side = Math.min(iw, ih);
-            const pos = getComputedStyle(img).objectPosition.split(' ');
-            const px = parseFloat(pos[0]) || 50;
-            const py = parseFloat(pos[1]) || 50;
-            const sx = Math.max(0, Math.min(iw - side, (iw - side) * (px / 100)));
-            const sy = Math.max(0, Math.min(ih - side, (ih - side) * (py / 100)));
-            ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
-            resolve(canvas.toDataURL('image/png'));
-          } catch (e) { resolve(null); }
-        }
-        if (img.complete && img.naturalWidth) draw();
-        else {
-          img.addEventListener('load', draw, { once: true });
-          img.addEventListener('error', () => resolve(null), { once: true });
-        }
-      });
-    }
-
-    function buildCvPdf() {
-      return loadAvatarDataUrl().then((avatarDataUrl) => {
-        const txt = (el) => el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-
-        const pageW = doc.internal.pageSize.getWidth();
-        const pageH = doc.internal.pageSize.getHeight();
-        const marginX = 18, marginTop = 20, marginBottom = 20;
-        const contentW = pageW - marginX * 2;
-        let y = marginTop;
-
-        const TEXT = [26, 26, 31], DIM = [100, 100, 115],
-              ACCENT = [108, 99, 255], ACCENT2 = [0, 130, 110], LINE = [222, 222, 232];
-
-        function ensureSpace(h) {
-          if (y + h > pageH - marginBottom) { doc.addPage(); y = marginTop; }
-        }
-        function setFont(weight, size, color) {
-          doc.setFont('helvetica', weight || 'normal');
-          doc.setFontSize(size);
-          doc.setTextColor(color[0], color[1], color[2]);
-        }
-        function wrapped(str, size, weight, color, lineH, x, width) {
-          x = x || marginX; width = width || contentW;
-          setFont(weight, size, color);
-          doc.splitTextToSize(str, width).forEach((line) => {
-            ensureSpace(lineH);
-            doc.text(line, x, y);
-            y += lineH;
-          });
-        }
-        function ruleLine(color, w) {
-          doc.setDrawColor(color[0], color[1], color[2]);
-          doc.setLineWidth(w || .3);
-          doc.line(marginX, y, pageW - marginX, y);
-        }
-        function sectionHeading(title) {
-          ensureSpace(16);
-          y += 3;
-          setFont('bold', 13.5, ACCENT);
-          doc.text(title, marginX, y);
-          y += 2.5;
-          ruleLine(LINE);
-          y += 7;
-        }
-        function bulletLine(str) {
-          const indent = 4.5;
-          setFont('normal', 9.3, TEXT);
-          doc.splitTextToSize(str, contentW - indent).forEach((line, i) => {
-            ensureSpace(4.6);
-            if (i === 0) doc.text('•', marginX, y);
-            doc.text(line, marginX + indent, y);
-            y += 4.6;
-          });
-        }
-
-        // ── Kopf ──
-        if (avatarDataUrl) {
-          const d = 30;
-          doc.addImage(avatarDataUrl, 'PNG', pageW / 2 - d / 2, y, d, d);
-          doc.setDrawColor(ACCENT[0], ACCENT[1], ACCENT[2]);
-          doc.setLineWidth(.5);
-          doc.circle(pageW / 2, y + d / 2, d / 2, 'S');
-          y += d + 6;
-        }
-        setFont('bold', 21, TEXT);
-        doc.text(txt(document.querySelector('header h1')), pageW / 2, y, { align: 'center' });
-        y += 8;
-        const subtitle = txt(document.querySelector('header .subtitle'));
-        if (subtitle) {
-          setFont('normal', 11, DIM);
-          doc.splitTextToSize(subtitle, contentW).forEach((line) => {
-            doc.text(line, pageW / 2, y, { align: 'center' });
-            y += 5.6;
-          });
-        }
-        const motto = txt(document.querySelector('header .motto'));
-        if (motto) {
-          setFont('italic', 10, DIM);
-          doc.text(motto, pageW / 2, y, { align: 'center' });
-          y += 7.5;
-        }
-        // Kontaktzeile, jedes Segment einzeln klickbar
-        const links = Array.from(document.querySelectorAll('.header-links a'))
-          .map((a) => ({ label: txt(a), href: a.getAttribute('href') }));
-        if (links.length) {
-          setFont('normal', 9.5, ACCENT2);
-          const sep = '   ·   ';
-          const totalW = links.reduce((w, l) => w + doc.getTextWidth(l.label), 0) +
-            doc.getTextWidth(sep) * (links.length - 1);
-          let x = pageW / 2 - totalW / 2;
-          links.forEach((l, i) => {
-            doc.setTextColor(ACCENT2[0], ACCENT2[1], ACCENT2[2]);
-            doc.textWithLink(l.label, x, y, { url: l.href });
-            x += doc.getTextWidth(l.label);
-            if (i < links.length - 1) {
-              doc.setTextColor(DIM[0], DIM[1], DIM[2]);
-              doc.text(sep, x, y);
-              x += doc.getTextWidth(sep);
-            }
-          });
-          y += 9;
-        }
-        ruleLine(ACCENT, .6);
-        y += 9;
-
-        // ── Über mich ──
-        const aboutParas = document.querySelectorAll('#about .about-text p');
-        if (aboutParas.length) {
-          sectionHeading('Über mich');
-          aboutParas.forEach((p) => { wrapped(txt(p), 10, 'normal', TEXT, 5); y += 2; });
-          y += 3;
-        }
-
-        // ── Berufserfahrung ──
-        const expItems = document.querySelectorAll('#experience .timeline-item');
-        if (expItems.length) {
-          sectionHeading('Berufserfahrung');
-          expItems.forEach((item) => {
-            ensureSpace(20);
-            const date = txt(item.querySelector('.date'));
-            const role = txt(item.querySelector('h3'));
-            const company = txt(item.querySelector('.company'));
-            const desc = item.querySelector('p');
-            const bullets = item.querySelectorAll('ul li');
-
-            if (date) { setFont('bold', 9.5, ACCENT); doc.text(date, marginX, y); y += 5; }
-            setFont('bold', 11.5, TEXT);
-            doc.splitTextToSize(role, contentW).forEach((line) => { ensureSpace(5.2); doc.text(line, marginX, y); y += 5.2; });
-            if (company) { setFont('italic', 9.5, DIM); doc.text(company, marginX, y); y += 5.5; }
-            if (desc) { wrapped(txt(desc), 9.5, 'normal', TEXT, 4.6); y += 1; }
-            bullets.forEach((li) => bulletLine(txt(li)));
-            y += 6;
-          });
-        }
-
-        // ── Ausbildung ──
-        const eduCards = document.querySelectorAll('#education .edu-card');
-        if (eduCards.length) {
-          sectionHeading('Ausbildung');
-          eduCards.forEach((card) => {
-            ensureSpace(18);
-            const date = txt(card.querySelector('.date'));
-            const degree = txt(card.querySelector('h3'));
-            const school = txt(card.querySelector('.school'));
-            const details = txt(card.querySelector('.details'));
-
-            if (date) { setFont('bold', 9.5, ACCENT); doc.text(date, marginX, y); y += 5; }
-            setFont('bold', 11, TEXT);
-            doc.splitTextToSize(degree, contentW).forEach((line) => { ensureSpace(5.2); doc.text(line, marginX, y); y += 5.2; });
-            if (school) { setFont('italic', 9.5, DIM); doc.text(school, marginX, y); y += 5.5; }
-            if (details) wrapped(details, 9, 'normal', DIM, 4.4);
-            y += 6;
-          });
-        }
-
-        // ── Skills ──
-        const skillGroups = document.querySelectorAll('#skills .skill-group');
-        if (skillGroups.length) {
-          sectionHeading('Skills');
-          skillGroups.forEach((group) => {
-            ensureSpace(12);
-            const cat = txt(group.querySelector('h4'));
-            const tags = Array.from(group.querySelectorAll('.skill-tag')).map(txt).join('  ·  ');
-            setFont('bold', 10, ACCENT);
-            doc.text(cat, marginX, y);
-            y += 5;
-            wrapped(tags, 9.3, 'normal', TEXT, 4.6);
-            y += 4;
-          });
-        }
-
-        // ── Zertifizierungen ──
-        const certItems = document.querySelectorAll('#certifications .cert-item');
-        if (certItems.length) {
-          sectionHeading('Zertifizierungen');
-          certItems.forEach((item) => {
-            const title = txt(item.querySelector('strong'));
-            const desc = txt(item.querySelector('span'));
-            ensureSpace(5.5);
-            setFont('bold', 9.5, TEXT);
-            doc.text('•', marginX, y);
-            doc.text(title, marginX + 4.5, y);
-            const titleW = doc.getTextWidth(title);
-            if (desc) {
-              setFont('normal', 9, DIM);
-              doc.text('  —  ' + desc, marginX + 4.5 + titleW, y);
-            }
-            y += 5.3;
-          });
-          y += 3;
-        }
-
-        // ── Sprachen ──
-        const langItems = document.querySelectorAll('#languages .lang-item');
-        if (langItems.length) {
-          sectionHeading('Sprachen');
-          langItems.forEach((item) => {
-            // Flaggen-Emoji entfernen -- PDF-Standardfonts stellen sie nicht dar
-            const name = txt(item.querySelector('.lang-name')).replace(/^[^\p{L}]*/u, '').trim();
-            const level = txt(item.querySelector('.lang-level'));
-            const desc = txt(item.querySelector('.lang-desc'));
-            ensureSpace(5.6);
-            setFont('bold', 9.8, TEXT);
-            doc.text(name, marginX, y);
-            let x = marginX + doc.getTextWidth(name);
-            if (level) {
-              setFont('bold', 9.8, ACCENT);
-              doc.text('  ' + level, x, y);
-              x += doc.getTextWidth('  ' + level);
-            }
-            if (desc) {
-              setFont('normal', 9, DIM);
-              doc.text('  —  ' + desc, x, y);
-            }
-            y += 5.6;
-          });
-          y += 3;
-        }
-
-        // ── Hobbyprojekte ──
-        const projectCards = document.querySelectorAll('#projects .project-card');
-        if (projectCards.length) {
-          sectionHeading('Projekte');
-          projectCards.forEach((card) => {
-            ensureSpace(16);
-            const linkEls = Array.from(card.querySelectorAll('h3 a'));
-            const title = linkEls.length ? linkEls.map((a) => txt(a).replace(/↗/g, '').trim()).join(' · ') : txt(card.querySelector('h3'));
-            const desc = txt(card.querySelector('.desc'));
-            const tech = Array.from(card.querySelectorAll('.tech-stack span')).map(txt).join('  ·  ');
-
-            setFont('bold', 10.5, TEXT);
-            doc.text(title, marginX, y);
-            y += 5.2;
-            if (desc) { wrapped(desc, 9.3, 'normal', TEXT, 4.5); y += .5; }
-            if (tech) { setFont('italic', 8.7, DIM); doc.text(tech, marginX, y); y += 4.8; }
-            if (linkEls.length) {
-              ensureSpace(4.4);
-              let x = marginX;
-              linkEls.forEach((a, i) => {
-                const href = a.getAttribute('href');
-                const label = href.replace(/^https?:\/\//, '');
-                setFont('normal', 8, ACCENT2);
-                doc.textWithLink(label, x, y, { url: href });
-                x += doc.getTextWidth(label);
-                if (i < linkEls.length - 1) {
-                  doc.setTextColor(DIM[0], DIM[1], DIM[2]);
-                  doc.text('   ·   ', x, y);
-                  x += doc.getTextWidth('   ·   ');
-                }
-              });
-              y += 5.5;
-            }
-            y += 4;
-          });
-        }
-
-        // ── Seitenfuß ──
-        const name = txt(document.querySelector('header h1'));
-        const footerContact = [
-          { label: 'Moosgasse 8, 2700 Wiener Neustadt' },
-          { label: '+43 699/1507 51 51', href: 'tel:+4369915075151' },
-          { label: 'g.schranz@hotmail.com', href: 'mailto:g.schranz@hotmail.com' },
-        ];
-        const pageCount = doc.internal.getNumberOfPages();
-        for (let i = 1; i <= pageCount; i++) {
-          doc.setPage(i);
-
-          // Kontaktzeile, zentriert, klickbare Segmente
-          setFont('normal', 7.8, DIM);
-          const fSep = '   ·   ';
-          const totalW = footerContact.reduce((w, c) => w + doc.getTextWidth(c.label), 0) +
-            doc.getTextWidth(fSep) * (footerContact.length - 1);
-          let fx = pageW / 2 - totalW / 2;
-          footerContact.forEach((c, idx) => {
-            doc.setTextColor(DIM[0], DIM[1], DIM[2]);
-            if (c.href) doc.textWithLink(c.label, fx, pageH - 14, { url: c.href });
-            else doc.text(c.label, fx, pageH - 14);
-            fx += doc.getTextWidth(c.label);
-            if (idx < footerContact.length - 1) {
-              doc.text(fSep, fx, pageH - 14);
-              fx += doc.getTextWidth(fSep);
-            }
-          });
-
-          setFont('normal', 8, DIM);
-          doc.text(name + ' — Lebenslauf', marginX, pageH - 8);
-          doc.text('Seite ' + i + ' / ' + pageCount, pageW - marginX, pageH - 8, { align: 'right' });
-        }
-
-        doc.save((name || 'Lebenslauf').replace(/[^\p{L}\p{N}]+/gu, '-') + '.pdf');
-      });
-    }
-
-    // Scroll Progress Bar
-    const bar = document.getElementById('progress-bar');
-    window.addEventListener('scroll', () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      bar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
-    }, { passive: true });
-
-    // Scroll Reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: .1 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    // Lazy init for lang bars
-    document.querySelectorAll('.lang-item.reveal').forEach(el => observer.observe(el));
-
-  </script>
+  <script src="site.js"></script>
   <script src="portfolio.js" defer></script>
+  <script src="circuit.js" defer></script>
 </body>
 </html>

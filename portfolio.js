@@ -56,29 +56,35 @@
   Array.prototype.forEach.call(list.querySelectorAll('.project-card'), function (card, i) {
     var id = card.getAttribute('data-id');
     if (!LAYOUT[id]) return;
+    // Unsichtbare Buttons nur für Tastatur und Screenreader; Maus/Touch treffen den Canvas.
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'pf-node';
-    btn.setAttribute('aria-label', card.getAttribute('data-short') + ' – ' + CLUSTERS[card.getAttribute('data-cluster')].name + ', Animation öffnen');
-    var span = document.createElement('span');
-    span.textContent = card.getAttribute('data-short');
-    btn.appendChild(span);
+    btn.textContent = card.getAttribute('data-short') + ' – ' + CLUSTERS[card.getAttribute('data-cluster')].name + ', Animation öffnen';
     stage.appendChild(btn);
-    var n = { id: id, card: card, btn: btn, cluster: card.getAttribute('data-cluster'), ph: i * 1.7, x: 0, y: 0 };
+    var n = {
+      id: id, card: card, btn: btn, cluster: card.getAttribute('data-cluster'),
+      short: card.getAttribute('data-short'), ph: i * 1.7,
+      x: 0, y: 0, bx: 0, by: 0, ox: 0, oy: 0, vx: 0, vy: 0
+    };
     btn.addEventListener('click', function () { select(n); });
-    btn.addEventListener('mouseenter', function () { hover = n; requestDraw(); });
-    btn.addEventListener('mouseleave', function () { if (hover === n) hover = null; requestDraw(); });
-    btn.addEventListener('focus', function () { hover = n; requestDraw(); });
-    btn.addEventListener('blur', function () { if (hover === n) hover = null; requestDraw(); });
+    btn.addEventListener('focus', function () { if (btn.matches(':focus-visible')) { focused = n; requestDraw(); } });
+    btn.addEventListener('blur', function () { if (focused === n) focused = null; requestDraw(); });
     nodes.push(n);
   });
   if (!nodes.length) return;
   var byId = {};
   nodes.forEach(function (n) { byId[n.id] = n; });
+  var NEIGH = {};
+  nodes.forEach(function (n) { NEIGH[n.id] = []; });
+  LINKS.forEach(function (l) {
+    if (byId[l[0]] && byId[l[1]]) { NEIGH[l[0]].push(byId[l[1]]); NEIGH[l[1]].push(byId[l[0]]); }
+  });
 
   // ── Zustand ──
   var W = 0, H = 0, dpr = 1, portrait = false;
-  var sel = null, lastSel = null, hover = null;
+  var sel = null, lastSel = null, hover = null, focused = null;
+  var drag = null;            // { n, id, sx, sy, moved, px, py }
   var mt = 0;                 // Übergang Karte (0) -> Szene (1)
   var clock = 0, sceneT = 0, S = {};
   var running = false, raf = 0, visible = false, prev = 0;
@@ -94,14 +100,32 @@
   }
 
   // ── Karte ──
-  function place(t) {
+  // Ruhelage + Drift + Feder-Auslenkung. Gezogene Knoten folgen dem Zeiger,
+  // ihre Nachbarn werden ein Stück mitgezogen, danach federt alles zurück.
+  function place(t, dt) {
     var amp = reduced ? 0 : 6;
     nodes.forEach(function (n) {
       var p = LAYOUT[n.id][portrait ? 'p' : 'l'];
-      n.x = p[0] * W + Math.sin(t * .6 + n.ph) * amp;
-      n.y = p[1] * H + Math.cos(t * .5 + n.ph * 1.3) * amp;
-      n.btn.style.transform = 'translate(' + n.x.toFixed(1) + 'px,' + n.y.toFixed(1) + 'px) translate(-50%,-50%)';
+      n.bx = p[0] * W + Math.sin(t * .6 + n.ph) * amp;
+      n.by = p[1] * H + Math.cos(t * .5 + n.ph * 1.3) * amp;
     });
+    var d = drag && drag.moved ? drag.n : null;
+    nodes.forEach(function (n) {
+      if (n === d) {
+        n.ox = clamp(drag.px, 12, W - 12) - n.bx;
+        n.oy = clamp(drag.py, 12, H - 12) - n.by;
+        n.vx = n.vy = 0;
+        return;
+      }
+      var tx = 0, ty = 0;
+      if (d && NEIGH[d.id].indexOf(n) >= 0) { tx = d.ox * .22; ty = d.oy * .22; }
+      if (dt > 0) {
+        n.vx += ((tx - n.ox) * 120 - n.vx * 13) * dt;
+        n.vy += ((ty - n.oy) * 120 - n.vy * 13) * dt;
+        n.ox += n.vx * dt; n.oy += n.vy * dt;
+      }
+    });
+    nodes.forEach(function (n) { n.x = n.bx + n.ox; n.y = n.by + n.oy; });
   }
   function drawMap(t) {
     Object.keys(CLUSTERS).forEach(function (k) {
@@ -121,19 +145,26 @@
     LINKS.forEach(function (l, i) {
       var a = byId[l[0]], b = byId[l[1]];
       if (!a || !b) return;
-      var hot = hover && (hover === a || hover === b);
-      line(a.x, a.y, b.x, b.y, rgba(C.a, hot ? .6 : .22), 1);
+      var h = hover || focused || (drag && drag.n);
+      var hot = h && (h === a || h === b);
+      line(a.x, a.y, b.x, b.y, rgba(C.a, hot ? .6 : .22), hot ? 1.4 : 1);
       var u = (t * .18 + i * .29) % 1;
       dot(a.x + (b.x - a.x) * u, a.y + (b.y - a.y) * u, 2, rgba(C.b, hot ? 1 : .6));
     });
     nodes.forEach(function (n) {
       var col = CLUSTERS[n.cluster].color;
-      var hot = hover === n;
+      var held = drag && drag.n === n;
+      var hot = hover === n || focused === n || held;
       var pulse = reduced ? 0 : (Math.sin(t * 1.6 + n.ph) + 1) / 2;
-      dot(n.x, n.y, hot ? 26 : 18 + pulse * 3, rgba(col, hot ? .22 : .10));
-      ctx.strokeStyle = rgba(col, hot ? 1 : .55); ctx.lineWidth = 1.2;
-      ctx.beginPath(); ctx.arc(n.x, n.y, hot ? 12 : 9, 0, Math.PI * 2); ctx.stroke();
-      dot(n.x, n.y, hot ? 5 : 4, col);
+      dot(n.x, n.y, hot ? 28 : 18 + pulse * 3, rgba(col, hot ? .22 : .10));
+      ctx.strokeStyle = rgba(col, hot ? 1 : .55); ctx.lineWidth = held ? 2 : 1.2;
+      ctx.beginPath(); ctx.arc(n.x, n.y, hot ? 13 : 9, 0, Math.PI * 2); ctx.stroke();
+      dot(n.x, n.y, hot ? 5.5 : 4, col);
+      if (focused === n) {
+        ctx.strokeStyle = C.b; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(n.x, n.y, 20, 0, Math.PI * 2); ctx.stroke();
+      }
+      label(n.short, n.x, n.y + 27, hot ? C.text : C.dim, 12);
     });
   }
 
@@ -348,7 +379,7 @@
     clock += dt;
     var target = sel ? 1 : 0;
     if (reduced) mt = target; else mt += clamp(target - mt, -dt / .55, dt / .55);
-    place(clock);
+    place(clock, dt);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
     var focus = sel || lastSel;
@@ -404,8 +435,7 @@
   function showOverview() {
     panel.textContent = '';
     panel.appendChild(el('p', 'pf-eyebrow', 'Netzkarte'));
-    panel.appendChild(el('h3', 'pf-title', nodes.length + ' Projekte'));
-    panel.appendChild(el('p', 'pf-text', 'Jeder Knoten ist ein Projekt. Ein Klick zoomt hinein und zeigt den Mechanismus als Animation.'));
+    panel.appendChild(el('p', 'pf-text', 'Jeder Knoten ist ein Projekt. Ein Klick zoomt hinein und zeigt, wie es funktioniert. Die Knoten lassen sich auch mit der Maus verschieben.'));
     var ul = el('ul', 'pf-legend');
     Object.keys(CLUSTERS).forEach(function (k) {
       var li = el('li');
@@ -462,6 +492,60 @@
     requestDraw();
   }
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sel) deselect(); });
+
+  // ── Zeiger: Treffer auf Knoten oder Beschriftung, Klick vs. Ziehen ──
+  function pos(e) {
+    var r = stage.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function hit(x, y) {
+    var best = null, bd = Infinity;
+    nodes.forEach(function (n) {
+      var dx = x - n.x, dy = y - n.y;
+      var d = Math.hypot(dx, dy);
+      var onLabel = Math.abs(dx) < 62 && dy > 14 && dy < 38;
+      if ((d < 34 || onLabel) && d < bd) { best = n; bd = d; }
+    });
+    return best;
+  }
+  function setCursor() {
+    stage.style.cursor = sel ? 'default' : drag && drag.moved ? 'grabbing' : hover ? 'pointer' : 'default';
+  }
+  stage.addEventListener('pointermove', function (e) {
+    if (sel) return;
+    var p = pos(e);
+    if (drag && e.pointerId === drag.id) {
+      drag.px = p.x; drag.py = p.y;
+      if (!drag.moved && drag.touch === false && Math.hypot(p.x - drag.sx, p.y - drag.sy) > 6) drag.moved = true;
+    } else {
+      var h = hit(p.x, p.y);
+      if (h !== hover) { hover = h; requestDraw(); }
+    }
+    setCursor();
+    if (!running) requestDraw();
+  });
+  stage.addEventListener('pointerleave', function () {
+    if (!drag && hover) { hover = null; setCursor(); requestDraw(); }
+  });
+  stage.addEventListener('pointerdown', function (e) {
+    if (sel || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    var p = pos(e), n = hit(p.x, p.y);
+    if (!n) return;
+    drag = { n: n, id: e.pointerId, sx: p.x, sy: p.y, px: p.x, py: p.y, moved: false, touch: e.pointerType === 'touch' || reduced };
+    if (!drag.touch) { try { stage.setPointerCapture(e.pointerId); } catch (err) {} }
+    hover = n;
+    requestDraw();
+  });
+  function endDrag(e, cancelled) {
+    if (!drag || e.pointerId !== drag.id) return;
+    var d = drag;
+    drag = null;
+    if (!cancelled && !d.moved) select(d.n);
+    setCursor();
+    requestDraw();
+  }
+  stage.addEventListener('pointerup', function (e) { endDrag(e, false); });
+  stage.addEventListener('pointercancel', function (e) { endDrag(e, true); });
 
   // ── Start ──
   showOverview();
