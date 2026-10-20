@@ -32,6 +32,15 @@
   <link rel="alternate icon" href="favicon.svg">
   <link rel="stylesheet" href="style.css">
   <script>try{if(!sessionStorage.getItem('heroIntroShown')&&!matchMedia('(prefers-reduced-motion: reduce)').matches){var r=document.documentElement;r.classList.add('splash-active','intro-hold','intro-run');setTimeout(function(){r.classList.remove('splash-active','intro-hold','intro-run')},7000)}}catch(e){}</script>
+  <!-- Alte CV-Deep-Links (#about, #skills, …) auf die neue Über-mich-Seite umleiten.
+       Diese Sektionen sind beim Relaunch von index.html nach ueber-mich.html gewandert. -->
+  <script>
+    (function () {
+      var moved = ['about', 'certifications', 'education', 'experience', 'languages', 'skills'];
+      var h = (location.hash || '').replace(/^#/, '');
+      if (moved.indexOf(h) !== -1) { location.replace('/ueber-mich.html#' + h); }
+    })();
+  </script>
 </head>
 <body class="page-home">
 

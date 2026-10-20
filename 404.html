@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, follow">
+  <title>Seite nicht gefunden (404) – Schranz IT</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <style>
+    @font-face{font-family:'Inter';font-weight:100 900;font-style:normal;font-display:swap;src:url('/fonts/Inter-latin.woff2') format('woff2');}
+    :root{--bg:#0a0a0f;--card:#12121a;--border:#1e1e32;--text:#e4e4ed;--dim:#8888a0;--accent:#6c63ff;--accent2:#00d4aa}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px;-webkit-font-smoothing:antialiased}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(circle at 15% 0%,rgba(108,99,255,.28),transparent 55%),radial-gradient(circle at 90% 100%,rgba(0,212,170,.20),transparent 55%);pointer-events:none}
+    main{position:relative;max-width:640px;width:100%;text-align:center;background:rgba(18,18,26,.85);border:1px solid var(--border);border-radius:20px;padding:56px 40px;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+    .mark{width:26px;height:26px;border:3px solid var(--accent);border-radius:6px;position:relative;display:inline-block;margin-bottom:26px}
+    .mark::after{content:'';position:absolute;inset:5px;background:var(--accent2);border-radius:2px}
+    .code{font-size:76px;font-weight:800;letter-spacing:-.03em;line-height:1;color:#fff}
+    h1{margin-top:14px;font-size:24px;font-weight:600;color:#fff}
+    p{margin-top:14px;color:var(--dim);font-size:16px;line-height:1.6}
+    .actions{margin-top:32px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+    a.btn{display:inline-block;padding:13px 24px;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;border:1px solid var(--border);color:var(--text);transition:.2s}
+    a.btn:hover{border-color:var(--accent2);color:#fff}
+    a.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    a.btn.primary:hover{background:#5a51f0}
+    footer{margin-top:28px;font-size:13px;color:var(--dim)}
+  </style>
+</head>
+<body>
+  <main>
+    <span class="mark" aria-hidden="true"></span>
+    <div class="code">404</div>
+    <h1>Diese Seite gibt es nicht (mehr).</h1>
+    <p>Die Adresse wurde geändert oder existiert nicht. Alles Wichtige finden Sie über die folgenden Links.</p>
+    <div class="actions">
+      <a class="btn primary" href="/">Zur Startseite</a>
+      <a class="btn" href="/ueber-mich.html">Über mich</a>
+      <a class="btn" href="/#services">Leistungen</a>
+      <a class="btn" href="/#contact">Kontakt</a>
+    </div>
+    <footer>Schranz IT · Gerald Schranz, MSc · Wiener Neustadt</footer>
+  </main>
+  <script>
+    /* Falls ein alter CV-Anker (#skills, #about, …) auf einer falschen URL landet:
+       zur passenden Über-mich-Sektion weiterleiten. */
+    (function () {
+      var moved = ['about', 'certifications', 'education', 'experience', 'languages', 'skills'];
+      var h = (location.hash || '').replace(/^#/, '');
+      if (moved.indexOf(h) !== -1) { location.replace('/ueber-mich.html#' + h); }
+    })();
+  </script>
+</body>
+</html>
